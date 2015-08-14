@@ -38,6 +38,9 @@
                     <a href="manage.jsp">Manage</a>
                 </li>
                 <li>
+                    <a href="resource.jsp">Resource</a>
+                </li>
+                <li>
                     <a href="../index.jsp">Back to Portal</a>
                 </li>
             </ul>

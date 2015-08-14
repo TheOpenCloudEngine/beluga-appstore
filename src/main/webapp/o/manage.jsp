@@ -11,6 +11,24 @@
                 <h1 id="tables">Manage Apps</h1>
             </div>
 
+            <h2>Overview</h2>
+            <div class="row">
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="stat-box">
+                        <p class="text-info">2</p>
+                        <h4>Apps</h4>
+                    </div>
+                </div>
+                <div class="col-md-6 col-sm-6 col-xs-6">
+                    <div class="stat-box">
+                        <p class="text-warning">1</p>
+                        <h4>Outer Apps</h4>
+                    </div>
+                </div>
+            </div>
+
+            <br>
+
             <h2>Providing Apps</h2>
             <table class="table table-hover table-bordered">
                 <thead>
@@ -48,6 +66,8 @@
                 </tr>
                 </tbody>
             </table>
+
+            <br>
 
             <h2>Outer Apps</h2>
             <table class="table table-hover table-bordered">

@@ -12,9 +12,9 @@
             </div>
 
             <div>
-                <div class="pull-right">
-                    <a href="#" class="btn btn-primary outline">Edit</a>
-                </div>
+                <%--<div class="pull-right">--%>
+                    <%--<a href="#" class="btn btn-primary outline">Edit</a>--%>
+                <%--</div>--%>
                 <%--<i class="label label-default">User</i>--%>
                 <p>songaal@gmail.com <i class="label label-primary">Administrator</i></p>
                 <p>fastcat.co</p>

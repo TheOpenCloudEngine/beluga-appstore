@@ -12,36 +12,14 @@
             </div>
 
             <div>
-                <div class="pull-right">
-                    <a href="#" class="btn btn-lg btn-primary outline">Edit</a>
-                </div>
-                <h3>토탈소프트뱅크</h3>
-                <p>tsb.co.kr</p>
-                <p>Since 2015.8.7</p>
+                <%--<div class="pull-right">--%>
+                    <%--<a href="#" class="btn btn-lg btn-primary outline">Edit</a>--%>
+                <%--</div>--%>
+                <h3>토탈소프트뱅크 (tsb)</h3>
+                <p>Member Since 2015.8.7</p>
+                <p><a href="#">5 Users</a></p>
             </div>
 
-            <br>
-
-            <div class="row">
-                <div class="col-md-4">
-                    <div class="stat-box">
-                        <p class="text-primary">13</p>
-                        <h4>Users</h4>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="stat-box">
-                        <p class="text-info">2</p>
-                        <h4>Apps</h4>
-                    </div>
-                </div>
-                <div class="col-md-4">
-                    <div class="stat-box">
-                        <p class="text-warning">1</p>
-                        <h4>Outer Apps</h4>
-                    </div>
-                </div>
-            </div>
             <br>
 
             <div class="box" >
