@@ -141,6 +141,7 @@ dd {  word-break: break-all; }
 }
 .col-100 { width:100px;}
 .col-150 { width:150px;}
+.col-200 { width:200px;}
 .col-300 { width:300px;}
 
 .form-horizontal.compact .form-group { margin-bottom: 0;}
@@ -183,3 +184,4 @@ dd {  word-break: break-all; }
 }
 
 .no-padding-left {padding-left: 0;}
+

@@ -264,11 +264,20 @@
 
             <div class="row col-md-12">
                 <hr>
-                <div class="pull-right">
-                    <a href="#" class="btn btn-danger outline"><i class="glyphicon glyphicon-trash"></i> Delete App</a>
-                </div>
                 <div>
                     <a href="appInfo.jsp" class="btn btn-primary outline">Save all changes</a>
+                </div>
+            </div>
+
+            <div class="row col-md-12">
+                <br>
+                <br>
+                <div class="box" >
+                    <div class="pull-right">
+                        <a href="#" class="btn btn-lg btn-danger outline"><i class="glyphicon glyphicon-trash"></i> Delete App</a>
+                    </div>
+                    <h2>Delete App</h2>
+                    <p>This will termination running app and permanently delete all app information.</p>
                 </div>
             </div>
         </div>

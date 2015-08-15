@@ -14,7 +14,45 @@
             <div class="row col-md-12">
                 <a href="manage.jsp" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
                 &nbsp;<a href="appEdit.jsp" class="btn btn-default">Edit</a>
-                &nbsp;<a href="#" class="btn btn-primary outline">Apply</a>
+            </div>
+
+            <div class="row col-md-12">
+                <br>
+                <div class="box" >
+                    <div class="pull-right">
+                        <a href="#" class="btn btn-lg btn-primary outline">Apply App</a>
+                        &nbsp; <a href="#" class="btn btn-lg btn-default"><i class="glyphicon glyphicon-refresh"></i></a>
+
+                    </div>
+                    <h2>Running Status</h2>
+                    <br>
+                    <div class="row">
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <div class="stat-box">
+                                <p class="text-success">OK</p>
+                                <h4>Status</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <div class="stat-box">
+                                <p class="text-warning">28 min</p>
+                                <h4>Elapsed</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <div class="stat-box">
+                                <p class="text-primary">2</p>
+                                <h4>Scale</h4>
+                            </div>
+                        </div>
+                        <div class="col-md-3 col-sm-3 col-xs-3">
+                            <div class="stat-box">
+                                <p class="text-success">ON</p>
+                                <h4>Auto Scale</h4>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
 
             <div class="row col-md-12">
