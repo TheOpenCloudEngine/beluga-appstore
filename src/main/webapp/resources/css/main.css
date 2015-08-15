@@ -177,3 +177,9 @@ dd {  word-break: break-all; }
     padding: 20px;
     margin-top: 10px;
 }
+
+.sub-options {
+    margin-left: 20px;
+}
+
+.no-padding-left {padding-left: 0;}

@@ -13,46 +13,39 @@
 
             <div class="row col-md-12">
                 <a href="manage.jsp" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
-                &nbsp;<a href="appInfo.jsp" class="btn btn-primary outline">View</a>
+                &nbsp;<a href="appInfo.jsp" class="btn btn-primary outline">Save all changes</a>
             </div>
-            <div class="row col-md-12">
-                <form>
+            <form>
+                <div class="row col-md-12">
                     <input type="hidden" name="" value="" />
                     <h4 class="bottom-line">General Information</h4>
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
-                            <label class="col-md-3 control-label">Name:</label>
-                            <div class="col-md-9"><input type="text" class="form-control" value="EDI" /></div>
+                            <label class="col-md-3 col-sm-3 control-label">Name:</label>
+                            <div class="col-md-9 col-sm-9"><input type="text" class="form-control" value="EDI" /></div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-md-3 control-label">Description :</label>
-                            <div class="col-md-9"><textarea class="form-control" rows="3"></textarea></div>
-                        </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-3 col-md-9">
-                                <button type="submit" class="btn btn-primary outline">Save</button>
-                            </div>
+                            <label class="col-md-3 col-sm-3 control-label">Description :</label>
+                            <div class="col-md-9 col-sm-9"><textarea class="form-control" rows="3"></textarea></div>
                         </div>
                     </div>
-                </form>
-            </div>
+                </div>
 
-            <div class="row col-md-12">
-                <form>
+                <div class="row col-md-12">
                     <h4 class="bottom-line">Operating Plan</h4>
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
-                            <label class="col-md-3 control-label">App file:</label>
-                            <div class="col-md-9">
+                            <label class="col-md-3 col-sm-3 control-label">App file:</label>
+                            <div class="col-md-9 col-sm-9">
                                 <p class="form-control-static">edi.war (1.2 MB) <br><i class="file-date">2015-07-08 14:11:35</i></p>
                                 <input type="file" />
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 control-label">CPUs:</label>
-                            <div class="col-md-9">
-                                <select class="form-control">
+                            <label class="col-md-3 col-sm-3 control-label">CPUs:</label>
+                            <div class="col-md-9 col-sm-9">
+                                <select class="form-control col-100">
                                     <option>0.1</option>
                                     <option>0.2</option>
                                     <option>0.3</option>
@@ -67,9 +60,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 control-label">Memory:</label>
-                            <div class="col-md-9">
-                                <select class="form-control">
+                            <label class="col-md-3 col-sm-3 control-label">Memory:</label>
+                            <div class="col-md-9 col-sm-9">
+                                <select class="form-control col-100">
                                     <option>50MB</option>
                                     <option>100MB</option>
                                     <option>200MB</option>
@@ -85,9 +78,9 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 control-label">Scale:</label>
-                            <div class="col-md-9">
-                                <select class="form-control">
+                            <label class="col-md-3 col-sm-3 control-label">Scale:</label>
+                            <div class="col-md-9 col-sm-9">
+                                <select class="form-control col-100">
                                     <option>1</option>
                                     <option>2</option>
                                     <option>3</option>
@@ -95,22 +88,93 @@
                                 </select>
                             </div>
                         </div>
+                    </div>
+                </div>
+
+                <div class="row col-md-12">
+                    <h4 class="bottom-line">Resource Plan</h4>
+                    <div class="col-md-12 form-horizontal">
                         <div class="form-group">
-                            <div class="col-md-offset-3 col-md-9">
-                                <button type="submit" class="btn btn-primary outline">Save</button>
+                            <label class="col-md-3 col-sm-3 control-label">Database:</label>
+                            <div class="col-md-9 col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" checked> DB01 ( MySql 5.6.26 )
+                                    </label>
+                                </div>
+                                <div class="sub-options">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="db1IsolationOptions" value="separateDB" checked> Separate DB
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="db1IsolationOptions" value="SharedDB" disabled> Shared DB
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" disabled> DB02 ( Oracle 11g )
+                                    </label>
+                                </div>
+                                <div class="sub-options">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="db2IsolationOptions" value="separateDB"> Separate DB
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="db2IsolationOptions" value="separateSchema"> Separate Schema
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="db2IsolationOptions" value="sharedSchema"> Shared Schema
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" disabled> DB03 ( Postgres 9.4.4 )
+                                    </label>
+                                </div>
+                                <div class="sub-options">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="db3IsolationOptions" value="separateDB"> Separate DB
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="db3IsolationOptions" value="separateSchema"> Separate Schema
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="db3IsolationOptions" value="sharedSchema"> Shared Schema
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-sm-3 control-label">FTP:</label>
+                            <div class="col-md-9 col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox"> FTP01 ( Ftp 3.2 )
+                                    </label>
+                                </div>
+                                <div class="sub-options">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="ftp1IsolationOptions" value="private"> Private
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="ftp1IsolationOptions" value="sharedByUser" checked> Shared by User
+                                    </label>
+                                </div>
                             </div>
                         </div>
                     </div>
-                </form>
-            </div>
+                </div>
 
-            <div class="row col-md-12">
-                <form>
+                <div class="row col-md-12">
                     <h4 class="bottom-line">Auto Scaling Plan</h4>
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
-                            <label class="col-md-3 control-label">Enable Auto Scale-out:</label>
-                            <div class="col-md-9">
+                            <label class="col-md-3 col-sm-3 control-label">Enable Auto Scale-out:</label>
+                            <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" disabled> Yes
@@ -119,8 +183,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 control-label">CPU Usage higher than:</label>
-                            <div class="col-md-9">
+                            <label class="col-md-3 col-sm-3 control-label">CPU Usage higher than:</label>
+                            <div class="col-md-9 col-sm-9">
                                 <select class="form-control display-inline col-100">
                                     <option>50%</option>
                                     <option>60%</option>
@@ -131,8 +195,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 control-label">During:</label>
-                            <div class="col-md-9">
+                            <label class="col-md-3 col-sm-3 control-label">During:</label>
+                            <div class="col-md-9 col-sm-9">
                                 <select class="form-control display-inline col-100">
                                     <option>1 Min</option>
                                     <option>2 Min</option>
@@ -143,8 +207,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 control-label">Add Scale:</label>
-                            <div class="col-md-9">
+                            <label class="col-md-3 col-sm-3 control-label">Add Scale:</label>
+                            <div class="col-md-9 col-sm-9">
                                 <select class="form-control display-inline col-100">
                                     <option>1</option>
                                     <option>2</option>
@@ -156,8 +220,8 @@
                         </div>
 
                         <div class="form-group">
-                            <label class="col-md-3 control-label">Enable Auto Scale-in:</label>
-                            <div class="col-md-9">
+                            <label class="col-md-3 col-sm-3 control-label">Enable Auto Scale-in:</label>
+                            <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
                                         <input type="checkbox" disabled> Yes
@@ -166,8 +230,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 control-label">CPU Usage lower than:</label>
-                            <div class="col-md-9">
+                            <label class="col-md-3 col-sm-3 control-label">CPU Usage lower than:</label>
+                            <div class="col-md-9 col-sm-9">
                                 <select class="form-control display-inline col-100">
                                     <option>10%</option>
                                     <option>20%</option>
@@ -178,8 +242,8 @@
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 control-label">During:</label>
-                            <div class="col-md-9">
+                            <label class="col-md-3 col-sm-3 control-label">During:</label>
+                            <div class="col-md-9 col-sm-9">
                                 <select class="form-control display-inline col-100">
                                     <option>1 Min</option>
                                     <option>2 Min</option>
@@ -194,17 +258,17 @@
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <div class="col-md-offset-3 col-md-9">
-                                <button type="submit" class="btn btn-primary outline">Save</button>
-                            </div>
-                        </div>
                     </div>
-                </form>
-            </div>
+                </div>
+            </form>
+
             <div class="row col-md-12">
+                <hr>
                 <div class="pull-right">
                     <a href="#" class="btn btn-danger outline"><i class="glyphicon glyphicon-trash"></i> Delete App</a>
+                </div>
+                <div>
+                    <a href="appInfo.jsp" class="btn btn-primary outline">Save all changes</a>
                 </div>
             </div>
         </div>

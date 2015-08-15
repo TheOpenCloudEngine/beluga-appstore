@@ -13,22 +13,37 @@
 
             <h2>Overview</h2>
             <div class="row">
-                <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="col-md-3 col-sm-3 col-xs-3">
                     <div class="stat-box">
                         <p class="text-info">2</p>
                         <h4>Apps</h4>
                     </div>
                 </div>
-                <div class="col-md-6 col-sm-6 col-xs-6">
+                <div class="col-md-3 col-sm-3 col-xs-3">
                     <div class="stat-box">
                         <p class="text-warning">1</p>
                         <h4>Outer Apps</h4>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                    <div class="stat-box">
+                        <p class="text-info">2.6</p>
+                        <h4>CPUs</h4>
+                    </div>
+                </div>
+                <div class="col-md-3 col-sm-3 col-xs-3">
+                    <div class="stat-box">
+                        <p class="text-warning">2400MB</p>
+                        <h4>Memory</h4>
                     </div>
                 </div>
             </div>
 
             <br>
 
+            <div class="pull-right">
+                <a href="#" class="btn btn-primary outline">New App</a></td>
+            </div>
             <h2>Providing Apps</h2>
             <table class="table table-hover table-bordered">
                 <thead>
