@@ -25,6 +25,10 @@
         </mvc:interceptor>
     </mvc:interceptors>
 
+    <!--<mvc:interceptors>-->
+    <!--<bean class="org.opencloudengine.service.web.controller.TenantInterceptor"/>-->
+    <!--</mvc:interceptors>-->
+
     <bean class="org.springframework.web.servlet.view.InternalResourceViewResolver">
         <property name="prefix">
             <value>/WEB-INF/pages/</value>
