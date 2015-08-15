@@ -15,17 +15,22 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
 		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
-    <context:annotation-config />
-    <aop:aspectj-autoproxy />
-    <mvc:annotation-driven/>
+    <!--<context:annotation-config />-->
+    <!--<aop:aspectj-autoproxy />-->
+    <!--<mvc:annotation-driven/>-->
 
-    <context:component-scan base-package="org.opencloudengine.bss.sample.service" />
+    <context:component-scan base-package="org.opencloudengine.service.web.controller" />
+
+    <!--<bean id="mainService" class="org.opencloudengine.service.web.service.MainService">-->
+    <!--</bean>-->
+    <!--<bean id="mainController" class="org.opencloudengine.service.web.controller.MainController">-->
+    <!--</bean>-->
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="org.opencloudengine.bss.sample.dao" />
+        <property name="basePackage" value="org.opencloudengine.service.web.db.dao" />
     </bean>
 
-	<bean id="dataSource" class="org.apache.commons.dbcp.BasicDataSource"
+	<bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
 		destroy-method="close">
 		<!-- Connection Info -->
 		<property name="driverClassName" value="com.mysql.jdbc.Driver" />
@@ -40,27 +45,26 @@
 		<property name="dataSource" ref="dataSource" />
 	</bean>
 
-	<aop:config>
-		<aop:advisor advice-ref="transactionAdvice" pointcut="bean(*Service)"/>
-	</aop:config>
+	<!--<aop:config>-->
+		<!--<aop:advisor advice-ref="transactionAdvice" pointcut="bean(*Service)"/>-->
+	<!--</aop:config>-->
 
-	<tx:advice id="transactionAdvice" transaction-manager="transactionManager">
-		<tx:attributes>
-			<tx:method name="*" propagation="REQUIRED"/>
-		</tx:attributes>
-	</tx:advice>
+	<!--<tx:advice id="transactionAdvice" transaction-manager="transactionManager">-->
+		<!--<tx:attributes>-->
+			<!--<tx:method name="*" propagation="REQUIRED"/>-->
+		<!--</tx:attributes>-->
+	<!--</tx:advice>-->
 
 	<bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
 		<property name="dataSource" ref="dataSource" />
 		<property name="configLocation" value="WEB-INF/conf/mybatis-conf.xml"></property>
 	</bean>
 
-    <mvc:resources mapping="/js/**" location="/js/" />
-    <mvc:resources mapping="/css/**" location="/css/" />
-    <mvc:resources mapping="/fonts/**" location="/fonts/" />
+    <mvc:resources mapping="/js/**" location="/resources/js/" />
+    <mvc:resources mapping="/css/**" location="/resources/css/" />
 
     <mvc:interceptors>
-        <bean class="org.opencloudengine.bss.sample.TenantInterceptor" />
+        <bean class="org.opencloudengine.service.web.controller.TenantInterceptor" />
     </mvc:interceptors>
 
     <bean
@@ -73,16 +77,7 @@
         </property>
     </bean>
 
-    <bean id="mainService" class="org.opencloudengine.bss.sample.service.MainService">
-        <!--<property name="userMapper" ref="userMapper"/>-->
-        <!--<property name="tenantUserMapper" ref="tenantUserMapper"/>-->
-        <!--<property name="tenantMapper" ref="tenantMapper"/>-->
-    </bean>
-    <bean id="mainController" class="org.opencloudengine.bss.sample.service.MainController">
-        <!--<property name="mainService" ref="mainService"/>-->
-        <!--<property name="appId" value="#{props['service.appId']}"/>-->
-        <!--<property name="domain" value="#{props['service.domain']}"/>-->
-    </bean>
+
 
     <!--<jaxws:client id="tenantSpecificClient"-->
     <!--serviceClass="org.oce.garuda.multitenancy.TenantSpecific"-->
