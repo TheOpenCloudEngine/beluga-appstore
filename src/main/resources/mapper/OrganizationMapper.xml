@@ -9,9 +9,9 @@
 
     <insert id="insert" parameterType="org.opencloudengine.serviceportal.db.entity.Organization">
         INSERT INTO organization(
-            `id`, `name`, `joinDate`
+            `id`, `name`
         ) VALUES(
-            #{id}, #{name}, #{joinDate}
+            #{id}, #{name}
         )
     </insert>
 

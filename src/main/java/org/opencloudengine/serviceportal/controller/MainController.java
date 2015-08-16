@@ -8,10 +8,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
@@ -19,7 +16,6 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLDecoder;
-import java.util.Map;
 
 /**
  * Created by swsong on 2015. 8. 16..
@@ -36,7 +32,7 @@ public class MainController {
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView index() throws Exception {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("redirect:store");
+        mav.setViewName("redirect:/store");
         return mav;
     }
 
@@ -47,11 +43,18 @@ public class MainController {
         return mav;
     }
 
-    @RequestMapping(value = "/api/organization", method = RequestMethod.POST)
-    public void getOrganization(@RequestBody(required = false) String json, HttpServletResponse response) throws IOException {
-        String json2 = URLDecoder.decode(json);
-        Map<String, Object> params = JsonUtil.json2Object(json2);
-        String orgId = (String) params.get("orgId");
+    @RequestMapping(value = "/api/user/{userId:.+}", method = RequestMethod.HEAD)
+    public void testUser(@PathVariable String userId, HttpServletResponse response) throws IOException {
+        User user = memberService.getUser(userId);
+        if(user != null) {
+            response.setStatus(200);
+        } else {
+            response.sendError(404, "no such user : " + userId);
+        }
+    }
+
+    @RequestMapping(value = "/api/organization/{orgId}", method = RequestMethod.GET)
+    public void testOrganization(@PathVariable String orgId, HttpServletResponse response) throws IOException {
         Organization organization = memberService.getOrganization(orgId);
         if(organization != null) {
             response.setCharacterEncoding("utf-8");
@@ -72,15 +75,56 @@ public class MainController {
     @RequestMapping(value = "/signUp", method = RequestMethod.POST)
     public ModelAndView doSignUp(@RequestParam String orgId, @RequestParam String orgName, @RequestParam String userId
             , @RequestParam String password) {
-
-
-        //1. org 확인.
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("signUp");
+
+        //0. 사전점검.
+        User user = memberService.getUser(userId);
+        if(user != null) {
+            //이메일이 중복이면, 다시 등록화면.
+            mav.setViewName("redirect:/signUp");
+            return mav;
+        }
+
+        //1. org 등록.
+
+        mav.setViewName("index");
+
+        boolean isAdmin = false;
+        Organization organization = memberService.getOrganization(orgId);
+        if(organization == null) {
+            organization = new Organization(orgId, orgName);
+            memberService.addOrganization(organization);
+            isAdmin = true;
+        }
+
+        //2. id 등록.
+        user = new User(userId, orgId, isAdmin? User.ADMIN_TYPE : User.USER_TYPE);
+        user.setPassword(password);
+        memberService.addUser(user);
+        mav.setViewName("redirect:/login");
         return mav;
     }
 
-    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    @RequestMapping(value = "/user", method = RequestMethod.DELETE)
+    public ModelAndView deleteUser(@RequestParam String userId) {
+        ModelAndView mav = new ModelAndView();
+
+        //TODO ajax로 관리자여부를 확인하여 관리자이면 삭제가 안되도록. 다른 사람을 관리자로 먼저 지정필요.
+
+        return mav;
+    }
+
+    @RequestMapping(value = "/organization", method = RequestMethod.DELETE)
+    public ModelAndView deleteOrganization(@RequestParam String orgId) {
+        ModelAndView mav = new ModelAndView();
+
+        //TODO 하위 사용자까지 모두 삭제.
+
+        return mav;
+    }
+
+
+        @RequestMapping(value = "/logout", method = RequestMethod.GET)
     public ModelAndView logout(HttpSession session) {
         ModelAndView mav = new ModelAndView();
         session.invalidate();

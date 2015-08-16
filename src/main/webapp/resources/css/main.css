@@ -185,3 +185,5 @@ dd {  word-break: break-all; }
 
 .no-padding-left {padding-left: 0;}
 
+label.error { color: #dd4b39 !important; }
+input.error { border-color: #dd4b39  !important; }

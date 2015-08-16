@@ -13,31 +13,63 @@
     <meta content='width=device-width' name='viewport'>
     <script>
     $(document).ready(function() {
-        $("#signup-form").validate();
         $("#orgId").on("focusout", checkOrganization);
 
         function checkOrganization() {
             var orgId = $("#orgId").val();
-            console.log("checkOrganization : ", orgId);
+//            console.log("checkOrganization : ", orgId);
             $.ajax({
-                url : "/api/organization",
-                async: true,
+                url : "/api/organization/"+orgId,
+                async: false,
+                type : "GET",
                 dataType : "json",
-                type : "POST",
-                data : JSON.stringify({ "orgId" : orgId + "" }),
                 success : function(response) {
                     var orgName = response.name;
                     $("#orgName").val(orgName);
                     $("#orgName").attr("readonly", "readonly");
-                    console.log("org success : ", orgName);
+                    console.log("org success : ", response, orgName);
                 },
                 error : function(jqXHR, textStatus, errorThrown) {
-                    console.log("org error : ", textStatus, errorThrown);
+//                    console.log("org error : ", textStatus, errorThrown);
                     $("#orgName").val("");
                     $("#orgName").removeAttrs("readonly");
                 }
             });
         }
+
+        $("#signup-form").validate({
+            onkeyup: function(element) {
+                var element_id = $(element).attr('id');
+                if (this.settings.rules[element_id] && this.settings.rules[element_id].onkeyup != false) {
+                    $.validator.defaults.onkeyup.apply(this, arguments);
+                }
+            },
+            rules: {
+                userId: {
+                    idExists: true,
+                    onkeyup: false
+                },
+                password2: {
+                    equalTo: "#password"
+                }
+            }
+        });
+
+        $.validator.addMethod("idExists", function(value, element) {
+            var ret = true;
+            $.ajax({
+                url : "/api/user/" + value,
+                async: false,
+                type : "HEAD",
+                success : function(response) {
+                    ret = false;
+                },
+                error : function() {
+                    ret = true;
+                }
+            });
+            return ret;
+        }, "This e-mail already exists.");
     });
 
 
@@ -49,11 +81,12 @@
     <form class="vertical-form" id="signup-form" action="/signUp" accept-charset="UTF-8" method="post">
         <legend>Sign Up</legend>
         <h4>Organization</h4>
-        <input placeholder="Organization ID" label="false" type="text" value="" name="orgId" id="orgId" />
-        <input placeholder="Organization Name" label="false" type="text" value="" name="orgName" id="orgName" />
+        <input placeholder="Organization ID" type="text" class="required" name="orgId" minlength="3" id="orgId" />
+        <input placeholder="Organization Name" type="text" class="required" name="orgName" id="orgName" />
         <h4>Personal</h4>
-        <input placeholder="Email Address" label="false" type="text" value="" name="userId" id="userId" />
-        <input placeholder="Password" label="false" autocomplete="off" type="password" name="password" id="password" />
+        <input placeholder="Email Address" type="text" class="required email" name="userId" id="userId" />
+        <input placeholder="Password" autocomplete="off" type="password" class="required" minlength="4" name="password" id="password" />
+        <input placeholder="Password Again" autocomplete="off" type="password" class="required" minlength="4" name="password2" id="password2" />
         <input type="submit" class="btn btn-success" name="commit" value="Create Account" />
         <%--<p><a href="/forgot_password/new">Forgot password?</a></p>--%>
     </form>

@@ -147,7 +147,7 @@
 ////			, @RequestParam(required = false) String tenantName, @RequestParam String userName, @RequestParam String userPassword
 ////			, @RequestParam(required = false) String admin) {
 ////
-////		if (admin != null && admin.equals(User.ADMIN)) {
+////		if (admin != null && admin.equals(User.ADMIN_TYPE)) {
 ////			/*
 ////			* 관리자 가입로직.
 ////			* */

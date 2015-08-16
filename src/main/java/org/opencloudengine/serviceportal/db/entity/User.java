@@ -7,7 +7,8 @@ public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
 	public static final String USER_KEY = "_user";
-    public static final String ADMIN = "A";
+    public static final String ADMIN_TYPE = "A";
+	public static final String USER_TYPE = "U";
 
 	private String id;
 	

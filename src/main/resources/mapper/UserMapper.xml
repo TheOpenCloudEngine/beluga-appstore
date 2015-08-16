@@ -14,9 +14,9 @@
 
     <insert id="insert" parameterType="org.opencloudengine.serviceportal.db.entity.User">
         INSERT INTO user(
-            `id`, `password`, `orgId`, `type`, `joinDate`
+            `id`, `password`, `orgId`, `type`
         ) VALUES(
-            #{id}, #{password}, #{orgId}, #{type}, #{joinData}
+            #{id}, #{password}, #{orgId}, #{type}
         )
     </insert>
 

@@ -38,4 +38,12 @@ public class MemberService {
     public Organization getOrganization(String id) {
         return orgMapper.select(id);
     }
+
+    public void addOrganization(Organization organization) {
+        orgMapper.insert(organization);
+    }
+
+    public void addUser(User user) {
+        userMapper.insert(user);
+    }
 }
