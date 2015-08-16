@@ -16,7 +16,7 @@
 		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="org.opencloudengine.service.web.db.dao"/>
+        <property name="basePackage" value="org.opencloudengine.serviceportal.db.dao"/>
     </bean>
 
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">

@@ -42,7 +42,7 @@
             <br>
 
             <div class="pull-right">
-                <a href="#" class="btn btn-primary outline">New App</a></td>
+                <a href="appNew.jsp" class="btn btn-primary outline">New App</a></td>
             </div>
             <h2>Providing Apps</h2>
             <table class="table table-hover table-bordered">

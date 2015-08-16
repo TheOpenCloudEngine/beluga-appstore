@@ -8,7 +8,7 @@
         <div class="col-md-12">
 
             <div class="page-header">
-                <h1 id="tables">EDI</h1>
+                <h1 id="tables">Create New App</h1>
             </div>
 
             <div class="row col-md-12">
@@ -21,8 +21,13 @@
                     <h4 class="bottom-line">General Information</h4>
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
+                            <label class="col-md-3 col-sm-3 control-label">ID:</label>
+                            <div class="col-md-9 col-sm-9"><input type="text" class="form-control col-150" /></div>
+                        </div>
+
+                        <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Name:</label>
-                            <div class="col-md-9 col-sm-9"><input type="text" class="form-control" value="EDI" /></div>
+                            <div class="col-md-9 col-sm-9"><input type="text" class="form-control" /></div>
                         </div>
 
                         <div class="form-group">
@@ -38,8 +43,8 @@
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">App file:</label>
                             <div class="col-md-9 col-sm-9">
-                                <p class="form-control-static">edi.war (1.2 MB) <br><i class="file-date">2015-07-08 14:11:35</i></p>
-                                <input type="file" />
+                                <%--<p class="form-control-static">edi.war (1.2 MB) <br><i class="file-date">2015-07-08 14:11:35</i></p>--%>
+                                <input type="file" class="form-control-static"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -99,12 +104,12 @@
                             <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" checked> DB01 ( MySql 5.6.26 )
+                                        <input type="checkbox"> DB01 ( MySql 5.6.26 )
                                     </label>
                                 </div>
                                 <div class="sub-options">
                                     <label class="radio-inline">
-                                        <input type="radio" name="db1IsolationOptions" value="separateDB" checked> Separate DB
+                                        <input type="radio" name="db1IsolationOptions" value="separateDB"> Separate DB
                                     </label>
                                     <label class="radio-inline">
                                         <input type="radio" name="db1IsolationOptions" value="SharedDB" disabled> Shared
@@ -161,7 +166,7 @@
                                         <input type="radio" name="ftp1IsolationOptions" value="private"> Private
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="ftp1IsolationOptions" value="sharedByUser" checked> Shared
+                                        <input type="radio" name="ftp1IsolationOptions" value="sharedByUser"> Shared
                                     </label>
                                 </div>
                             </div>
@@ -269,17 +274,6 @@
                 </div>
             </div>
 
-            <div class="row col-md-12">
-                <br>
-                <br>
-                <div class="box" >
-                    <div class="pull-right">
-                        <a href="#" class="btn btn-lg btn-danger outline"><i class="glyphicon glyphicon-trash"></i> Delete App</a>
-                    </div>
-                    <h2>Delete App</h2>
-                    <p>This will termination running app and permanently delete all app information.</p>
-                </div>
-            </div>
         </div>
     </div>
 </div>

@@ -15,13 +15,14 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
 		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
-    <context:component-scan base-package="org.opencloudengine.service.web.controller"/>
+    <context:component-scan base-package="org.opencloudengine.serviceportal.controller"/>
+    <context:component-scan base-package="org.opencloudengine.serviceportal.service"/>
 
     <mvc:interceptors>
-        <bean class="org.opencloudengine.service.web.controller.TenantInterceptor"/>
+        <bean class="org.opencloudengine.serviceportal.controller.TenantInterceptor"/>
         <mvc:interceptor>
             <mvc:mapping path="/**/*.html"/>
-            <bean id="authMainInterceptor" class="org.opencloudengine.service.web.AuthMainInterceptor"/>
+            <bean id="authMainInterceptor" class="org.opencloudengine.serviceportal.controller.AuthMainInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 

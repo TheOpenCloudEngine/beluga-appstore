@@ -118,7 +118,7 @@
                         <label class="col-md-3 col-sm-3 control-label">FTP: </label>
                         <div class="col-md-9 col-sm-9">
                             <ul class="no-padding-left">
-                                <li><p class="form-control-static">FTP01 ( Ftp 3.2 ) - Shared by User</p></li>
+                                <li><p class="form-control-static">FTP01 ( Ftp 3.2 ) - Private</p></li>
                             </ul>
                         </div>
                     </div>
