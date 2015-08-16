@@ -48,8 +48,7 @@
                         <%--<li><a href="login.jsp">Log Out</a></li>--%>
                     <%--</ul>--%>
                 <%--</li>--%>
-                <li><a href="signUp.jsp" class="btn btn-primary outline">Sign Up</a></li>
-                &nbsp;<li><a href="login.jsp" class="btn btn-primary outline">Log in</a></li>
+                <li><a href="/logout" class="btn btn-primary outline">Log Out</a></li>
             </ul>
 
         </div>

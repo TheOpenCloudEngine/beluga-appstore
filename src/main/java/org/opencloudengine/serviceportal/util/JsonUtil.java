@@ -4,6 +4,7 @@ import com.fasterxml.jackson.core.type.TypeReference;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import java.io.IOException;
+import java.text.SimpleDateFormat;
 import java.util.HashMap;
 import java.util.Map;
 
@@ -19,12 +20,14 @@ public class JsonUtil {
 
     public static <T> T json2Object(String json, Class<T> clazz) throws IOException {
         ObjectMapper objectMapper = new ObjectMapper();
-        TypeReference<T> typeReference = new TypeReference<T>() { };
-        return objectMapper.readValue(json, typeReference);
+        Object o = objectMapper.readValue(json, clazz);
+        return (T) o;
     }
 
+    static String dateFormat = "yyyy-MM-dd hh:mm:ss";
     public static String object2String(Object object) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
-        return mapper.writeValueAsString(object);
+        SimpleDateFormat sdf = new SimpleDateFormat(dateFormat);
+        return mapper.writer(sdf).writeValueAsString(object);
     }
 }

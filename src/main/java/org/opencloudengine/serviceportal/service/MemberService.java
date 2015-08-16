@@ -1,5 +1,6 @@
 package org.opencloudengine.serviceportal.service;
 
+import org.opencloudengine.serviceportal.db.entity.Organization;
 import org.opencloudengine.serviceportal.db.entity.User;
 import org.opencloudengine.serviceportal.db.mapper.OrganizationMapper;
 import org.opencloudengine.serviceportal.db.mapper.UserMapper;
@@ -34,4 +35,7 @@ public class MemberService {
     }
 
 
+    public Organization getOrganization(String id) {
+        return orgMapper.select(id);
+    }
 }

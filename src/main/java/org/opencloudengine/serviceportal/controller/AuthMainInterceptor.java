@@ -16,8 +16,7 @@ import java.io.IOException;
 public class AuthMainInterceptor extends HandlerInterceptorAdapter {
 	protected static Logger logger = LoggerFactory.getLogger(AuthMainInterceptor.class);
 
-    private static final String USER_KEY = "_user";
-    private static final String LOGIN_PAGE = "/login.html";
+    private static final String LOGIN_PAGE = "/login";
 
     @Override
     public boolean preHandle(HttpServletRequest request,
@@ -25,13 +24,12 @@ public class AuthMainInterceptor extends HandlerInterceptorAdapter {
 
         HttpSession session = request.getSession(true);
 
-        User user = (User) session.getAttribute(USER_KEY);
+        User user = (User) session.getAttribute(User.USER_KEY);
 
-
-//        if(user == null) {
-//            checkLoginRedirect(request, response);
-//            return false;
-//        }
+        if(user == null) {
+            checkLoginRedirect(request, response);
+            return false;
+        }
         return super.preHandle(request, response, handler);
     }
 
@@ -39,7 +37,7 @@ public class AuthMainInterceptor extends HandlerInterceptorAdapter {
         String loginURL = request.getContextPath() + LOGIN_PAGE;
         String method = request.getMethod();
         if(method.equalsIgnoreCase("GET")){
-            String target = request.getRequestURL().toString();
+            String target = request.getRequestURI();
             String queryString = request.getQueryString();
             if(queryString != null && queryString.length() > 0){
                 target += ("?" + queryString);

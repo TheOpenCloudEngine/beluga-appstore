@@ -1,5 +1,6 @@
 package org.opencloudengine.serviceportal.controller;
 
+import org.opencloudengine.serviceportal.db.entity.Organization;
 import org.opencloudengine.serviceportal.db.entity.User;
 import org.opencloudengine.serviceportal.service.MemberService;
 import org.opencloudengine.serviceportal.util.JsonUtil;
@@ -13,8 +14,11 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.util.Map;
 
 /**
  * Created by swsong on 2015. 8. 16..
@@ -31,14 +35,53 @@ public class MainController {
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView index() throws Exception {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("redirect:store.html");
+        mav.setViewName("redirect:store");
         return mav;
     }
 
-    @RequestMapping(value = "/signUp")
+    @RequestMapping(value = "/store", method = RequestMethod.GET)
+    public ModelAndView viewStore() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("store");
+        return mav;
+    }
+
+    @RequestMapping(value = "/api/organization", method = RequestMethod.POST)
+    public void getOrganization(@RequestBody String json, HttpServletResponse response) throws IOException {
+        Map<String, Object> params = JsonUtil.json2Object(json);
+        String orgId = (String) params.get("orgId");
+        Organization organization = memberService.getOrganization(orgId);
+        if(organization != null) {
+            response.getWriter().print(JsonUtil.object2String(organization));
+        } else {
+            response.sendError(404, "no such organization : " + orgId);
+            return;
+        }
+    }
+
+    @RequestMapping(value = "/signUp", method = RequestMethod.GET)
     public ModelAndView signUp() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("signUp");
+        return mav;
+    }
+
+    @RequestMapping(value = "/signUp", method = RequestMethod.POST)
+    public ModelAndView doSignUp(@RequestParam String orgId, @RequestParam String orgName, @RequestParam String userId
+            , @RequestParam String password) {
+
+
+        //1. org 확인.
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("signUp");
+        return mav;
+    }
+
+    @RequestMapping(value = "/logout", method = RequestMethod.GET)
+    public ModelAndView logout(HttpSession session) {
+        ModelAndView mav = new ModelAndView();
+        session.invalidate();
+        mav.setViewName("redirect:/login");
         return mav;
     }
 
@@ -50,44 +93,47 @@ public class MainController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView doLogin(@RequestParam String userId, @RequestParam String orgId, @RequestParam String password) {
+    public ModelAndView doLogin(HttpServletRequest request, @RequestParam String userId, @RequestParam String orgId
+            , @RequestParam String password, @RequestParam(value="redirect", required=false) String redirect) {
         ModelAndView mav = new ModelAndView();
-        //TODO 로그인 처리 한다.
-        // session.
-//        if(memberService.isUserExistsWithPassword(user)) {
-//            response.sendError(404, "incorrent user information : " + userId);
-//            return;
-//        }
-//        user = memberService.getUser(userId);
-        mav.setViewName("store");
-        return mav;
-    }
-
-
-    @RequestMapping(value = "/store")
-    public ModelAndView viewStore() {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("store");
-        return mav;
-    }
-
-    @RequestMapping(value = "/rest/login", method = RequestMethod.POST)
-    public void doLogin(@RequestBody String json, HttpServletResponse response) {
-
-        try {
-            User user = JsonUtil.json2Object(json, User.class);
-            logger.debug("user : {}", user);
-
-            String userId = user.getId();
-
-            if(memberService.isUserExistsWithPassword(user)) {
-                response.sendError(404, "incorrent user information : " + userId);
-                return;
+        User user = new User();
+        user.setId(userId);
+        user.setOrgId(orgId);
+        user.setPassword(password);
+        // 로그인 처리 한다.
+        if(!memberService.isUserExistsWithPassword(user)) {
+            String target = request.getRequestURI();
+            String queryString = request.getQueryString();
+            if(queryString != null && queryString.length() > 0){
+                target += ("?" + queryString);
             }
+            mav.setViewName("redirect:" + target);
+        } else {
             user = memberService.getUser(userId);
-            response.getWriter().print(JsonUtil.object2String(user));
-        } catch (IOException e) {
-            logger.error("", e);
+            HttpSession session = request.getSession(true);
+            session.setAttribute(User.USER_KEY, user);
+            if(redirect != null && redirect.length() > 0){
+                mav.setViewName("redirect:"+redirect);
+            }else{
+                mav.setViewName("redirect:/index");
+            }
         }
+        return mav;
+    }
+
+    @RequestMapping(value = "/api/login", method = RequestMethod.POST)
+    public void doLogin(@RequestBody String json, HttpServletResponse response) throws IOException {
+
+        User user = JsonUtil.json2Object(json, User.class);
+        logger.debug("user : {}", user);
+
+        String userId = user.getId();
+
+        if(!memberService.isUserExistsWithPassword(user)) {
+            response.sendError(404, "incorrect user information : " + userId);
+            return;
+        }
+        user = memberService.getUser(userId);
+        response.getWriter().print(JsonUtil.object2String(user));
     }
 }
