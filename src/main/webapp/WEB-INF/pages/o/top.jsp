@@ -38,7 +38,7 @@
                     <a href="manage.jsp">Manage</a>
                 </li>
                 <li>
-                    <a href="../index.jsp">Back to Portal</a>
+                    <a href="../WEB-INF/pages/index.jsp">Back to Portal</a>
                 </li>
             </ul>
 

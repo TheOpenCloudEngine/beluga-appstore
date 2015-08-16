@@ -15,16 +15,16 @@ public class User implements Serializable{
 	
 	private String orgId;
 
-	private boolean isAdmin;
+	private String type;
 
     public User(){
     }
 
-    public User(String id, String name, String password, String orgId) {
+    public User(String id, String name, String orgId, String type) {
         this.id = id;
         this.name = name;
-        this.password = password;
         this.orgId = orgId;
+        this.type = type;
     }
 
     public String getId() {
@@ -59,17 +59,16 @@ public class User implements Serializable{
 		this.orgId = orgId;
 	}
 
-	public boolean isAdmin() {
-		return isAdmin;
-	}
+    public String getType() {
+        return type;
+    }
 
-	public void setAdmin(boolean isAdmin) {
-		this.isAdmin = isAdmin;
-	}
+    public void setType(String type) {
+        this.type = type;
+    }
 
-	@Override
+    @Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", password=" + password
-				+ ", orgId=" + orgId + ", "+ isAdmin +"]";
+		return "User [id=" + id + ", name=" + name + ", orgId=" + orgId + ", "+ type +"]";
 	}
 }
