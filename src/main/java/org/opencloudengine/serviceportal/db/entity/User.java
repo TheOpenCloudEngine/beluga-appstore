@@ -1,15 +1,14 @@
 package org.opencloudengine.serviceportal.db.entity;
 
 import java.io.Serializable;
+import java.util.Date;
 
-public class User implements Serializable{
+public class User implements Serializable {
 
 	private static final long serialVersionUID = 1L;
     public static final String ADMIN = "A";
 
 	private String id;
-	
-	private String name;
 	
 	private String password;
 	
@@ -17,12 +16,13 @@ public class User implements Serializable{
 
 	private String type;
 
+	private Date joinDate;
+
     public User(){
     }
 
-    public User(String id, String name, String orgId, String type) {
+    public User(String id, String orgId, String type) {
         this.id = id;
-        this.name = name;
         this.orgId = orgId;
         this.type = type;
     }
@@ -33,14 +33,6 @@ public class User implements Serializable{
 
 	public void setId(String id) {
 		this.id = id;
-	}
-
-	public String getName() {
-		return name;
-	}
-
-	public void setName(String name) {
-		this.name = name;
 	}
 
 	public String getPassword() {
@@ -67,8 +59,16 @@ public class User implements Serializable{
         this.type = type;
     }
 
-    @Override
+	public Date getJoinDate() {
+		return joinDate;
+	}
+
+	public void setJoinDate(Date joinDate) {
+		this.joinDate = joinDate;
+	}
+
+	@Override
 	public String toString() {
-		return "User [id=" + id + ", name=" + name + ", orgId=" + orgId + ", "+ type +"]";
+		return "User [id=" + id + ", orgId=" + orgId + ", type="+ type + ", joinDate="+ joinDate +"]";
 	}
 }

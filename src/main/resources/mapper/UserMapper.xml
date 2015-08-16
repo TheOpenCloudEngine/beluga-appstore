@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.opencloudengine.serviceportal.db.mapper.UserMapper">
+
+    <select id="select" parameterType="map" resultType="org.opencloudengine.serviceportal.db.entity.User">
+        select `id`, `orgId`, `type`, `joinDate` from user
+        where id = #{id}
+    </select>
+
+    <select id="selectWithPassword" parameterType="org.opencloudengine.serviceportal.db.entity.User" resultType="org.opencloudengine.serviceportal.db.entity.User">
+        select `id`, `orgId`, `type`, `joinDate` from user
+  	    where id = #{id} and `password`=#{password} and orgId = #{orgId}
+    </select>
+
+    <insert id="insert" parameterType="org.opencloudengine.serviceportal.db.entity.User">
+        INSERT INTO user(
+            `id`, `password`, `orgId`, `type`, `joinDate`
+        ) VALUES(
+            #{id}, #{password}, #{orgId}, #{type}, #{joinData}
+        )
+    </insert>
+
+    <delete id="truncate">
+        truncate table user
+    </delete>
+</mapper>

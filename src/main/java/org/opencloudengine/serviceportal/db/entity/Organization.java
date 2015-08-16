@@ -34,4 +34,16 @@ public class Organization {
         this.name = name;
     }
 
+    public Date getJoinDate() {
+        return joinDate;
+    }
+
+    public void setJoinDate(Date joinDate) {
+        this.joinDate = joinDate;
+    }
+
+    @Override
+    public String toString() {
+        return "User [id=" + id + ", name=" + name + ", joinDate="+ joinDate +"]";
+    }
 }
