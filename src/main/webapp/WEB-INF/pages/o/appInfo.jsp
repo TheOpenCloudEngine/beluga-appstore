@@ -12,8 +12,8 @@
             </div>
 
             <div class="row col-md-12">
-                <a href="manage.jsp" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
-                &nbsp;<a href="appEdit.jsp" class="btn btn-default">Edit</a>
+                <a href="manage" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
+                &nbsp;<a href="appEdit" class="btn btn-default">Edit</a>
             </div>
 
             <div class="row col-md-12">

@@ -33,26 +33,26 @@
         <div class="navbar-collapse collapse" id="navbar-main">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="tsb.jsp">Apps</a>
+                    <a href="/o/apps">Apps</a>
                 </li>
                 <li>
-                    <a href="manage.jsp">Manage</a>
+                    <a href="/o/manage">Manage</a>
                 </li>
                 <li>
-                    <a href="../WEB-INF/pages/index.jsp">Back to Portal</a>
+                    <a href="/index">Back to Portal</a>
                 </li>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">user@mydomain.com <span class="caret"></span></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes"><c:out value="${sessionScope._user.id}" /><span class="caret"></span></a>
                     <ul class="dropdown-menu" aria-labelledby="themes">
-                        <li><a href="profile.jsp">My Profile</a></li>
+                        <li><a href="/o/profile">My Profile</a></li>
                         <li class="divider"></li>
-                        <li><a href="login.jsp">Log Out</a></li>
+                        <li><a href="/logout">Log Out</a></li>
                     </ul>
                 </li>
-                <li><a href="settings.jsp" class="btn btn-default"><i class="glyphicon glyphicon-cog"></i></a></li>
+                <li><a href="settings" class="btn btn-default"><i class="glyphicon glyphicon-cog"></i></a></li>
             </ul>
 
         </div>

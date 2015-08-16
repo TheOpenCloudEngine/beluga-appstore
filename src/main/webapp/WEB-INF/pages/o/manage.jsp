@@ -42,7 +42,7 @@
             <br>
 
             <div class="pull-right">
-                <a href="appNew.jsp" class="btn btn-primary outline">New App</a></td>
+                <a href="appNew" class="btn btn-primary outline">New App</a></td>
             </div>
             <h2>Providing Apps</h2>
             <table class="table table-hover table-bordered">
@@ -60,24 +60,24 @@
                 </thead>
                 <tbody>
                 <tr>
-                    <td><a href="appInfo.jsp">EDI</a></td>
-                    <td><a href="appInfo.jsp">erp</a></td>
+                    <td><a href="appInfo">EDI</a></td>
+                    <td><a href="appInfo">erp</a></td>
                     <td>0.3</td>
                     <td>700MB</td>
                     <td>2</td>
                     <td>2015.8.14 12:23:50</td>
                     <td><span class="glyphicon glyphicon-ok-sign running-status"></span></td>
-                    <td><a href="appEdit.jsp" class="btn btn-primary outline">Edit</a></td>
+                    <td><a href="appEdit" class="btn btn-primary outline">Edit</a></td>
                 </tr>
                 <tr>
-                    <td><a href="appInfo.jsp">CASP</a></td>
-                    <td><a href="appInfo.jsp">erp</a></td>
+                    <td><a href="appInfo">CASP</a></td>
+                    <td><a href="appInfo">erp</a></td>
                     <td>0.1</td>
                     <td>500MB</td>
                     <td>3</td>
                     <td>2015.8.14 12:23:50</td>
                     <td><span class="glyphicon glyphicon-ok-sign running-status"></span></td>
-                    <td><a href="appEdit.jsp" class="btn btn-primary outline">Edit</a></td>
+                    <td><a href="appEdit" class="btn btn-primary outline">Edit</a></td>
                 </tr>
                 </tbody>
             </table>

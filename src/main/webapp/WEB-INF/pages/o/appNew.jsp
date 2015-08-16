@@ -12,8 +12,8 @@
             </div>
 
             <div class="row col-md-12">
-                <a href="manage.jsp" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
-                &nbsp;<a href="appInfo.jsp" class="btn btn-primary outline">Save all changes</a>
+                <a href="manage" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
+                &nbsp;<a href="appInfo" class="btn btn-primary outline">Save all changes</a>
             </div>
             <form>
                 <div class="row col-md-12">
@@ -270,7 +270,7 @@
             <div class="row col-md-12">
                 <hr>
                 <div>
-                    <a href="appInfo.jsp" class="btn btn-primary outline">Save all changes</a>
+                    <a href="appInfo" class="btn btn-primary outline">Save all changes</a>
                 </div>
             </div>
 

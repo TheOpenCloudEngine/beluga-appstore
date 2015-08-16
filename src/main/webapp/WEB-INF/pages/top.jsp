@@ -33,10 +33,10 @@
         <div class="navbar-collapse collapse" id="navbar-main">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="store.jsp">Store</a>
+                    <a href="/store">Store</a>
                 </li>
                 <li>
-                    <a href="o/tsb.jsp">My Organization</a>
+                    <a href="/o/index">My Organization</a>
                 </li>
             </ul>
 
