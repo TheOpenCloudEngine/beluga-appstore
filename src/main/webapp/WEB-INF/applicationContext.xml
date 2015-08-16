@@ -15,17 +15,17 @@
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-3.1.xsd
 		http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd">
 
-    <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="org.opencloudengine.serviceportal.db.dao"/>
-    </bean>
-
     <bean id="sqlSessionFactory" class="org.mybatis.spring.SqlSessionFactoryBean">
         <property name="dataSource" ref="dataSource"/>
+        <property name="mapperLocations" value="classpath*:org/opencloudengine/serviceportal/db/dao/*.xml" />
         <property name="configLocation" value="WEB-INF/mybatis-conf.xml"></property>
     </bean>
 
-    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource"
-          destroy-method="close">
+    <bean id="transactionManager" class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
+        <property name="dataSource" ref="dataSource"/>
+    </bean>
+
+    <bean id="dataSource" class="org.apache.commons.dbcp2.BasicDataSource" destroy-method="close">
         <!-- Connection Info -->
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url"
@@ -34,14 +34,5 @@
         <property name="password" value=""/>
         <property name="validationQuery" value="SELECT 1"/>
     </bean>
-
-    <bean id="transactionManager"
-          class="org.springframework.jdbc.datasource.DataSourceTransactionManager">
-        <property name="dataSource" ref="dataSource"/>
-    </bean>
-
-    <mvc:resources mapping="/js/**" location="/resources/js/"/>
-    <mvc:resources mapping="/css/**" location="/resources/css/"/>
-    <mvc:resources mapping="/resources/**" location="/resources/"/>
 
 </beans>

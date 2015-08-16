@@ -28,10 +28,10 @@ public class AuthMainInterceptor extends HandlerInterceptorAdapter {
         User user = (User) session.getAttribute(USER_KEY);
 
 
-        if(user == null) {
-            checkLoginRedirect(request, response);
-            return false;
-        }
+//        if(user == null) {
+//            checkLoginRedirect(request, response);
+//            return false;
+//        }
         return super.preHandle(request, response, handler);
     }
 
