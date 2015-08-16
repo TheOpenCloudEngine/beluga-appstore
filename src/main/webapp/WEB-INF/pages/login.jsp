@@ -8,6 +8,7 @@
     <link rel="stylesheet" media="screen" href="/resources/bootstrap/css/bootstrap.min.css" />
     <link rel="stylesheet" media="screen" href="/resources/css/login.css" />
     <script src="/resources/jquery/jquery-1.11.3.min.js"></script>
+    <script src="/resources/js/jquery.validate.min.js"></script>
     <meta content='width=device-width' name='viewport'>
 </head>
 <body class='login'>

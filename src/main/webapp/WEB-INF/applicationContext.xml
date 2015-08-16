@@ -17,7 +17,7 @@
         <!-- Connection Info -->
         <property name="driverClassName" value="com.mysql.jdbc.Driver"/>
         <property name="url"
-                  value="jdbc:mysql://db.aws:3306/serviceportal?useUnicode=true&amp;characterEncoding=UTF8&amp;useOldAliasMetadataBehavior=true"/>
+                  value="jdbc:mysql://db.portal.garuda:3306/serviceportal?useUnicode=true&amp;characterEncoding=UTF8&amp;useOldAliasMetadataBehavior=true"/>
         <property name="username" value="root"/>
         <property name="password" value="garuda123:)"/>
         <property name="validationQuery" value="SELECT 1"/>

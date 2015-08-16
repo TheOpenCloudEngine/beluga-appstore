@@ -13,29 +13,20 @@
         <servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
         <load-on-startup>1</load-on-startup>
     </servlet>
-    <!--<servlet>-->
-        <!--<servlet-name>staticResourceDispatcher</servlet-name>-->
-        <!--<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>-->
-        <!--<load-on-startup>1</load-on-startup>-->
-    <!--</servlet>-->
 
     <servlet-mapping>
         <servlet-name>dispatcher</servlet-name>
         <url-pattern>/</url-pattern>
     </servlet-mapping>
-    <!--<servlet-mapping>-->
-        <!--<servlet-name>staticResourceDispatcher</servlet-name>-->
-        <!--<url-pattern>/resources/**</url-pattern>-->
-    <!--</servlet-mapping>-->
 
     <listener>
         <listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
     </listener>
 
-    <error-page>
-        <error-code>404</error-code>
-        <location>/WEB-INF/pages/error/404.jsp</location>
-    </error-page>
+    <!--<error-page>-->
+        <!--<error-code>404</error-code>-->
+        <!--<location>/WEB-INF/pages/error/404.jsp</location>-->
+    <!--</error-page>-->
 
     <filter>
         <filter-name>encodingFilter</filter-name>

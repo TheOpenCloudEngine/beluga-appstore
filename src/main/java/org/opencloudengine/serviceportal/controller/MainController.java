@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
+import java.net.URLDecoder;
 import java.util.Map;
 
 /**
@@ -47,11 +48,13 @@ public class MainController {
     }
 
     @RequestMapping(value = "/api/organization", method = RequestMethod.POST)
-    public void getOrganization(@RequestBody String json, HttpServletResponse response) throws IOException {
-        Map<String, Object> params = JsonUtil.json2Object(json);
+    public void getOrganization(@RequestBody(required = false) String json, HttpServletResponse response) throws IOException {
+        String json2 = URLDecoder.decode(json);
+        Map<String, Object> params = JsonUtil.json2Object(json2);
         String orgId = (String) params.get("orgId");
         Organization organization = memberService.getOrganization(orgId);
         if(organization != null) {
+            response.setCharacterEncoding("utf-8");
             response.getWriter().print(JsonUtil.object2String(organization));
         } else {
             response.sendError(404, "no such organization : " + orgId);
@@ -123,8 +126,8 @@ public class MainController {
 
     @RequestMapping(value = "/api/login", method = RequestMethod.POST)
     public void doLogin(@RequestBody String json, HttpServletResponse response) throws IOException {
-
-        User user = JsonUtil.json2Object(json, User.class);
+        String json2 = URLDecoder.decode(json);
+        User user = JsonUtil.json2Object(json2, User.class);
         logger.debug("user : {}", user);
 
         String userId = user.getId();

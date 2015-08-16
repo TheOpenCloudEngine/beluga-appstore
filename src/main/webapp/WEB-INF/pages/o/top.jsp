@@ -11,11 +11,12 @@
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Favicon -->
     <link rel="shortcut icon" href="/resources/favicon.ico">
-    <link rel="stylesheet" href="../../resources/bootstrap/css/bootstrap.min.css" media="screen">
-    <link rel="stylesheet" href="../../resources/css/main.css" media="screen">
-    <link rel="stylesheet" href="../../resources/css/enhance.css" media="screen">
-    <script src="../../resources/jquery/jquery-1.11.3.min.js"></script>
-    <script src="../../resources/bootstrap/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" href="/resources/bootstrap/css/bootstrap.min.css" media="screen">
+    <link rel="stylesheet" href="/resources/css/main.css" media="screen">
+    <link rel="stylesheet" href="/resources/css/enhance.css" media="screen">
+    <script src="/resources/jquery/jquery-1.11.3.min.js"></script>
+    <script src="/resources/bootstrap/js/bootstrap.min.js"></script>
+    <script src="/resources/js/jquery.validate.min.js"></script>
 
 </head>
 <body>
