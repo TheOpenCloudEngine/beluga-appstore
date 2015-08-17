@@ -76,46 +76,18 @@ public class OrgController {
         ModelAndView mav = new ModelAndView();
         logger.debug("appNew data : {}", data);
         //TODO 페이지에서 ID 중복여부를 확인한다.
-        /* General Information */
-//        private String id;
-//        private String orgId;
-//        private String name;
-//        private String description;
-//
-//    /* Operating Plan */
-//        private String appFile;
-//        private String appFileDate;
-//        private Long appFileSize;
-//        private char appFileUpdated;
-//        private Float cpus;
-//        private Integer memory;
-//        private Float scale;
-//        private String version;
-//
-//    /* Resource Plan */
-//        private String resources;
-//
-//    /* Auto Scaling Plan */
-//        private char autoScaleOutUse;
-//        private char autoScaleInUse;
-//        private String autoScaleOutConf;
-//        private String autoScaleInConf;
-//
-//    /* Apply state */
-//        private char applied;
-
         String id = (String) data.get("id");
         String orgId = (String) data.get("orgId");
         String name = (String) data.get("name");
         String description = (String) data.get("description");
         String appFile = (String) data.get("appFile");
-        String appFileDate = (String) data.get("appFileDate");
+        String appFileDate = (String) data.get("appFileDate"); //Version
         String appFileSize = (String) data.get("appFileSize");
-        String appFileUpdated = (String) data.get("appFileUpdated");
+//        String appFileUpdated = (String) data.get("appFileUpdated");
         String cpus = (String) data.get("cpus");
         String memory = (String) data.get("memory");
         String scale = (String) data.get("scale");
-        String version = (String) data.get("version");
+//        String version = (String) data.get("version");
 
         String resources = (String) data.get("resources");
         String autoScaleOutUse = (String) data.get("autoScaleOutUse");
