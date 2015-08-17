@@ -203,7 +203,6 @@ public class MainController {
             response.getWriter().print(JsonUtil.object2String(usingResources));
         } else {
             response.sendError(403, "App " + appId + " is not allowed to organization " + orgId);
-            return;
         }
 
     }

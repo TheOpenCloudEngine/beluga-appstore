@@ -1,17 +1,30 @@
 package org.opencloudengine.serviceportal.controller;
 
 import org.opencloudengine.serviceportal.db.entity.App;
+import org.opencloudengine.serviceportal.db.entity.UploadFile;
+import org.opencloudengine.serviceportal.db.entity.User;
 import org.opencloudengine.serviceportal.service.AppManageService;
+import org.opencloudengine.serviceportal.util.DateUtil;
+import org.opencloudengine.serviceportal.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
+import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
+import java.io.*;
+import java.net.URLDecoder;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -105,6 +118,23 @@ public class OrgController {
 
         mav.setViewName("redirect:appInfo");
         return mav;
+    }
+
+    @RequestMapping(value = "/uploadAppFile", method = RequestMethod.POST)
+    public void uploadAppFile(@RequestParam("file") MultipartFile file, HttpServletResponse response, HttpSession session) throws IOException {
+        User user = (User) session.getAttribute(User.USER_KEY);
+        String orgId = user.getOrgId();
+        File appFile = appManageService.uploadAppFile(file, orgId);
+
+        if(appFile != null) {
+            long length = appFile.length();
+            String fileName = appFile.getName();
+            UploadFile uploadFile = new UploadFile(fileName, length, DateUtil.getNow());
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().print(JsonUtil.object2String(uploadFile));
+        } else {
+            response.sendError(500, "File is empty");
+        }
     }
 
     @RequestMapping(value = "/manage", method = RequestMethod.GET)

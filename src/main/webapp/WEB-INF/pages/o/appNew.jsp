@@ -3,6 +3,46 @@
          pageEncoding="utf-8" %>
 <%@include file="top.jsp" %>
 
+<script>
+
+$(function(){
+    $("#appFile").on("change", function(event){
+        var formData = new FormData();
+        formData.append("file", $( event.delegateTarget )[0].files[0]);
+//        console.log("target = ", $( event.delegateTarget )[0].files[0]);
+        $.ajax({
+            url: 'uploadAppFile',
+            processData: false,
+            contentType: false,
+            data: formData,
+            type: 'POST',
+            dataType: 'json',
+            success: function(result){
+                console.log(result.name, result.length, result.date);
+                $("#fileInfo").text(result.name + " (" + toHumanSize(result.length) + ")");
+                $("#fileDate").text(result.date);
+                $("input[name=fileName]").val(result.name);
+                $("input[name=fileLength]").val(result.length);
+                $("input[name=fileDate]").val(result.date);
+            },
+            error : function (e) {
+                console.log("upload error = ", e);
+            }
+        });
+    });
+})
+function toHumanSize(fileLength) {
+    if(fileLength < 1024) {
+        return fileLength + "B";
+    } else if(fileLength < 1024 * 1024) {
+        return (fileLength / 1024.0).toFixed(1) + "KB";
+    } else if(fileLength < 1024 * 1024 * 1024) {
+        return (fileLength / 1024.0 / 1024.0).toFixed(1) + "MB";
+    } else if(fileLength >= 1024 * 1024 * 1024) {
+        return (fileLength / 1024.0 / 1024.0 / 1024.0).toFixed(1) + "GB";
+    }
+}
+</script>
 <div class="container" id="content">
     <div class="row">
         <div class="col-md-12">
@@ -43,8 +83,12 @@
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">App file:</label>
                             <div class="col-md-9 col-sm-9">
-                                <%--<p class="form-control-static">edi.war (1.2 MB) <br><i class="file-date">2015-07-08 14:11:35</i></p>--%>
-                                <input type="file" name="appFile" class="form-control-static"/>
+                                <p class="form-control-static"><span id="fileInfo"></span><br><span class="file-date" id="fileDate"></span></p>
+                                <input type="file" id="appFile" class="form-control-static"/>
+                                <input type="hidden" name="fileName" value=""/>
+                                <input type="hidden" name="fileLength" value=""/>
+                                <input type="hidden" name="fileDate" value=""/>
+
                             </div>
                         </div>
                         <div class="form-group">
@@ -100,6 +144,7 @@
                     <h4 class="bottom-line">Resource Plan</h4>
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
+                            <input type="hidden" name="db_resource_size" value="3" />
                             <label class="col-md-3 col-sm-3 control-label">Database:</label>
                             <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
@@ -154,6 +199,7 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <input type="hidden" name="ftp_resource_size" value="1" />
                             <label class="col-md-3 col-sm-3 control-label">FTP:</label>
                             <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">

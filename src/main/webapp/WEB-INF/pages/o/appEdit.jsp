@@ -95,6 +95,7 @@
                     <h4 class="bottom-line">Resource Plan</h4>
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
+                            <input type="hidden" name="db_resource_size" value="3" />
                             <label class="col-md-3 col-sm-3 control-label">Database:</label>
                             <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
@@ -149,6 +150,7 @@
                             </div>
                         </div>
                         <div class="form-group">
+                            <input type="hidden" name="ftp_resource_size" value="1" />
                             <label class="col-md-3 col-sm-3 control-label">FTP:</label>
                             <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
