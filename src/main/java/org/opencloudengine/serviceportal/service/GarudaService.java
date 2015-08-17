@@ -18,6 +18,8 @@ public class GarudaService {
 
     private static final Logger logger = LoggerFactory.getLogger(GarudaService.class);
 
+    private static final String PROTOCOL = "http://";
+
     @Value("#{systemProperties['GARUDA_ENDPOINT']}")
     private String garudaEndPoint;
 
