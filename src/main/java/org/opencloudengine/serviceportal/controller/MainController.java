@@ -29,6 +29,13 @@ public class MainController {
     @Autowired
     private MemberService memberService;
 
+    @RequestMapping(value = "/", method = RequestMethod.GET)
+    public ModelAndView root() throws Exception {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("redirect:/index");
+        return mav;
+    }
+
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView index() throws Exception {
         ModelAndView mav = new ModelAndView();

@@ -1,9 +1,18 @@
 package org.opencloudengine.serviceportal.controller;
 
+import org.opencloudengine.serviceportal.db.entity.App;
+import org.opencloudengine.serviceportal.service.AppManageService;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
+
+import java.util.Map;
 
 /**
  * Created by swsong on 2015. 8. 17..
@@ -12,6 +21,10 @@ import org.springframework.web.servlet.ModelAndView;
 @Controller
 @RequestMapping("/o")
 public class OrgController {
+    private static final Logger logger = LoggerFactory.getLogger(OrgController.class);
+
+    @Autowired
+    AppManageService appManageService;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView index() {
@@ -34,6 +47,13 @@ public class OrgController {
         return mav;
     }
 
+    @RequestMapping(value = "/appEdit", method = RequestMethod.POST)
+    public ModelAndView appEditUpdate() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("redirect:appInfo");
+        return mav;
+    }
+
     @RequestMapping(value = "/appInfo", method = RequestMethod.GET)
     public ModelAndView appInfo() {
         ModelAndView mav = new ModelAndView();
@@ -44,7 +64,27 @@ public class OrgController {
     @RequestMapping(value = "/appNew", method = RequestMethod.GET)
     public ModelAndView appNew() {
         ModelAndView mav = new ModelAndView();
+
+
+
         mav.setViewName("o/appNew");
+        return mav;
+    }
+
+    @RequestMapping(value = "/appNew", method = RequestMethod.POST)
+    public ModelAndView appNewCreate(@RequestParam Map<String, Object> data) {
+        ModelAndView mav = new ModelAndView();
+        logger.debug("appNew data : {}", data);
+        //TODO 페이지에서 ID 중복여부를 확인한다.
+        String id = (String) data.get("id");
+        App app = new App();
+
+        //TODO
+        appManageService.createApp(app);
+
+
+
+        mav.setViewName("redirect:appInfo");
         return mav;
     }
 

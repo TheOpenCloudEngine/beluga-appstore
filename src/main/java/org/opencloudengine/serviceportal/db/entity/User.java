@@ -3,9 +3,8 @@ package org.opencloudengine.serviceportal.db.entity;
 import java.io.Serializable;
 import java.util.Date;
 
-public class User implements Serializable {
+public class User {
 
-	private static final long serialVersionUID = 1L;
 	public static final String USER_KEY = "_user";
     public static final String ADMIN_TYPE = "A";
 	public static final String USER_TYPE = "U";

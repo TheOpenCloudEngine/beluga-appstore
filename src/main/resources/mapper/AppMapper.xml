@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.opencloudengine.serviceportal.db.mapper.AppMapper">
+
+    <select id="listAll" resultType="org.opencloudengine.serviceportal.db.entity.App">
+        select * from apps
+    </select>
+
+    <select id="listByOrganization" parameterType="map" resultType="org.opencloudengine.serviceportal.db.entity.App">
+        select * from apps
+        where orgId = #{orgId}
+    </select>
+
+
+    <select id="select" parameterType="map" resultType="org.opencloudengine.serviceportal.db.entity.App">
+        select * from apps
+        where id = #{id}
+    </select>
+
+    <insert id="insert" parameterType="org.opencloudengine.serviceportal.db.entity.App">
+        INSERT INTO apps(
+            `id`, `name`, orgId
+        ) VALUES(
+            #{id}, #{name}
+        )
+    </insert>
+
+    <update id="update" parameterType="org.opencloudengine.serviceportal.db.entity.App">
+        UPDATE TABLE apps VALUES (
+        `id`, `name`, orgId
+        ) VALUES(
+        #{id}, #{name}
+        )
+    </update>
+
+    <delete id="delete">
+        DELETE FROM apps
+        WHERE id = #{id}
+    </delete>
+
+    <delete id="truncate">
+        truncate table apps
+    </delete>
+</mapper>
