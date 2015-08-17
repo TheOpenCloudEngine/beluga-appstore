@@ -23,4 +23,8 @@ public interface AppMapper {
     public void delete(@Param("id") String id);
 
     public void truncate();
+
+    public void addGrant(@Param("orgId") String orgId, @Param("appId") String appId);
+
+    public Integer getGrant(@Param("orgId") String orgId, @Param("appId") String appId);
 }

@@ -1,7 +1,8 @@
 package org.opencloudengine.serviceportal.controller;
 
-import org.opencloudengine.serviceportal.db.entity.Organization;
-import org.opencloudengine.serviceportal.db.entity.User;
+import org.opencloudengine.serviceportal.db.entity.*;
+import org.opencloudengine.serviceportal.service.AppManageService;
+import org.opencloudengine.serviceportal.service.GarudaService;
 import org.opencloudengine.serviceportal.service.MemberService;
 import org.opencloudengine.serviceportal.util.JsonUtil;
 import org.slf4j.Logger;
@@ -28,6 +29,12 @@ public class MainController {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private AppManageService appManageService;
+
+    @Autowired
+    private GarudaService garudaService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView root() throws Exception {
@@ -175,19 +182,38 @@ public class MainController {
         return mav;
     }
 
-    @RequestMapping(value = "/api/login", method = RequestMethod.POST)
-    public void doLogin(@RequestBody String json, HttpServletResponse response) throws IOException {
-        String json2 = URLDecoder.decode(json);
-        User user = JsonUtil.json2Object(json2, User.class);
-        logger.debug("user : {}", user);
+    @RequestMapping(value = "/api/users", method = RequestMethod.POST)
+    public void loginAPI(@RequestBody String appId, @RequestBody String id, @RequestBody String password, HttpServletResponse response) throws IOException {
 
-        String userId = user.getId();
-
+        User user = new User();
+        user.setId(id);
+        user.setPassword(password);
         if(!memberService.isUserExistsWithPassword(user)) {
-            response.sendError(404, "incorrect user information : " + userId);
+            response.sendError(401, "Incorrect user information : " + id);
             return;
         }
-        user = memberService.getUser(userId);
-        response.getWriter().print(JsonUtil.object2String(user));
+        user = memberService.getUser(id);
+        String orgId = user.getOrgId();
+        if(appManageService.isGranted(orgId, appId)) {
+            // 사용가능한 리소스 정보를 전달.
+            Resources allResources = garudaService.getResources();
+            //조직별 사용할 리소스를 산출한다.
+            Resources usingResources = appManageService.getUsingResources(appId, allResources);
+
+            response.getWriter().print(JsonUtil.object2String(usingResources));
+        } else {
+            response.sendError(403, "App " + appId + " is not allowed to organization " + orgId);
+            return;
+        }
+
+    }
+
+    @RequestMapping(value = "/api/oauth2/token", method = RequestMethod.POST)
+    public void oauth2Token(@RequestBody String json, HttpServletResponse response) throws IOException {
+       //TODO
+    }
+    @RequestMapping(value = "/api/oauth2/authorization", method = RequestMethod.POST)
+    public void oauth2Authrozation(@RequestBody String json, HttpServletResponse response) throws IOException {
+        //TODO
     }
 }

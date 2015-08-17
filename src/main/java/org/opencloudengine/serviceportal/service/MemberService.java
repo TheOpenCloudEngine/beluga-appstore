@@ -46,4 +46,5 @@ public class MemberService {
     public void addUser(User user) {
         userMapper.insert(user);
     }
+
 }

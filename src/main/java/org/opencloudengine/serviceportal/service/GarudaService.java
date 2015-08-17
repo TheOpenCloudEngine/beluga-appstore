@@ -1,5 +1,6 @@
 package org.opencloudengine.serviceportal.service;
 
+import org.opencloudengine.serviceportal.db.entity.Resources;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,5 +22,13 @@ public class GarudaService {
 
     public String getEndPoint() {
         return garudaEndPoint;
+    }
+
+    public Resources getResources() {
+
+        //TODO
+
+        Resources resources = null;
+        return resources;
     }
 }
