@@ -1,6 +1,8 @@
 package org.opencloudengine.serviceportal.service;
 
+import org.opencloudengine.serviceportal.db.entity.App;
 import org.opencloudengine.serviceportal.db.entity.Resources;
+import org.opencloudengine.serviceportal.db.mapper.AppMapper;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -19,6 +21,8 @@ public class GarudaService {
     @Value("#{systemProperties['GARUDA_ENDPOINT']}")
     private String garudaEndPoint;
 
+    @Autowired
+    private AppMapper appMapper;
 
     public String getEndPoint() {
         return garudaEndPoint;
@@ -30,5 +34,16 @@ public class GarudaService {
 
         Resources resources = null;
         return resources;
+    }
+
+    public void applyApp(String appId) {
+
+        //TODO
+        App app = appMapper.select(appId);
+
+
+        //TODO garuda master 에 전송. marathon으로 실행.
+
+
     }
 }
