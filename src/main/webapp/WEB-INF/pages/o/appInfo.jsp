@@ -2,7 +2,21 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
 <%@include file="top.jsp" %>
+<script>
+    function applyApp() {
+        $.ajax({
+            url:"/api/apps/${app.id}/apply",
+            type: "POST",
+            success:function() {
+                alert("[${app.id}] app apply started.");
+            },
+            error:function(xhr, status, e) {
+                alert("Apply app fails : [" + status + "] " + e);
+            }
+        });
+    }
 
+</script>
 <div class="container" id="content">
     <div class="row">
         <div class="col-md-12">
@@ -20,7 +34,7 @@
                 <br>
                 <div class="box" >
                     <div class="pull-right">
-                        <a href="${app.id}/apply" class="btn btn-lg btn-primary outline">Apply App</a>
+                        <a href="javascript:applyApp()" class="btn btn-lg btn-primary outline">Apply App</a>
                         &nbsp; <a href="${app.id}" class="btn btn-lg btn-default"><i class="glyphicon glyphicon-refresh"></i></a>
                     </div>
                     <h2>Running Status</h2>

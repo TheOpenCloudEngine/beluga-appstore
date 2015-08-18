@@ -16,6 +16,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
@@ -41,6 +42,19 @@ public class RestController {
     @RequestMapping(value = "/api/apps/{appId}", method = RequestMethod.HEAD)
     public void apps(@PathVariable String appId, HttpSession session, HttpServletResponse response) throws IOException {
         App app = appManageService.getApp(appId);
+        if(app != null) {
+            response.setStatus(200);
+        } else {
+            response.setStatus(404, "no such app : " + appId);
+        }
+    }
+
+    @RequestMapping(value = "/api/apps/{appId}/apply", method = RequestMethod.POST)
+    public void appApply(@PathVariable String appId, HttpServletResponse response) {
+
+
+
+        String app = "";
         if(app != null) {
             response.setStatus(200);
         } else {
