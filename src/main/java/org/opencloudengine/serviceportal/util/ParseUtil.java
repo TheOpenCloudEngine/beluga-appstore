@@ -45,10 +45,23 @@ public class ParseUtil {
         return null;
     }
 
+    public static String toHumanSize(long fileLength) {
+        if(fileLength < SizeUnit.KB) {
+            return fileLength + "B";
+        } else if(fileLength < SizeUnit.MB) {
+            return String.format("%.1fKB", fileLength / SizeUnit.K / SizeUnit.K);
+        } else if(fileLength < SizeUnit.GB) {
+            return String.format("%.1fMB", fileLength / SizeUnit.K / SizeUnit.K);
+        } else if(fileLength >= SizeUnit.GB) {
+            return String.format("%.1fGB", fileLength / SizeUnit.K / SizeUnit.K / SizeUnit.K);
+        }
+        return fileLength + "B";
+    }
+
     public static String toHumanSizeOverMB(long fileLength) {
-        if(fileLength < 1000 * 1000 * 1000) {
+        if(fileLength < SizeUnit.GB) {
             return String.format("%.0fMB", fileLength / 1000.0 / 1000.0);
-        } else if(fileLength >= 1000 * 1000 * 1000) {
+        } else if(fileLength >= SizeUnit.GB) {
             return String.format("%.1fGB", fileLength / 1000.0 / 1000.0 / 1000.0);
         }
         return null;

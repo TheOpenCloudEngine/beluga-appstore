@@ -9,6 +9,7 @@ import org.opencloudengine.serviceportal.service.GarudaService;
 import org.opencloudengine.serviceportal.util.DateUtil;
 import org.opencloudengine.serviceportal.util.JsonUtil;
 import org.opencloudengine.serviceportal.util.ParseUtil;
+import org.opencloudengine.serviceportal.util.SizeUnit;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,6 +23,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.NotFoundException;
 import java.io.*;
 import java.util.List;
 import java.util.Map;
@@ -107,46 +109,50 @@ public class OrgController {
         }
     }
 
-    @RequestMapping(value = "/appEdit", method = RequestMethod.GET)
+    @RequestMapping(value = "/apps/{appId}/edit", method = RequestMethod.GET)
     public ModelAndView appEdit() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("o/appEdit");
         return mav;
     }
 
-    @RequestMapping(value = "/appEdit", method = RequestMethod.POST)
+    @RequestMapping(value = "/apps/{appId}/edit", method = RequestMethod.POST)
     public ModelAndView appEditUpdate() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("redirect:appInfo");
         return mav;
     }
 
-    @RequestMapping(value = "/appInfo", method = RequestMethod.GET)
-    public ModelAndView appInfo() {
+    @RequestMapping(value = "/apps/{appId}", method = RequestMethod.GET)
+    public ModelAndView appInfo(@PathVariable String appId) {
+        App app = appManageService.getApp(appId);
+        if(app == null) {
+            throw new NotFoundException();
+        }
+        String elapsed = DateUtil.getElapsedTime(app.getAppliedDate());
         ModelAndView mav = new ModelAndView();
+        mav.addObject("elapsed", elapsed);
+        mav.addObject("app", app);
+        app.setAppFileLengthDisplay(ParseUtil.toHumanSize(app.getAppFileLength()));
+        app.setMemoryDisplay(ParseUtil.toHumanSizeOverMB(app.getMemory() * SizeUnit.MB));
         mav.setViewName("o/appInfo");
         return mav;
     }
 
-    @RequestMapping(value = "/appNew", method = RequestMethod.GET)
+    @RequestMapping(value = "/apps/new", method = RequestMethod.GET)
     public ModelAndView appNew() {
         ModelAndView mav = new ModelAndView();
-
-
-
         mav.setViewName("o/appNew");
         return mav;
     }
 
 
-    @RequestMapping(value = "/appNew", method = RequestMethod.POST)
+    @RequestMapping(value = "/apps", method = RequestMethod.POST)
     public ModelAndView appNewCreate(@RequestParam Map<String, Object> data, HttpSession session) {
 
         logger.debug("appNew data : {}", data);
         User user = getUser(session);
         String orgId = user.getOrgId();
-
-        //TODO 페이지에서 ID 중복여부를 확인한다.
 
         String id = (String) data.get("id");
         String name = (String) data.get("name");
@@ -184,7 +190,7 @@ public class OrgController {
         app.setEnvironment(environment);
         app.setCpus(ParseUtil.parseFloat(cpus));
         app.setMemory(ParseUtil.parseInt(memory));
-        app.setScale(ParseUtil.parseFloat(scale));
+        app.setScale(ParseUtil.parseInt(scale));
 
         /* resources plan */
         App.ResourcesPlan resourcesPlan = new App.ResourcesPlan();

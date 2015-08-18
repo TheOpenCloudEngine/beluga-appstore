@@ -8,21 +8,20 @@
         <div class="col-md-12">
 
             <div class="page-header">
-                <h1 id="tables">EDI</h1>
+                <h1 id="tables">${app.name}</h1>
             </div>
 
             <div class="row col-md-12">
-                <a href="manage" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
-                &nbsp;<a href="appEdit" class="btn btn-default">Edit</a>
+                <a href="/o/manage" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
+                &nbsp;<a href="${app.id}/edit" class="btn btn-default">Edit</a>
             </div>
 
             <div class="row col-md-12">
                 <br>
                 <div class="box" >
                     <div class="pull-right">
-                        <a href="#" class="btn btn-lg btn-primary outline">Apply App</a>
-                        &nbsp; <a href="#" class="btn btn-lg btn-default"><i class="glyphicon glyphicon-refresh"></i></a>
-
+                        <a href="${app.id}/apply" class="btn btn-lg btn-primary outline">Apply App</a>
+                        &nbsp; <a href="${app.id}" class="btn btn-lg btn-default"><i class="glyphicon glyphicon-refresh"></i></a>
                     </div>
                     <h2>Running Status</h2>
                     <br>
@@ -35,13 +34,13 @@
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                             <div class="stat-box">
-                                <p class="text-warning">28 min</p>
+                                <p class="text-warning">${elapsed}</p>
                                 <h4>Elapsed</h4>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                             <div class="stat-box">
-                                <p class="text-primary">2</p>
+                                <p class="text-primary">${app.scale}</p>
                                 <h4>Scale</h4>
                             </div>
                         </div>
@@ -60,14 +59,12 @@
                 <div class="col-md-12 form-horizontal compact">
                     <div class="form-group">
                         <label class="col-md-3 col-sm-3 control-label">Name:</label>
-                        <div class="col-md-9 col-sm-9"><p class="form-control-static">EDI</p></div>
+                        <div class="col-md-9 col-sm-9"><p class="form-control-static">${app.name}</p></div>
                     </div>
 
                     <div class="form-group">
                         <label class="col-md-3 col-sm-3 control-label">Description :</label>
-                        <div class="col-md-9 col-sm-9"><p class="form-control-static">8월 14, 2015 2:54:28 오후 org.springframework.web.servlet.handler.SimpleUrlHandlerMapping registerHandler
-                            정보: Mapped URL path [/resources/**] onto handler 'org.springframework.web.servlet.resource.ResourceHttpRequestHandler#0'
-                            8월 14, 2015 2:54:28 오후 org.springframework.web.context.support.XmlWebApplicationContext prepareRefresh</p></div>
+                        <div class="col-md-9 col-sm-9"><p class="form-control-static">${app.description}</p></div>
                     </div>
                 </div>
             </div>
@@ -78,25 +75,25 @@
                     <div class="form-group">
                         <label class="col-md-3 col-sm-3 control-label">App file:</label>
                         <div class="col-md-9 col-sm-9">
-                            <p class="form-control-static">edi.war (1.2 MB) <br><i class="file-date">2015-07-08 14:11:35</i></p>
+                            <p class="form-control-static">${app.appFile} ( ${app.appFileLengthDisplay} ) <br><i class="file-date">${app.appFileDate}</i></p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 col-sm-3 control-label">CPUs:</label>
                         <div class="col-md-9 col-sm-9">
-                            <p class="form-control-static">0.1</p>
+                            <p class="form-control-static">${app.cpus}</p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 col-sm-3 control-label">Memory:</label>
                         <div class="col-md-9 col-sm-9">
-                            <p class="form-control-static">500MB</p>
+                            <p class="form-control-static">${app.memoryDisplay}</p>
                         </div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 col-sm-3 control-label">Scale:</label>
                         <div class="col-md-9 col-sm-9">
-                            <p class="form-control-static">2</p>
+                            <p class="form-control-static">${app.scale}</p>
                         </div>
                     </div>
                 </div>

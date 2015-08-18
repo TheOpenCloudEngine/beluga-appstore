@@ -61,8 +61,8 @@
                     <tbody>
                         <c:forEach var="app" items="${appList}">
                             <tr>
-                                <td><a href="appInfo">${app.name}</a></td>
-                                <td><a href="appInfo">${app.id}</a></td>
+                                <td><a href="apps/${app.id}">${app.name}</a></td>
+                                <td><a href="apps/${app.id}">${app.id}</a></td>
                                 <td>${app.cpus}</td>
                                 <td>${app.memory}MB</td>
                                 <td>${app.scale}</td>

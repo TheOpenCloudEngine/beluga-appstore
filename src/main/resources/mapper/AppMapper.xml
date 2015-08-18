@@ -29,7 +29,7 @@
         select A.*, O.name as orgName from apps A
         join organization O
         on A.orgId = O.id
-        where id = #{id}
+        where A.id = #{id}
     </select>
 
     <insert id="insert" parameterType="org.opencloudengine.serviceportal.db.entity.App">

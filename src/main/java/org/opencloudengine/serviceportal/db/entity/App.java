@@ -26,12 +26,14 @@ public class App {
     private String appFile;
     private String appFilePath;
     private Long appFileLength;
+    private String appFileLengthDisplay; // human readable 수치.
     private String appFileDate;
     private char appFileUpdated;
     private String environment;
     private Float cpus;
     private Integer memory;
-    private Float scale;
+    private String memoryDisplay;
+    private Integer scale;
 
     /* Resource Plan */
     private String resources;
@@ -114,6 +116,14 @@ public class App {
         this.appFileLength = appFileLength;
     }
 
+    public String getAppFileLengthDisplay() {
+        return appFileLengthDisplay;
+    }
+
+    public void setAppFileLengthDisplay(String appFileLengthDisplay) {
+        this.appFileLengthDisplay = appFileLengthDisplay;
+    }
+
     public String getAppFileDate() {
         return appFileDate;
     }
@@ -154,11 +164,19 @@ public class App {
         this.memory = memory;
     }
 
-    public Float getScale() {
+    public String getMemoryDisplay() {
+        return memoryDisplay;
+    }
+
+    public void setMemoryDisplay(String memoryDisplay) {
+        this.memoryDisplay = memoryDisplay;
+    }
+
+    public Integer getScale() {
         return scale;
     }
 
-    public void setScale(Float scale) {
+    public void setScale(Integer scale) {
         this.scale = scale;
     }
 
