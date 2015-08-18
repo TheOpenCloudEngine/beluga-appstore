@@ -14,6 +14,8 @@ public interface AppMapper {
 
     public List<App> listByOrganization(@Param("orgId") String orgId);
 
+    public List<App> listOuterApp(@Param("orgId") String orgId);
+
     public App select(@Param("id") String id);
 
     public void insert(App app);

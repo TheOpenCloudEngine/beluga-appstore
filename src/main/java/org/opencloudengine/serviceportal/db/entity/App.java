@@ -18,6 +18,7 @@ public class App {
     /* General Information */
     private String id;
     private String orgId;
+    private String orgName; //Organization 테이블 조인결과.
     private String name;
     private String description;
 
@@ -46,6 +47,7 @@ public class App {
 
     /* Apply state */
     private char applied;
+    private String appliedDate;
 
 
     public String getId() {
@@ -62,6 +64,14 @@ public class App {
 
     public void setOrgId(String orgId) {
         this.orgId = orgId;
+    }
+
+    public String getOrgName() {
+        return orgName;
+    }
+
+    public void setOrgName(String orgName) {
+        this.orgName = orgName;
     }
 
     public String getName() {
@@ -251,6 +261,14 @@ public class App {
 
     public void setApplied(char applied) {
         this.applied = applied;
+    }
+
+    public String getAppliedDate() {
+        return appliedDate;
+    }
+
+    public void setAppliedDate(String appliedDate) {
+        this.appliedDate = appliedDate;
     }
 
     public static class ResourcesPlan {

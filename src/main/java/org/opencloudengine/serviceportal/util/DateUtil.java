@@ -15,4 +15,8 @@ public class DateUtil {
     public static SimpleDateFormat getDateFormat() {
         return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     }
+
+    public static String convertDateString(String dateString) {
+        return dateString.substring(0, 10).replaceAll("-", ".");
+    }
 }

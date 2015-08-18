@@ -27,8 +27,12 @@ public class AppManageService {
     @Autowired
     private AppMapper appMapper;
 
-    public List<App> getAppsByOrganization(String orgId) {
+    public List<App> getOrgApps(String orgId) {
         return appMapper.listByOrganization(orgId);
+    }
+
+    public List<App> getOuterApps(String orgId) {
+        return appMapper.listOuterApp(orgId);
     }
 
     public void updateApp(App app) {

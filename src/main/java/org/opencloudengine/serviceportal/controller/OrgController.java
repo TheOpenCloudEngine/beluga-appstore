@@ -22,6 +22,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -39,6 +40,9 @@ public class OrgController {
     @Autowired
     GarudaService garudaService;
 
+    private User getUser(HttpSession session) {
+        return (User) session.getAttribute(User.USER_KEY);
+    }
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView mav = new ModelAndView();
@@ -47,10 +51,28 @@ public class OrgController {
     }
 
     @RequestMapping(value = "/apps", method = RequestMethod.GET)
-    public ModelAndView apps() {
+    public ModelAndView apps(HttpSession session) {
+        User user = getUser(session);
+        String orgId = user.getOrgId();
+        List<App> appList = appManageService.getOrgApps(orgId);
+        List<App> outerAppList = appManageService.getOuterApps(orgId);
+        makeUserFriendlyApp(appList);
+        makeUserFriendlyApp(outerAppList);
         ModelAndView mav = new ModelAndView();
+        mav.addObject("appList", appList);
+        mav.addObject("outerAppList", outerAppList);
         mav.setViewName("o/apps");
         return mav;
+    }
+
+    private void makeUserFriendlyApp(List<App> appList) {
+        if(appList == null) {
+            return;
+        }
+        // applied date "yyyy-MM-dd hh:mm:ss" => "yyyy.MM.dd"
+        for(App app : appList) {
+            app.setAppliedDate(DateUtil.convertDateString(app.getAppliedDate()));
+        }
     }
 
     @RequestMapping(value = "/appEdit", method = RequestMethod.GET)
@@ -88,7 +110,7 @@ public class OrgController {
     public ModelAndView appNewCreate(@RequestParam Map<String, Object> data, HttpSession session) {
 
         logger.debug("appNew data : {}", data);
-        User user = (User) session.getAttribute(User.USER_KEY);
+        User user = getUser(session);
         String orgId = user.getOrgId();
 
         //TODO 페이지에서 ID 중복여부를 확인한다.

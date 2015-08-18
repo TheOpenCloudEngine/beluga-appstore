@@ -3,24 +3,39 @@
 <mapper namespace="org.opencloudengine.serviceportal.db.mapper.AppMapper">
 
     <select id="listAll" resultType="org.opencloudengine.serviceportal.db.entity.App">
-        select * from apps
+        select A.*, O.name as orgName from apps A
+        join organization O
+        on A.orgId = O.id
     </select>
 
     <select id="listByOrganization" parameterType="map" resultType="org.opencloudengine.serviceportal.db.entity.App">
-        select * from apps
-        where orgId = #{orgId}
+        select A.*, O.name as orgName from apps A
+        join organization O
+        on A.orgId = O.id
+        where A.orgId = #{orgId}
+    </select>
+
+    <select id="listOuterApp" parameterType="map" resultType="org.opencloudengine.serviceportal.db.entity.App">
+        select A.*, O.name as orgName from apps A
+        join organization O
+        on A.orgId = O.id
+        join apps_grant G
+        on A.id = G.appId
+        where G.orgId = #{orgId} and A.orgId != #{orgId}
     </select>
 
 
     <select id="select" parameterType="map" resultType="org.opencloudengine.serviceportal.db.entity.App">
-        select * from apps
+        select A.*, O.name as orgName from apps A
+        join organization O
+        on A.orgId = O.id
         where id = #{id}
     </select>
 
     <insert id="insert" parameterType="org.opencloudengine.serviceportal.db.entity.App">
         INSERT INTO apps(
-            `id`, orgId, `name`, description, appfile, appfile_path, appfile_length, appfile_date, environment, cpus, memory
-            , `scale`, resources, auto_scale_out_use, auto_scale_in_use, auto_scale_out_conf, auto_scale_in_conf
+            `id`, orgId, `name`, description, appFile, appFilePath, appFileLength, appFileDate, environment, cpus, memory
+            , `scale`, resources, autoScaleOutUse, autoScaleInUse, autoScaleOutConf, autoScaleInConf
         ) VALUES(
             #{id}, #{orgId}, #{name}, #{description}, #{appFile}, #{appFilePath}, #{appFileLength}, #{appFileDate}
             , #{environment}, #{cpus}, #{memory}, #{scale}, #{resources}, #{autoScaleOutUse}, #{autoScaleInUse}
