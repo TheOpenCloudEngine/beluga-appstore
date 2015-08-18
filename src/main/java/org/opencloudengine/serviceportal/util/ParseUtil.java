@@ -44,4 +44,13 @@ public class ParseUtil {
         }
         return null;
     }
+
+    public static String toHumanSizeOverMB(long fileLength) {
+        if(fileLength < 1000 * 1000 * 1000) {
+            return String.format("%.0fMB", fileLength / 1000.0 / 1000.0);
+        } else if(fileLength >= 1000 * 1000 * 1000) {
+            return String.format("%.1fGB", fileLength / 1000.0 / 1000.0 / 1000.0);
+        }
+        return null;
+    }
 }

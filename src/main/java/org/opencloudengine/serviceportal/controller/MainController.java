@@ -30,12 +30,6 @@ public class MainController {
     @Autowired
     private MemberService memberService;
 
-    @Autowired
-    private AppManageService appManageService;
-
-    @Autowired
-    private GarudaService garudaService;
-
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView root() throws Exception {
         ModelAndView mav = new ModelAndView();
@@ -55,28 +49,6 @@ public class MainController {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("store");
         return mav;
-    }
-
-    @RequestMapping(value = "/api/user/{userId:.+}", method = RequestMethod.HEAD)
-    public void testUser(@PathVariable String userId, HttpServletResponse response) throws IOException {
-        User user = memberService.getUser(userId);
-        if(user != null) {
-            response.setStatus(200);
-        } else {
-            response.sendError(404, "no such user : " + userId);
-        }
-    }
-
-    @RequestMapping(value = "/api/organization/{orgId}", method = RequestMethod.GET)
-    public void testOrganization(@PathVariable String orgId, HttpServletResponse response) throws IOException {
-        Organization organization = memberService.getOrganization(orgId);
-        if(organization != null) {
-            response.setCharacterEncoding("utf-8");
-            response.getWriter().print(JsonUtil.object2String(organization));
-        } else {
-            response.sendError(404, "no such organization : " + orgId);
-            return;
-        }
     }
 
     @RequestMapping(value = "/signUp", method = RequestMethod.GET)
@@ -182,37 +154,4 @@ public class MainController {
         return mav;
     }
 
-    @RequestMapping(value = "/api/users", method = RequestMethod.POST)
-    public void loginAPI(@RequestBody String appId, @RequestBody String id, @RequestBody String password, HttpServletResponse response) throws IOException {
-
-        User user = new User();
-        user.setId(id);
-        user.setPassword(password);
-        if(!memberService.isUserExistsWithPassword(user)) {
-            response.sendError(401, "Incorrect user information : " + id);
-            return;
-        }
-        user = memberService.getUser(id);
-        String orgId = user.getOrgId();
-        if(appManageService.isGranted(orgId, appId)) {
-            // 사용가능한 리소스 정보를 전달.
-            Resources allResources = garudaService.getResources();
-            //조직별 사용할 리소스를 산출한다.
-            Resources usingResources = appManageService.getUsingResources(appId, allResources);
-
-            response.getWriter().print(JsonUtil.object2String(usingResources));
-        } else {
-            response.sendError(403, "App " + appId + " is not allowed to organization " + orgId);
-        }
-
-    }
-
-    @RequestMapping(value = "/api/oauth2/token", method = RequestMethod.POST)
-    public void oauth2Token(@RequestBody String json, HttpServletResponse response) throws IOException {
-       //TODO
-    }
-    @RequestMapping(value = "/api/oauth2/authorization", method = RequestMethod.POST)
-    public void oauth2Authrozation(@RequestBody String json, HttpServletResponse response) throws IOException {
-        //TODO
-    }
 }

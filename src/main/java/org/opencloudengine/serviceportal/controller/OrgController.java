@@ -13,6 +13,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -65,6 +66,37 @@ public class OrgController {
         return mav;
     }
 
+    @RequestMapping(value = "/manage", method = RequestMethod.GET)
+    public ModelAndView manage(HttpSession session) {
+        User user = getUser(session);
+        String orgId = user.getOrgId();
+        List<App> appList = appManageService.getOrgApps(orgId);
+        List<App> outerAppList = appManageService.getOuterApps(orgId);
+        makeUserFriendlyApp(appList);
+        makeUserFriendlyApp(outerAppList);
+        ModelAndView mav = new ModelAndView();
+        int appSize = appList != null ? appList.size() : 0;
+        int outerAppSize = outerAppList != null ? outerAppList.size() : 0;
+        float totalCpus = 0;
+        int totalMemory = 0;
+
+        if(appList != null) {
+            for(App app : appList) {
+                totalCpus += app.getCpus();
+                totalMemory += app.getMemory();
+            }
+        }
+        String totalMemoryString = ParseUtil.toHumanSizeOverMB(totalMemory * 1000000L);
+
+        mav.addObject("appSize", appSize);
+        mav.addObject("outerAppSize", outerAppSize);
+        mav.addObject("totalCpus", totalCpus);
+        mav.addObject("totalMemory", totalMemoryString);
+        mav.addObject("appList", appList);
+        mav.addObject("outerAppList", outerAppList);
+        mav.setViewName("o/manage");
+        return mav;
+    }
     private void makeUserFriendlyApp(List<App> appList) {
         if(appList == null) {
             return;
@@ -105,6 +137,7 @@ public class OrgController {
         mav.setViewName("o/appNew");
         return mav;
     }
+
 
     @RequestMapping(value = "/appNew", method = RequestMethod.POST)
     public ModelAndView appNewCreate(@RequestParam Map<String, Object> data, HttpSession session) {
@@ -225,13 +258,6 @@ public class OrgController {
         } else {
             response.sendError(500, "File is empty");
         }
-    }
-
-    @RequestMapping(value = "/manage", method = RequestMethod.GET)
-    public ModelAndView manage() {
-        ModelAndView mav = new ModelAndView();
-        mav.setViewName("o/manage");
-        return mav;
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)

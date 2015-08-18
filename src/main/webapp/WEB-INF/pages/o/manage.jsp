@@ -2,7 +2,6 @@
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
 <%@include file="top.jsp" %>
-
 <div class="container" id="content">
     <div class="row">
         <div class="col-md-12">
@@ -11,29 +10,29 @@
                 <h1 id="tables">Manage Apps</h1>
             </div>
 
-            <h2>Overview</h2>
+            <h2>Usage Overview</h2>
             <div class="row">
                 <div class="col-md-3 col-sm-3 col-xs-3">
                     <div class="stat-box">
-                        <p class="text-info">2</p>
+                        <p class="text-info">${appSize}</p>
                         <h4>Apps</h4>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
                     <div class="stat-box">
-                        <p class="text-warning">1</p>
+                        <p class="text-warning">${outerAppSize}</p>
                         <h4>Outer Apps</h4>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
                     <div class="stat-box">
-                        <p class="text-info">2.6</p>
+                        <p class="text-info">${totalCpus}</p>
                         <h4>CPUs</h4>
                     </div>
                 </div>
                 <div class="col-md-3 col-sm-3 col-xs-3">
                     <div class="stat-box">
-                        <p class="text-warning">2400MB</p>
+                        <p class="text-warning">${totalMemory}</p>
                         <h4>Memory</h4>
                     </div>
                 </div>
@@ -45,80 +44,63 @@
                 <a href="appNew" class="btn btn-primary outline">New App</a></td>
             </div>
             <h2>Providing Apps</h2>
-            <table class="table table-hover table-bordered">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>ID</th>
-                    <th>CPUs</th>
-                    <th>Memory</th>
-                    <th>Scale</th>
-                    <th>Version</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td><a href="appInfo">EDI</a></td>
-                    <td><a href="appInfo">erp</a></td>
-                    <td>0.3</td>
-                    <td>700MB</td>
-                    <td>2</td>
-                    <td>2015.8.14 12:23:50</td>
-                    <td><span class="glyphicon glyphicon-ok-sign running-status"></span></td>
-                    <td><a href="appEdit" class="btn btn-primary outline">Edit</a></td>
-                </tr>
-                <tr>
-                    <td><a href="appInfo">CASP</a></td>
-                    <td><a href="appInfo">erp</a></td>
-                    <td>0.1</td>
-                    <td>500MB</td>
-                    <td>3</td>
-                    <td>2015.8.14 12:23:50</td>
-                    <td><span class="glyphicon glyphicon-ok-sign running-status"></span></td>
-                    <td><a href="appEdit" class="btn btn-primary outline">Edit</a></td>
-                </tr>
-                </tbody>
-            </table>
-
+            <c:if test="${not empty appList}">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>ID</th>
+                        <th>CPUs</th>
+                        <th>Memory</th>
+                        <th>Scale</th>
+                        <th>Apply Date</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="app" items="${appList}">
+                            <tr>
+                                <td><a href="appInfo">${app.name}</a></td>
+                                <td><a href="appInfo">${app.id}</a></td>
+                                <td>${app.cpus}</td>
+                                <td>${app.memory}MB</td>
+                                <td>${app.scale}</td>
+                                <td>${app.appliedDate}</td>
+                                <td><span class="glyphicon glyphicon-ok-sign running-status"></span></td>
+                                <td><a href="appEdit" class="btn btn-primary outline">Edit</a></td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </c:if>
             <br>
 
             <h2>Outer Apps</h2>
-            <table class="table table-hover table-bordered">
-                <thead>
-                <tr>
-                    <th>Name</th>
-                    <th>ID</th>
-                    <th>Provider</th>
-                    <th>Status</th>
-                    <th>Action</th>
-                </tr>
-                </thead>
-                <tbody>
-                <tr>
-                    <td>ERP</td>
-                    <td>erp</td>
-                    <td>ITMA</td>
-                    <td><span class="glyphicon glyphicon-ok-sign running-status"></span></td>
-                    <td><a href="#" class="btn btn-danger outline">Cancel</a></td>
-                </tr>
-                <tr>
-                    <td>Good Solution</td>
-                    <td>goods</td>
-                    <td>ITMA</td>
-                    <td><span class="glyphicon glyphicon-ok-sign running-status"></span></td>
-                    <td><a href="#" class="btn btn-danger outline">Cancel</a></td>
-                </tr>
-                <tr>
-                    <td>Some Solution</td>
-                    <td>somes</td>
-                    <td>ITMA</td>
-                    <td><span class="glyphicon glyphicon-ok-sign running-status"></span></td>
-                    <td><a href="#" class="btn btn-danger outline">Cancel</a></td>
-                </tr>
-                </tbody>
-            </table>
+            <c:if test="${not empty outerAppList}">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>ID</th>
+                        <th>Provider</th>
+                        <th>Status</th>
+                        <th>Action</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                        <c:forEach var="app" items="${outerAppList}">
+                            <tr>
+                                <td>${app.name}</td>
+                                <td>${app.id}</td>
+                                <td>${app.orgName}</td>
+                                <td><span class="glyphicon glyphicon-ok-sign running-status"></span></td>
+                                <td><a href="#" class="btn btn-danger outline">Cancel</a></td>
+                            </tr>
+                        </c:forEach>
+                    </tbody>
+                </table>
+            </c:if>
         </div>
     </div>
 </div>
