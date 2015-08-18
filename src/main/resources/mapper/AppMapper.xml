@@ -19,9 +19,12 @@
 
     <insert id="insert" parameterType="org.opencloudengine.serviceportal.db.entity.App">
         INSERT INTO apps(
-            `id`, `name`, orgId
+            `id`, orgId, `name`, description, appfile, appfile_path, appfile_length, appfile_date, environment, cpus, memory
+            , `scale`, resources, auto_scale_out_use, auto_scale_in_use, auto_scale_out_conf, auto_scale_in_conf
         ) VALUES(
-            #{id}, #{name}
+            #{id}, #{orgId}, #{name}, #{description}, #{appFile}, #{appFilePath}, #{appFileLength}, #{appFileDate}
+            , #{environment}, #{cpus}, #{memory}, #{scale}, #{resources}, #{autoScaleOutUse}, #{autoScaleInUse}
+            , #{autoScaleOutConf}, #{autoScaleInConf}
         )
     </insert>
 

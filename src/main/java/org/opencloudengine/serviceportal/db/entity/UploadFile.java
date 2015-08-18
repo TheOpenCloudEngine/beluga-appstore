@@ -5,12 +5,14 @@ package org.opencloudengine.serviceportal.db.entity;
  */
 public class UploadFile {
     private String name;
+    private String path;
     private long length;
     private String date;
 
     public UploadFile() {}
-    public UploadFile(String name, long length, String date) {
+    public UploadFile(String name, String path, long length, String date) {
         this.name = name;
+        this.path = path;
         this.length = length;
         this.date = date;
     }
@@ -21,6 +23,14 @@ public class UploadFile {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getPath() {
+        return path;
+    }
+
+    public void setPath(String path) {
+        this.path = path;
     }
 
     public long getLength() {

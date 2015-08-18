@@ -41,7 +41,6 @@ public class AppManageService {
 
     public void createApp(App app) {
         appMapper.insert(app);
-
     }
 
     public void addGrant(String orgId, String appId) {
@@ -89,7 +88,7 @@ public class AppManageService {
         return false;
     }
 
-    public File uploadAppFile(MultipartFile file, String orgId) throws IOException {
+    public File saveMultipartFile(MultipartFile file, String orgId) throws IOException {
 
         if(file == null || file.isEmpty()) {
             return null;

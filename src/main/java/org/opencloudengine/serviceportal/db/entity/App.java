@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -22,22 +23,26 @@ public class App {
 
     /* Operating Plan */
     private String appFile;
+    private String appFilePath;
+    private Long appFileLength;
     private String appFileDate;
-    private Long appFileSize;
     private char appFileUpdated;
+    private String environment;
     private Float cpus;
     private Integer memory;
     private Float scale;
-    private String version;
 
     /* Resource Plan */
+    private String resources;
     private ResourcesPlan resourcesPlan;
 
     /* Auto Scaling Plan */
-    private char autoScaleOutUse;
-    private char autoScaleInUse;
-    private AutoScaleOutConfig autoScaleOutConf;
-    private AutoScaleInConfig autoScaleInConf;
+    private Character autoScaleOutUse;
+    private Character autoScaleInUse;
+    private String autoScaleOutConf;
+    private String autoScaleInConf;
+    private AutoScaleOutConfig autoScaleOutConfig;
+    private AutoScaleInConfig autoScaleInConfig;
 
     /* Apply state */
     private char applied;
@@ -83,6 +88,22 @@ public class App {
         this.appFile = appFile;
     }
 
+    public String getAppFilePath() {
+        return appFilePath;
+    }
+
+    public void setAppFilePath(String appFilePath) {
+        this.appFilePath = appFilePath;
+    }
+
+    public Long getAppFileLength() {
+        return appFileLength;
+    }
+
+    public void setAppFileLength(Long appFileLength) {
+        this.appFileLength = appFileLength;
+    }
+
     public String getAppFileDate() {
         return appFileDate;
     }
@@ -91,20 +112,20 @@ public class App {
         this.appFileDate = appFileDate;
     }
 
-    public Long getAppFileSize() {
-        return appFileSize;
-    }
-
-    public void setAppFileSize(Long appFileSize) {
-        this.appFileSize = appFileSize;
-    }
-
     public char getAppFileUpdated() {
         return appFileUpdated;
     }
 
     public void setAppFileUpdated(char appFileUpdated) {
         this.appFileUpdated = appFileUpdated;
+    }
+
+    public String getEnvironment() {
+        return environment;
+    }
+
+    public void setEnvironment(String environment) {
+        this.environment = environment;
     }
 
     public Float getCpus() {
@@ -131,19 +152,12 @@ public class App {
         this.scale = scale;
     }
 
-    public String getVersion() {
-        return version;
+    public String getResources() {
+        return resources;
     }
 
-    public void setVersion(String version) {
-        this.version = version;
-    }
-
-    public ResourcesPlan getResourcesPlan() {
-        return resourcesPlan;
-    }
-
-    public void setResourcesPlan(String resources) {
+    public void setResources(String resources) {
+        this.resources = resources;
         try{
             this.resourcesPlan = JsonUtil.json2Object(resources, ResourcesPlan.class);
         } catch (IOException e) {
@@ -151,44 +165,84 @@ public class App {
         }
     }
 
-    public char getAutoScaleOutUse() {
+    public ResourcesPlan getResourcesPlan() {
+        return resourcesPlan;
+    }
+
+    public void setResourcesPlan(ResourcesPlan resourcesPlan) {
+        this.resourcesPlan = resourcesPlan;
+        try{
+            this.resources = JsonUtil.object2String(resourcesPlan);
+        } catch (IOException e) {
+            logger.error("", e);
+        }
+    }
+
+    public Character getAutoScaleOutUse() {
         return autoScaleOutUse;
     }
 
-    public void setAutoScaleOutUse(char autoScaleOutUse) {
+    public void setAutoScaleOutUse(Character autoScaleOutUse) {
         this.autoScaleOutUse = autoScaleOutUse;
     }
 
-    public char getAutoScaleInUse() {
+    public Character getAutoScaleInUse() {
         return autoScaleInUse;
     }
 
-    public void setAutoScaleInUse(char autoScaleInUse) {
+    public void setAutoScaleInUse(Character autoScaleInUse) {
         this.autoScaleInUse = autoScaleInUse;
     }
 
-    public AutoScaleOutConfig getAutoScaleOutConfig() {
+    public void setAutoScaleOutConf(String autoScaleOutConf) {
+        this.autoScaleOutConf = autoScaleOutConf;
+        try{
+           this.autoScaleOutConfig = JsonUtil.json2Object(autoScaleOutConf, AutoScaleOutConfig.class);
+        } catch (IOException e) {
+            logger.error("", e);
+        }
+    }
+    public String getAutoScaleOutConf() {
         return autoScaleOutConf;
     }
 
-    public void setAutoScaleOutConf(String autoScaleOutConf) {
+    public void setAutoScaleOutConfig(AutoScaleOutConfig autoScaleOutConfig) {
+        this.autoScaleOutConfig  = autoScaleOutConfig;
         try{
-           this.autoScaleOutConf = JsonUtil.json2Object(autoScaleOutConf, AutoScaleOutConfig.class);
+            this.autoScaleOutConf = JsonUtil.object2String(autoScaleOutConfig);
+        } catch (IOException e) {
+            logger.error("", e);
+        }
+    }
+
+    public AutoScaleOutConfig getAutoScaleOutConfig() {
+        return autoScaleOutConfig;
+    }
+
+    public void setAutoScaleInConf(String autoScaleInConf) {
+        this.autoScaleInConf = autoScaleInConf;
+        try {
+            this.autoScaleInConfig = JsonUtil.json2Object(autoScaleInConf, AutoScaleInConfig.class);
+        } catch (IOException e) {
+            logger.error("", e);
+        }
+    }
+
+    public String getAutoScaleInConf() {
+        return autoScaleInConf;
+    }
+
+    public void setAutoScaleInConfig(AutoScaleInConfig autoScaleInConfig) {
+        this.autoScaleInConfig = autoScaleInConfig;
+        try{
+            this.autoScaleInConf = JsonUtil.object2String(autoScaleInConfig);
         } catch (IOException e) {
             logger.error("", e);
         }
     }
 
     public AutoScaleInConfig getAutoScaleInConfig() {
-        return autoScaleInConf;
-    }
-
-    public void setAutoScaleInConf(String autoScaleInConf) {
-        try {
-            this.autoScaleInConf = JsonUtil.json2Object(autoScaleInConf, AutoScaleInConfig.class);
-        } catch (IOException e) {
-            logger.error("", e);
-        }
+        return autoScaleInConfig;
     }
 
     public char getApplied() {
@@ -209,6 +263,13 @@ public class App {
 
         public void setPlanList(List<ResourcePlan> planList) {
             this.planList = planList;
+        }
+
+        public void addPlan(ResourcePlan resourcePlan) {
+            if(planList == null) {
+                planList = new ArrayList<>();
+            }
+            planList.add(resourcePlan);
         }
 
     }

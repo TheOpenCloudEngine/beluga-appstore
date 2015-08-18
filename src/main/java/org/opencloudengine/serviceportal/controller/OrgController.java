@@ -1,18 +1,18 @@
 package org.opencloudengine.serviceportal.controller;
 
 import org.opencloudengine.serviceportal.db.entity.App;
+import org.opencloudengine.serviceportal.db.entity.ResourcePlan;
 import org.opencloudengine.serviceportal.db.entity.UploadFile;
 import org.opencloudengine.serviceportal.db.entity.User;
 import org.opencloudengine.serviceportal.service.AppManageService;
+import org.opencloudengine.serviceportal.service.GarudaService;
 import org.opencloudengine.serviceportal.util.DateUtil;
 import org.opencloudengine.serviceportal.util.JsonUtil;
+import org.opencloudengine.serviceportal.util.ParseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -22,9 +22,6 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.*;
-import java.net.URLDecoder;
-import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -38,6 +35,9 @@ public class OrgController {
 
     @Autowired
     AppManageService appManageService;
+
+    @Autowired
+    GarudaService garudaService;
 
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView index() {
@@ -85,37 +85,97 @@ public class OrgController {
     }
 
     @RequestMapping(value = "/appNew", method = RequestMethod.POST)
-    public ModelAndView appNewCreate(@RequestParam Map<String, Object> data) {
-        ModelAndView mav = new ModelAndView();
+    public ModelAndView appNewCreate(@RequestParam Map<String, Object> data, HttpSession session) {
+
         logger.debug("appNew data : {}", data);
+        User user = (User) session.getAttribute(User.USER_KEY);
+        String orgId = user.getOrgId();
+
         //TODO 페이지에서 ID 중복여부를 확인한다.
+
         String id = (String) data.get("id");
-        String orgId = (String) data.get("orgId");
         String name = (String) data.get("name");
         String description = (String) data.get("description");
-        String appFile = (String) data.get("appFile");
-        String appFileDate = (String) data.get("appFileDate"); //Version
-        String appFileSize = (String) data.get("appFileSize");
-//        String appFileUpdated = (String) data.get("appFileUpdated");
+        String appFile = (String) data.get("fileName");
+        String appFilePath = (String) data.get("filePath");
+        String appFileLength = (String) data.get("fileLength");
+        String appFileDate = (String) data.get("fileDate");
+        String environment = (String) data.get("environment");
         String cpus = (String) data.get("cpus");
         String memory = (String) data.get("memory");
         String scale = (String) data.get("scale");
-//        String version = (String) data.get("version");
+
+        Integer dbResourceSize = ParseUtil.parseInt(data.get("db_resource_size"));
+        Integer ftpResourceSize = ParseUtil.parseInt(data.get("ftp_resource_size"));
 
         String resources = (String) data.get("resources");
         String autoScaleOutUse = (String) data.get("autoScaleOutUse");
+        Integer cpuHigher = ParseUtil.parseInt(data.get("cpuHigher"));
+        Integer cpuHigherDuring = ParseUtil.parseInt(data.get("cpuHigherDuring"));
+        Integer autoScaleOutSize = ParseUtil.parseInt(data.get("autoScaleOutSize"));
         String autoScaleInUse = (String) data.get("autoScaleInUse");
-        String autoScaleOutConf = (String) data.get("autoScaleOutConf");
-        String autoScaleInConf = (String) data.get("autoScaleInConf");
+        Integer cpuLower = ParseUtil.parseInt(data.get("cpuLower"));
+        Integer cpuLowerDuring = ParseUtil.parseInt(data.get("cpuLowerDuring"));
 
         App app = new App();
         app.setId(id);
         app.setOrgId(orgId);
-        //TODO
+        app.setName(name);
+        app.setDescription(description);
+        app.setAppFile(appFile);
+        app.setAppFilePath(appFilePath);
+        app.setAppFileLength(ParseUtil.parseLong(appFileLength));
+        app.setAppFileDate(appFileDate);
+        app.setEnvironment(environment);
+        app.setCpus(ParseUtil.parseFloat(cpus));
+        app.setMemory(ParseUtil.parseInt(memory));
+        app.setScale(ParseUtil.parseFloat(scale));
+
+        /* resources plan */
+        App.ResourcesPlan resourcesPlan = new App.ResourcesPlan();
+        String dbPrefix = "db";
+        String ftpPrefix = "ftp";
+        String optionSuffix = "_option";
+        for (int i = 0; i < dbResourceSize; i++){
+            String key = dbPrefix + i;
+            String dbId = (String) data.get(key);
+            if(dbId != null) {
+                String optionKey = key + optionSuffix;
+                String option = (String) data.get(optionKey);
+                ResourcePlan p = new ResourcePlan(dbId, option);
+                resourcesPlan.addPlan(p);
+            }
+        }
+        for (int i = 0; i < ftpResourceSize; i++){
+            String key = ftpPrefix + i;
+            String ftpId = (String) data.get(key);
+            if(ftpId != null) {
+                String optionKey = key + optionSuffix;
+                String option = (String) data.get(optionKey);
+                ResourcePlan p = new ResourcePlan(ftpId, option);
+                resourcesPlan.addPlan(p);
+            }
+        }
+        app.setResourcesPlan(resourcesPlan);
+
+        /* auto scale */
+        App.AutoScaleOutConfig autoScaleOutConfig = new App.AutoScaleOutConfig();
+        autoScaleOutConfig.setCpuHigher(cpuHigher);
+        autoScaleOutConfig.setCpuHigherDuring(cpuHigherDuring);
+        autoScaleOutConfig.setAddScale(autoScaleOutSize);
+
+        App.AutoScaleInConfig autoScaleInConfig = new App.AutoScaleInConfig();
+        autoScaleInConfig.setCpuLower(cpuLower);
+        autoScaleInConfig.setCpuLowerDuring(cpuLowerDuring);
+
+        app.setAutoScaleOutUse(ParseUtil.parseChar(autoScaleOutUse));
+        app.setAutoScaleInUse(ParseUtil.parseChar(autoScaleInUse));
+        app.setAutoScaleOutConfig(autoScaleOutConfig);
+        app.setAutoScaleInConfig(autoScaleInConfig);
+
         appManageService.createApp(app);
 
-
-
+        ModelAndView mav = new ModelAndView();
         mav.setViewName("redirect:appInfo");
         return mav;
     }
@@ -124,14 +184,22 @@ public class OrgController {
     public void uploadAppFile(@RequestParam("file") MultipartFile file, HttpServletResponse response, HttpSession session) throws IOException {
         User user = (User) session.getAttribute(User.USER_KEY);
         String orgId = user.getOrgId();
-        File appFile = appManageService.uploadAppFile(file, orgId);
+        File appFile = appManageService.saveMultipartFile(file, orgId);
 
         if(appFile != null) {
-            long length = appFile.length();
-            String fileName = appFile.getName();
-            UploadFile uploadFile = new UploadFile(fileName, length, DateUtil.getNow());
-            response.setCharacterEncoding("utf-8");
-            response.getWriter().print(JsonUtil.object2String(uploadFile));
+            String clusterId = "dev";
+            // garuda에 올린다.
+            String filePath = garudaService.uploadAppFile(clusterId, orgId, appFile);
+            if(filePath != null) {
+                long length = appFile.length();
+                String fileName = appFile.getName();
+                UploadFile uploadFile = new UploadFile(fileName, filePath, length, DateUtil.getNow());
+                response.setCharacterEncoding("utf-8");
+                response.getWriter().print(JsonUtil.object2String(uploadFile));
+                return;
+            } else {
+                response.sendError(500, "Cannot upload file to remote garuda server.");
+            }
         } else {
             response.sendError(500, "File is empty");
         }

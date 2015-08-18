@@ -22,26 +22,18 @@ $(function(){
                 $("#fileInfo").text(result.name + " (" + toHumanSize(result.length) + ")");
                 $("#fileDate").text(result.date);
                 $("input[name=fileName]").val(result.name);
+                $("input[name=filePath]").val(result.path);
                 $("input[name=fileLength]").val(result.length);
                 $("input[name=fileDate]").val(result.date);
             },
             error : function (e) {
                 console.log("upload error = ", e);
+                alert("File upload failed :" + e);
             }
         });
     });
 })
-function toHumanSize(fileLength) {
-    if(fileLength < 1024) {
-        return fileLength + "B";
-    } else if(fileLength < 1024 * 1024) {
-        return (fileLength / 1024.0).toFixed(1) + "KB";
-    } else if(fileLength < 1024 * 1024 * 1024) {
-        return (fileLength / 1024.0 / 1024.0).toFixed(1) + "MB";
-    } else if(fileLength >= 1024 * 1024 * 1024) {
-        return (fileLength / 1024.0 / 1024.0 / 1024.0).toFixed(1) + "GB";
-    }
-}
+
 </script>
 <div class="container" id="content">
     <div class="row">
@@ -85,10 +77,21 @@ function toHumanSize(fileLength) {
                             <div class="col-md-9 col-sm-9">
                                 <p class="form-control-static"><span id="fileInfo"></span><br><span class="file-date" id="fileDate"></span></p>
                                 <input type="file" id="appFile" class="form-control-static"/>
-                                <input type="hidden" name="fileName" value=""/>
-                                <input type="hidden" name="fileLength" value=""/>
-                                <input type="hidden" name="fileDate" value=""/>
+                                <input type="hidden" name="fileName"/>
+                                <input type="hidden" name="filePath"/>
+                                <input type="hidden" name="fileLength"/>
+                                <input type="hidden" name="fileDate"/>
 
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-sm-3 control-label">Environment:</label>
+                            <div class="col-md-9 col-sm-9">
+                                <select  name="environment" class="form-control">
+                                    <option value="">:: Select ::</option>
+                                    <option value="java7-wildfly8.2">java7-wildfly8.2</option>
+                                    <option value="php5-apache2">php5-apache2</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
@@ -149,7 +152,22 @@ function toHumanSize(fileLength) {
                             <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="db1" value="DB01"> DB01 ( MySql 5.6.26 )
+                                        <input type="checkbox" name="db0" value="DB01"> DB01 ( MySql 5.6.26 )
+                                    </label>
+                                </div>
+                                <div class="sub-options">
+                                    <label class="radio-inline">
+                                        <input type="radio" name="db0_option" value="separateDB"> Separate DB
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="db0_option" value="SharedDB" disabled> Shared
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="db1" value="DB02" > DB02 ( Oracle 11g )
                                     </label>
                                 </div>
                                 <div class="sub-options">
@@ -157,14 +175,17 @@ function toHumanSize(fileLength) {
                                         <input type="radio" name="db1_option" value="separateDB"> Separate DB
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="db1_option" value="SharedDB" disabled> Shared
+                                        <input type="radio" name="db1_option" value="separateSchema"> Separate Schema
+                                    </label>
+                                    <label class="radio-inline">
+                                        <input type="radio" name="db1_option" value="sharedSchema"> Shared
                                     </label>
                                 </div>
                             </div>
                             <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="db2" value="DB02" > DB02 ( Oracle 11g )
+                                        <input type="checkbox" name="db2" value="DB03" > DB03 ( Postgres 9.4.4 )
                                     </label>
                                 </div>
                                 <div class="sub-options">
@@ -179,24 +200,6 @@ function toHumanSize(fileLength) {
                                     </label>
                                 </div>
                             </div>
-                            <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="db3" value="DB03" > DB03 ( Postgres 9.4.4 )
-                                    </label>
-                                </div>
-                                <div class="sub-options">
-                                    <label class="radio-inline">
-                                        <input type="radio" name="db3_option" value="separateDB"> Separate DB
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="db3_option" value="separateSchema"> Separate Schema
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="db3_option" value="sharedSchema"> Shared
-                                    </label>
-                                </div>
-                            </div>
                         </div>
                         <div class="form-group">
                             <input type="hidden" name="ftp_resource_size" value="1" />
@@ -204,15 +207,15 @@ function toHumanSize(fileLength) {
                             <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="ftp1" value="FTP01"> FTP01 ( Ftp 3.2 )
+                                        <input type="checkbox" name="ftp0" value="FTP01"> FTP01 ( Ftp 3.2 )
                                     </label>
                                 </div>
                                 <div class="sub-options">
                                     <label class="radio-inline">
-                                        <input type="radio" name="ftp1_option" value="private"> Private
+                                        <input type="radio" name="ftp0_option" value="private"> Private
                                     </label>
                                     <label class="radio-inline">
-                                        <input type="radio" name="ftp1_option" value="shared"> Shared
+                                        <input type="radio" name="ftp0_option" value="shared"> Shared
                                     </label>
                                 </div>
                             </div>
