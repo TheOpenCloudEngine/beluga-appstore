@@ -12,96 +12,33 @@
                 <h1 id="tables">Store</h1>
             </div>
 
-            <div class="app-grid-list">
-                <div class="app-entry-wrapper col-md-4 col-sm-6 col-xs-6">
-                    <div class="app-entry col-md-4 col-sm-6 col-xs-6">
-                        <div class="app-thumbnail">
-                            <%--<image src="resources/img/default-thumbnail.jpg"></image>--%>
-                        </div>
-                        <div class="app-info">
-                            <div class="app-title">ERP</div>
-                            <div class="app-provider">Total Soft Bank</div>
-                            <div class="app-date">2015.8.17</div>
-                            <div class="app-button" align="right">
-                                <a href="#" class="btn btn-primary outline">Use App</a>
+            <c:if test="${not empty appList}">
+                <div class="app-grid-list">
+                    <c:forEach var="app" items="${appList}">
+                        <div class="app-entry-wrapper col-md-4 col-sm-6 col-xs-6">
+                            <div class="app-entry col-md-4 col-sm-6 col-xs-6">
+                                <div class="app-thumbnail">
+                                    <%--<image src="resources/img/default-thumbnail.jpg"></image>--%>
+                                </div>
+                                <div class="app-info">
+                                    <div class="app-title">${app.name}</div>
+                                    <div class="app-provider">${app.orgName}</div>
+                                    <div class="app-date">${app.applyDate}&nbsp;</div>
+                                    <div class="app-button" align="right">
+                                        <a href="#${app.id}" class="btn btn-primary outline">Use App</a>
+                                    </div>
+                                </div>
                             </div>
                         </div>
-                    </div>
+                    </c:forEach>
                 </div>
-                <div class="app-entry-wrapper col-md-4 col-sm-6 col-xs-6">
-                    <div class="app-entry">
-                        <div class="app-thumbnail">
-                        </div>
-                        <div class="app-info">
-                            <div class="app-title">EDI</div>
-                            <div class="app-provider">Total Soft Bank</div>
-                            <div class="app-date">2015.8.17</div>
-                            <div class="app-button" align="right">
-                                <a href="#" class="btn btn-primary outline">Use App</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="app-entry-wrapper col-md-4 col-sm-6 col-xs-6">
-                    <div class="app-entry">
-                        <div class="app-thumbnail">
-                        </div>
-                        <div class="app-info">
-                            <div class="app-title">CASP</div>
-                            <div class="app-provider">Total Soft Bank</div>
-                            <div class="app-date">2015.8.17</div>
-                            <div class="app-button" align="right">
-                                <a href="#" class="btn btn-primary outline">Use App</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
+            </c:if>
 
-                <div class="app-entry-wrapper col-md-4 col-sm-6 col-xs-6">
-                    <div class="app-entry">
-                        <div class="app-thumbnail">
-                            <%--<image src="resources/img/default-thumbnail.jpg"></image>--%>
-                        </div>
-                        <div class="app-info">
-                            <div class="app-title">ERP</div>
-                            <div class="app-provider">Total Soft Bank</div>
-                            <div class="app-date">2015.8.17</div>
-                            <div class="app-button" align="right">
-                                <a href="#" class="btn btn-primary outline">Use App</a>
-                            </div>
-                        </div>
-                    </div>
+            <c:if test="${empty appList}">
+                <div class="well col-md-12 empty-apps">
+                    <h3>No apps</h3>
                 </div>
-                <div class="app-entry-wrapper col-md-4 col-sm-6 col-xs-6">
-                    <div class="app-entry">
-                        <div class="app-thumbnail">
-                        </div>
-                        <div class="app-info">
-                            <div class="app-title">EDI</div>
-                            <div class="app-provider">Total Soft Bank</div>
-                            <div class="app-date">2015.8.17</div>
-                            <div class="app-button" align="right">
-                                <a href="#" class="btn btn-primary outline">Use App</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-                <div class="app-entry-wrapper col-md-4 col-sm-6 col-xs-6">
-                    <div class="app-entry">
-                        <div class="app-thumbnail">
-                        </div>
-                        <div class="app-info">
-                            <div class="app-title">CASP</div>
-                            <div class="app-provider">Total Soft Bank</div>
-                            <div class="app-date">2015.8.17</div>
-                            <div class="app-button" align="right">
-                                <a href="#" class="btn btn-primary outline">Use App</a>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
+            </c:if>
         </div>
     </div>
 </div>

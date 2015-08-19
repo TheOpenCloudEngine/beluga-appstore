@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.IOException;
 import java.net.URLDecoder;
+import java.util.List;
 
 /**
  * Created by swsong on 2015. 8. 16..
@@ -29,6 +30,9 @@ public class MainController {
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private AppManageService appManageService;
 
     @RequestMapping(value = "/", method = RequestMethod.GET)
     public ModelAndView root() throws Exception {
@@ -46,7 +50,9 @@ public class MainController {
 
     @RequestMapping(value = "/store", method = RequestMethod.GET)
     public ModelAndView viewStore() {
+        List<App> appList = appManageService.getAllApps();
         ModelAndView mav = new ModelAndView();
+        mav.addObject("appList", appList);
         mav.setViewName("store");
         return mav;
     }
