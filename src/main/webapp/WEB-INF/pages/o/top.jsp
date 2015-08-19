@@ -33,10 +33,10 @@
         <div class="navbar-collapse collapse" id="navbar-main">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="/o/apps">Apps</a>
+                    <a href="/o/apps" class="<%="apps".equals(menuId) ? "current" : ""%>" >Apps</a>
                 </li>
                 <li>
-                    <a href="/o/manage">Manage</a>
+                    <a href="/o/manage" class="<%="manage".equals(menuId) ? "current" : ""%>" >Manage</a>
                 </li>
                 <li>
                     <a href="/index">Back to Portal</a>
@@ -52,7 +52,9 @@
                         <li><a href="/logout">Log Out</a></li>
                     </ul>
                 </li>
-                <li><a href="settings" class="btn btn-default"><i class="glyphicon glyphicon-cog"></i></a></li>
+                <c:if test="${sessionScope._user.type == 'A'}" >
+                <li><a href="/o/settings" class="btn btn-default"><i class="glyphicon glyphicon-cog"></i></a></li>
+                </c:if>
             </ul>
 
         </div>

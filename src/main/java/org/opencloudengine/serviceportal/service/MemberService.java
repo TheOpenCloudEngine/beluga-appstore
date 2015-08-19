@@ -7,6 +7,8 @@ import org.opencloudengine.serviceportal.db.mapper.UserMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Created by swsong on 2015. 8. 16..
  */
@@ -26,6 +28,10 @@ public class MemberService {
         return userMapper.select(userId);
     }
 
+    public List<User> getUsers(String orgId) {
+        return userMapper.selectInOrganization(orgId);
+    }
+
     public boolean isUserExistsWithPassword(User user) {
         return userMapper.selectWithPassword(user) != null;
     }
@@ -33,7 +39,6 @@ public class MemberService {
     public boolean isOrgExists(String orgId) {
         return orgMapper.select(orgId) != null;
     }
-
 
     public Organization getOrganization(String id) {
         return orgMapper.select(id);

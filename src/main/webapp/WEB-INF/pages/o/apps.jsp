@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
+<% String menuId = "apps"; %>
 <%@include file="top.jsp" %>
 
 <div class="container" id="content">
@@ -32,6 +33,11 @@
                         </div>
                     </c:forEach>
                 </c:if>
+                <c:if test="${empty appList}">
+                    <div class="well col-md-12 empty-apps">
+                        <h3>No apps</h3>
+                    </div>
+                </c:if>
             </div>
         </div>
         <div class="col-md-12">
@@ -55,6 +61,11 @@
                             </div>
                         </div>
                     </c:forEach>
+                </c:if>
+                <c:if test="${empty outerAppList}">
+                    <div class="well col-md-12 empty-apps">
+                        <h3>No apps</h3>
+                    </div>
                 </c:if>
             </div>
         </div>

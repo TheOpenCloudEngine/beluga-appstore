@@ -3,6 +3,8 @@ package org.opencloudengine.serviceportal.db.mapper;
 import org.apache.ibatis.annotations.Param;
 import org.opencloudengine.serviceportal.db.entity.User;
 
+import java.util.List;
+
 public interface UserMapper {
 
 	public User select(@Param("id") String id);
@@ -13,4 +15,5 @@ public interface UserMapper {
 
     public void truncate();
 
+    public List<User> selectInOrganization(String orgId);
 }

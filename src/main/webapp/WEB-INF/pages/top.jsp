@@ -33,7 +33,7 @@
         <div class="navbar-collapse collapse" id="navbar-main">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="/store">Store</a>
+                    <a href="/store" class="<%="store".equals(menuId) ? "current" : ""%>" >Store</a>
                 </li>
                 <li>
                     <a href="/o/index">My Organization</a>

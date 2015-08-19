@@ -12,6 +12,11 @@
   	    where id = #{id} and `password`=#{password} and orgId = #{orgId}
     </select>
 
+    <select id="selectInOrganization" parameterType="map" resultType="org.opencloudengine.serviceportal.db.entity.User">
+        select `id`, `orgId`, `type`, `joinDate` from user
+        where orgId = #{orgId}
+    </select>
+
     <insert id="insert" parameterType="org.opencloudengine.serviceportal.db.entity.User">
         INSERT INTO user(
             `id`, `password`, `orgId`, `type`

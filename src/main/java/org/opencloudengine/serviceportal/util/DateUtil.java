@@ -17,6 +17,9 @@ public class DateUtil {
     public static SimpleDateFormat getDateFormat() {
         return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
     }
+    public static SimpleDateFormat getShortDateFormat() {
+        return new SimpleDateFormat("yyyy.MM.dd");
+    }
 
     public static String convertDateString(String dateString) {
         if(dateString == null) {
@@ -56,5 +59,9 @@ public class DateUtil {
         } else {
             return "-";
         }
+    }
+
+    public static String getShortDateString(Date date) {
+        return getShortDateFormat().format(date);
     }
 }

@@ -1,11 +1,9 @@
 package org.opencloudengine.serviceportal.controller;
 
-import org.opencloudengine.serviceportal.db.entity.App;
-import org.opencloudengine.serviceportal.db.entity.ResourcePlan;
-import org.opencloudengine.serviceportal.db.entity.UploadFile;
-import org.opencloudengine.serviceportal.db.entity.User;
+import org.opencloudengine.serviceportal.db.entity.*;
 import org.opencloudengine.serviceportal.service.AppManageService;
 import org.opencloudengine.serviceportal.service.GarudaService;
+import org.opencloudengine.serviceportal.service.MemberService;
 import org.opencloudengine.serviceportal.util.DateUtil;
 import org.opencloudengine.serviceportal.util.JsonUtil;
 import org.opencloudengine.serviceportal.util.ParseUtil;
@@ -38,10 +36,13 @@ public class OrgController {
     private static final Logger logger = LoggerFactory.getLogger(OrgController.class);
 
     @Autowired
-    AppManageService appManageService;
+    private AppManageService appManageService;
 
     @Autowired
-    GarudaService garudaService;
+    private GarudaService garudaService;
+
+    @Autowired
+    private MemberService memberService;
 
     private User getUser(HttpSession session) {
         return (User) session.getAttribute(User.USER_KEY);
@@ -267,15 +268,35 @@ public class OrgController {
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
-    public ModelAndView profile() {
+    public ModelAndView profile(HttpSession session) {
+
+        User user = (User) session.getAttribute(User.USER_KEY);
+        Organization organization = memberService.getOrganization(user.getOrgId());
         ModelAndView mav = new ModelAndView();
+        mav.addObject("user", user);
+
+        if(user.getType().equals(User.ADMIN_TYPE)) {
+            mav.addObject("userType", "Administrator");
+        } else {
+            mav.addObject("userType", "User");
+        }
+        String joinDate = DateUtil.getShortDateString(user.getJoinDate());
+        mav.addObject("joinDate", joinDate);
+        mav.addObject("orgName", organization.getName());
         mav.setViewName("o/profile");
         return mav;
     }
 
     @RequestMapping(value = "/settings", method = RequestMethod.GET)
-    public ModelAndView settings() {
+    public ModelAndView settings(HttpSession session) {
+        User user = (User) session.getAttribute(User.USER_KEY);
+        Organization organization = memberService.getOrganization(user.getOrgId());
+        List<User> users = memberService.getUsers(organization.getId());
         ModelAndView mav = new ModelAndView();
+        String joinDate = DateUtil.getShortDateString(organization.getJoinDate());
+        mav.addObject("joinDate", joinDate);
+        mav.addObject("organization", organization);
+        mav.addObject("users", users);
         mav.setViewName("o/settings");
         return mav;
     }

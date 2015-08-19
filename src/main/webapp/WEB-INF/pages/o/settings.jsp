@@ -1,6 +1,8 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib prefix="fn" uri="http://java.sun.com/jsp/jstl/functions" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
+<% String menuId = "settings"; %>
 <%@include file="top.jsp" %>
 
 <script>
@@ -20,16 +22,18 @@
                 <%--<div class="pull-right">--%>
                     <%--<a href="#" class="btn btn-lg btn-primary outline">Edit</a>--%>
                 <%--</div>--%>
-                <h3>토탈소프트뱅크 (tsb)</h3>
-                <p>Member Since 2015.8.7</p>
-                <p><a href="javascript:showUsers()">5 Users</a></p>
+                <h3>${organization.name} (${organization.id})</h3>
+                <p>Member Since ${joinDate}</p>
+                <p>
+                    <a href="javascript:showUsers()">${fn:length(users)} Users</a>
+                </p>
             </div>
 
             <br>
 
             <div class="box" >
                 <div class="pull-right">
-                    <a href="#" class="btn btn-lg btn-danger outline">Delete Organization</a>
+                    <a href="#${organization.id}" class="btn btn-lg btn-danger outline">Delete Organization</a>
                 </div>
                 <h2>Delete Organization</h2>
                 <p>This will permanently delete all users, apps and organization information.</p>
@@ -52,20 +56,28 @@
                     <tr>
                     <th>#</th>
                     <th>ID</th>
+                    <th>Type</th>
                     <th>Join Time</th>
                     </tr>
                     </thead>
                     <tbody>
-                    <tr>
-                        <td>1</td>
-                        <td>user@tsb.co.kr</td>
-                        <td>2015-07-15 17:56:20</td>
-                    </tr>
-                    <tr>
-                        <td>2</td>
-                        <td>user2@tsb.co.kr</td>
-                        <td>2015-08-13 10:11:45</td>
-                    </tr>
+                    <c:if test="${not empty users}">
+                        <c:forEach var="user" items="${users}" varStatus="loop">
+                        <tr>
+                            <td>${loop.index + 1}</td>
+                            <td>${user.id}</td>
+                            <td>
+                                <c:if test="${user.type eq 'A'}">
+                                    Administrator
+                                </c:if>
+                                <c:if test="${user.type eq 'U'}">
+                                    User
+                                </c:if>
+                            </td>
+                            <td>${user.joinDate}</td>
+                        </tr>
+                        </c:forEach>
+                    </c:if>
                     </tbody>
                 </table>
             </div>

@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
+<% String menuId = "manage"; %>
 <%@include file="top.jsp" %>
 <div class="container" id="content">
     <div class="row">
@@ -41,7 +42,7 @@
             <br>
 
             <div class="pull-right">
-                <a href="appNew" class="btn btn-primary outline">New App</a></td>
+                <a href="apps/new" class="btn btn-primary outline">New App</a></td>
             </div>
             <h2>Providing Apps</h2>
             <c:if test="${not empty appList}">
@@ -74,6 +75,11 @@
                     </tbody>
                 </table>
             </c:if>
+            <c:if test="${empty appList}">
+                <div class="well col-md-12 empty-apps">
+                    <h3>No apps</h3>
+                </div>
+            </c:if>
             <br>
 
             <h2>Outer Apps</h2>
@@ -100,6 +106,11 @@
                         </c:forEach>
                     </tbody>
                 </table>
+            </c:if>
+            <c:if test="${empty outerAppList}">
+                <div class="well col-md-12 empty-apps">
+                    <h3>No apps</h3>
+                </div>
             </c:if>
         </div>
     </div>

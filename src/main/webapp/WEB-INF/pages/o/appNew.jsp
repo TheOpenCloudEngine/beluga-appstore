@@ -1,6 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
+<% String menuId = "apps"; %>
 <%@include file="top.jsp" %>
 
 <script>
@@ -43,11 +44,11 @@ $(function(){
                 <h1 id="tables">Create New App</h1>
             </div>
 
-            <div class="row col-md-12">
-                <a href="manage" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
-                &nbsp;<a href="appInfo" class="btn btn-primary outline">Save all changes</a>
-            </div>
-            <form action="appNew" method="POST">
+            <form action="/o/apps" method="POST">
+                <div class="row col-md-12">
+                    <a href="/o/manage" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
+                    &nbsp;<button type="submit" class="btn btn-primary outline">Save all changes</button>
+                </div>
                 <div class="row col-md-12">
                     <input type="hidden" name="" value="" />
                     <h4 class="bottom-line">General Information</h4>
