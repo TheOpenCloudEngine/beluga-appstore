@@ -9,6 +9,8 @@ public class AppApplyRequest {
     private String id;
     private String cmd;
     private Integer port;
+    private String file;
+    private String type;
     private Float cpus;
     private Integer memory;
     private Integer scale;
@@ -18,6 +20,8 @@ public class AppApplyRequest {
     public AppApplyRequest(App app) {
         this.id = app.getId();
         this.port = app.getEnvironment().startsWith("java") ? 8080 : 80; //WAS 면 8080을 연다.
+        this.file = app.getAppFilePath();
+        this.type = app.getEnvironment();
         this.cpus = app.getCpus();
         this.memory = app.getMemory();
         this.scale = app.getScale();
@@ -45,6 +49,22 @@ public class AppApplyRequest {
 
     public void setPort(Integer port) {
         this.port = port;
+    }
+
+    public String getFile() {
+        return file;
+    }
+
+    public void setFile(String file) {
+        this.file = file;
+    }
+
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
     }
 
     public Float getCpus() {

@@ -73,7 +73,7 @@ public class RestController {
     }
 
     @RequestMapping(value = "/api/apps/{appId}/apply", method = RequestMethod.POST)
-    public void appApply(@PathVariable String appId, HttpServletResponse response) throws IOException {
+    public void appApply(@PathVariable String appId, HttpServletResponse response) throws Exception {
 
         App app = appManageService.getApp(appId);
 
@@ -81,6 +81,8 @@ public class RestController {
             if(garudaService.applyApp(clusterId, app)){
                 response.setStatus(200);
                 return;
+            } else {
+                response.sendError(500, "error : " + appId);
             }
         } else {
             response.sendError(404, "no such app : " + appId);

@@ -57,7 +57,7 @@
     <form class="vertical-form" id="login-form" action="/login" accept-charset="UTF-8" method="post">
         <legend>Log In</legend>
         <input type="hidden" name="redirect" value="<%=redirect %>" />
-        <input placeholder="Organization ID" type="text" class="required" name="orgId" id="orgId" value="fastcat"/>
+        <input placeholder="Organization ID" type="text" class="required" name="orgId" id="orgId" value=""/>
         <input placeholder="Email Address" type="text" class="required email" name="userId" id="userId" />
         <input placeholder="Password" autocomplete="off" type="password" class="required" minlength="4" name="password" id="password" />
         <input type="submit" class="btn btn-success" name="commit" value="Log In" />

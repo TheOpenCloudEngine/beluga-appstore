@@ -37,7 +37,7 @@ public class GarudaService {
 
     private static final String PROTOCOL = "http://";
 
-    @Value("#{systemProperties['garauda.endpoint']}")
+    @Value("#{systemProperties['garuda.endpoint']}")
     private String garudaEndPoint;
 
     private String domainName;
@@ -66,7 +66,7 @@ public class GarudaService {
         return resources;
     }
 
-    public boolean applyApp(String clusterId, App app) throws IOException {
+    public boolean applyApp(String clusterId, App app) throws Exception {
         // garuda master 에 전송. marathon으로 실행.
         String appId = app.getId();
         String uri = String.format("/v1/clusters/%s/apps", clusterId);
@@ -75,13 +75,15 @@ public class GarudaService {
 
         AppApplyRequest request = new AppApplyRequest(app);
         Response response = webTarget.request(MediaType.APPLICATION_JSON).post(Entity.json(request));
-        if (response.getStatus() == 200) {
+        if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
             String str = response.readEntity(String.class);
             Map<String, Object> entity = JsonUtil.json2Object(str);
             logger.debug("Apply response : {}", entity);
             return true;
+        } else {
+            String entity = response.readEntity(String.class);
+            throw new Exception(entity);
         }
-        return false;
     }
 
     public boolean destoryApp(String clusterId, String appId) throws IOException {
