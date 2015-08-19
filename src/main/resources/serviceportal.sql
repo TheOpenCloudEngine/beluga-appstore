@@ -1,22 +1,5 @@
 CREATE DATABASE `serviceportal` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
 
-CREATE TABLE `organization` (
-  `id` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  PRIMARY KEY (`id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `user` (
-  `id` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `orgId` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `password` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
-  `type` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'U',
-  `joinDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
-  KEY `fk_org_id_idx` (`orgId`),
-  CONSTRAINT `fk_org_id` FOREIGN KEY (`orgId`) REFERENCES `organization` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
 CREATE TABLE `apps` (
   `id` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `orgId` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
@@ -32,8 +15,8 @@ CREATE TABLE `apps` (
   `memory` int(11) NOT NULL,
   `scale` int(11) NOT NULL,
   `resources` mediumtext COLLATE utf8_unicode_ci,
-  `autoScaleOutUse` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
-  `autoScaleInUse` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
+  `autoScaleOutUse` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
+  `autoScaleInUse` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
   `autoScaleOutConf` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
   `autoScaleInConf` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
   `applied` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
@@ -50,4 +33,22 @@ CREATE TABLE `apps_grant` (
   KEY `fk_grant_org_id_idx` (`orgId`),
   CONSTRAINT `fk_grant_app_id` FOREIGN KEY (`appId`) REFERENCES `apps` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_grant_org_id` FOREIGN KEY (`orgId`) REFERENCES `organization` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `organization` (
+  `id` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `joinDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
+CREATE TABLE `user` (
+  `id` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `orgId` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `password` varchar(256) COLLATE utf8_unicode_ci NOT NULL,
+  `type` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'U',
+  `joinDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`),
+  KEY `fk_org_id_idx` (`orgId`),
+  CONSTRAINT `fk_org_id` FOREIGN KEY (`orgId`) REFERENCES `organization` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
