@@ -49,7 +49,7 @@ public class App {
 
     /* Apply state */
     private char applied;
-    private String appliedDate;
+    private String applyDate;
 
 
     public String getId() {
@@ -281,12 +281,12 @@ public class App {
         this.applied = applied;
     }
 
-    public String getAppliedDate() {
-        return appliedDate;
+    public String getApplyDate() {
+        return applyDate;
     }
 
-    public void setAppliedDate(String appliedDate) {
-        this.appliedDate = appliedDate;
+    public void setApplyDate(String applyDate) {
+        this.applyDate = applyDate;
     }
 
     public static class ResourcesPlan {

@@ -66,7 +66,7 @@
                                 <td>${app.cpus}</td>
                                 <td>${app.memory}MB</td>
                                 <td>${app.scale}</td>
-                                <td>${app.appliedDate}</td>
+                                <td>${app.applyDate}</td>
                                 <td><span class="glyphicon glyphicon-ok-sign running-status"></span></td>
                                 <td><a href="appEdit" class="btn btn-primary outline">Edit</a></td>
                             </tr>

@@ -23,7 +23,7 @@
                                 <div class="app-info">
                                     <div class="app-title">${app.name}</div>
                                     <div class="app-provider">${app.orgName}</div>
-                                    <div class="app-date">${app.appliedDate}&nbsp;</div>
+                                    <div class="app-date">${app.applyDate}&nbsp;</div>
                                     <div class="app-button" align="right">
                                         <a href="#${app.id}" class="btn btn-primary outline">Launch App</a>
                                     </div>
@@ -47,7 +47,7 @@
                                 <div class="app-info">
                                     <div class="app-title">${app.name}</div>
                                     <div class="app-provider">${app.orgName}</div>
-                                    <div class="app-date">${app.appliedDate}&nbsp;</div>
+                                    <div class="app-date">${app.applyDate}&nbsp;</div>
                                     <div class="app-button" align="right">
                                         <a href="#${app.id}" class="btn btn-primary outline">Launch App</a>
                                     </div>

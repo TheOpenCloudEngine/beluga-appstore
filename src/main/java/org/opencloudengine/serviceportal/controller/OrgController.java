@@ -105,7 +105,7 @@ public class OrgController {
         }
         // applied date "yyyy-MM-dd hh:mm:ss" => "yyyy.MM.dd"
         for(App app : appList) {
-            app.setAppliedDate(DateUtil.convertDateString(app.getAppliedDate()));
+            app.setApplyDate(DateUtil.convertDateString(app.getApplyDate()));
         }
     }
 
@@ -129,7 +129,7 @@ public class OrgController {
         if(app == null) {
             throw new NotFoundException();
         }
-        String elapsed = DateUtil.getElapsedTime(app.getAppliedDate());
+        String elapsed = DateUtil.getElapsedTime(app.getApplyDate());
         ModelAndView mav = new ModelAndView();
         mav.addObject("elapsed", elapsed);
         mav.addObject("app", app);
