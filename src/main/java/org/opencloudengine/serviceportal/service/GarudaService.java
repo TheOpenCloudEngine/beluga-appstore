@@ -40,8 +40,7 @@ public class GarudaService {
     @Value("#{systemProperties['garauda.endpoint']}")
     private String garudaEndPoint;
 
-    @Autowired
-    private AppMapper appMapper;
+    private String domainName;
 
     private WebTarget getWebTarget(String path) {
         Client client = ClientBuilder.newClient();
@@ -50,6 +49,13 @@ public class GarudaService {
 
     public String getEndPoint() {
         return garudaEndPoint;
+    }
+
+    public String getDomainName() {
+        if(domainName == null) {
+            domainName = getWebTarget("/v1/domain").request().get(String.class);
+        }
+        return domainName;
     }
 
     public Resources getResources() {

@@ -35,11 +35,16 @@ import java.util.Map;
 public class OrgController {
     private static final Logger logger = LoggerFactory.getLogger(OrgController.class);
 
+    private static final String clusterId = "test-cluster";
+
     @Autowired
     private AppManageService appManageService;
 
     @Autowired
     private MemberService memberService;
+
+    @Autowired
+    private GarudaService garudaService;
 
     private User getUser(HttpSession session) {
         return (User) session.getAttribute(User.USER_KEY);
@@ -60,6 +65,7 @@ public class OrgController {
         makeUserFriendlyApp(appList);
         makeUserFriendlyApp(outerAppList);
         ModelAndView mav = new ModelAndView();
+        mav.addObject("domain", garudaService.getDomainName());
         mav.addObject("appList", appList);
         mav.addObject("outerAppList", outerAppList);
         mav.setViewName("o/apps");
@@ -94,6 +100,7 @@ public class OrgController {
         mav.addObject("totalMemory", totalMemoryString);
         mav.addObject("appList", appList);
         mav.addObject("outerAppList", outerAppList);
+        mav.addObject("domain", garudaService.getDomainName());
         mav.setViewName("o/manage");
         return mav;
     }
@@ -114,6 +121,7 @@ public class OrgController {
             throw new NotFoundException();
         }
         ModelAndView mav = new ModelAndView();
+        mav.addObject("domain", garudaService.getDomainName());
         mav.addObject("app", app);
         app.setAppFileLengthDisplay(ParseUtil.toHumanSize(app.getAppFileLength()));
         mav.setViewName("o/appEdit");
@@ -141,9 +149,10 @@ public class OrgController {
         String elapsed = DateUtil.getElapsedTime(app.getApplyDate());
         ModelAndView mav = new ModelAndView();
         mav.addObject("elapsed", elapsed);
-        mav.addObject("app", app);
         app.setAppFileLengthDisplay(ParseUtil.toHumanSize(app.getAppFileLength()));
         app.setMemoryDisplay(ParseUtil.toHumanSizeOverMB(app.getMemory() * SizeUnit.MB));
+        mav.addObject("app", app);
+        mav.addObject("domain", garudaService.getDomainName());
         mav.setViewName("o/appInfo");
         return mav;
     }
@@ -152,6 +161,7 @@ public class OrgController {
     public ModelAndView appNew() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("o/appNew");
+        mav.addObject("domain", garudaService.getDomainName());
         return mav;
     }
 

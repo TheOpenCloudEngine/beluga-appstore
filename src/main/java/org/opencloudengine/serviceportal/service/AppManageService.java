@@ -58,6 +58,10 @@ public class AppManageService {
         return appMapper.getGrant(orgId, appId) > 0;
     }
 
+    public void deleteApp(String appId) {
+        appMapper.delete(appId);
+    }
+
     public Resources getUsingResources(String appId, Resources allResources) {
         Resources usingResources = allResources;
         App app = getApp(appId);

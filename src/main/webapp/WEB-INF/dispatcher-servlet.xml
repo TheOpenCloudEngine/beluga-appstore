@@ -17,7 +17,7 @@
     <mvc:interceptors>
         <mvc:interceptor>
             <mvc:mapping path="/*"/>
-            <mvc:mapping path="/o/*"/>
+            <mvc:mapping path="/o/**/*"/>
             <mvc:exclude-mapping path="/login"/>
             <mvc:exclude-mapping path="/logout"/>
             <mvc:exclude-mapping path="/signUp"/>

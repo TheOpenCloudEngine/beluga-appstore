@@ -88,13 +88,15 @@ public class RestController {
     }
 
     @RequestMapping(value = "/api/apps/{appId}", method = RequestMethod.DELETE)
-    public void deleteApply(@PathVariable String appId, HttpServletResponse response) throws IOException {
-
+    public void deleteApp(@PathVariable String appId, HttpServletResponse response) throws IOException {
+        ModelAndView mav = new ModelAndView();
         if(garudaService.destoryApp(clusterId, appId)) {
+            appManageService.deleteApp(appId);
             response.setStatus(200);
             return;
+        } else {
+            response.sendError(500, "no such app : " + appId);
         }
-        response.sendError(500, "cannot delete app : " + appId);
     }
 
     @RequestMapping(value = "/api/user/{userId:.+}", method = RequestMethod.HEAD)

@@ -74,10 +74,13 @@
                 <div><h4 class="bottom-line">General Information</h4></div>
                 <div class="col-md-12 form-horizontal compact">
                     <div class="form-group">
+                        <label class="col-md-3 col-sm-3 control-label">Domain:</label>
+                        <div class="col-md-9 col-sm-9"><p class="form-control-static">${app.id}.${domain}</p></div>
+                    </div>
+                    <div class="form-group">
                         <label class="col-md-3 col-sm-3 control-label">Name:</label>
                         <div class="col-md-9 col-sm-9"><p class="form-control-static">${app.name}</p></div>
                     </div>
-
                     <div class="form-group">
                         <label class="col-md-3 col-sm-3 control-label">Description :</label>
                         <div class="col-md-9 col-sm-9"><p class="form-control-static">${app.description}</p></div>

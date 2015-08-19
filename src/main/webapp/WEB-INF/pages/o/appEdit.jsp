@@ -4,11 +4,50 @@
 <% String menuId = "manage"; %>
 <%@include file="top.jsp" %>
 <script>
+$(function() {
+    $("#appFile").on("change", function (event) {
+        var formData = new FormData();
+        formData.append("file", $(event.delegateTarget)[0].files[0]);
+//        console.log("target = ", $( event.delegateTarget )[0].files[0]);
+        $.ajax({
+            url: '/api/apps/upload',
+            processData: false,
+            contentType: false,
+            data: formData,
+            type: 'POST',
+            dataType: 'json',
+            success: function (result) {
+                console.log(result.name, result.length, result.date);
+                $("#fileInfo").text(result.name + " (" + toHumanSize(result.length) + ")");
+                $("#fileDate").text(result.date);
+                $("input[name=fileName]").val(result.name);
+                $("input[name=filePath]").val(result.path);
+                $("input[name=fileLength]").val(result.length);
+                $("input[name=fileDate]").val(result.date);
+            },
+            error: function (xhr, status, e) {
+                console.log("upload error = ", e);
+                alert("File upload failed :" + e);
+            }
+        });
+    });
 
-    function deleteApp(appId) {
+    $("#app-edit-form").validate();
 
+    $("#deleteAppButton").on("click", function(){
+        $.ajax({
+            url: "/api/apps/${app.id}",
+            type: "DELETE",
+            success: function() {
+                location.href = "/o/manage";
+            },
+            error: function(xhr, status, e) {
+                alert("cannot delete app : " + e);
+            }
+        })
+    });
+});
 
-    }
 
 </script>
 <div class="container" id="content">
@@ -19,23 +58,26 @@
                 <h1 id="tables">EDI</h1>
             </div>
 
-            <div class="row col-md-12">
-                <a href="/o/manage" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
-                &nbsp;<a href="appInfo" class="btn btn-primary outline">Save all changes</a>
-            </div>
-            <form>
+            <form id="app-edit-form" action="/o/apps/${app.id}/edit" method="POST">
+                <div class="row col-md-12">
+                    <a href="/o/manage" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
+                    &nbsp;<a href="appInfo" class="btn btn-primary outline">Save all changes</a>
+                </div>
                 <div class="row col-md-12">
                     <input type="hidden" name="" value="" />
                     <h4 class="bottom-line">General Information</h4>
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Name:</label>
-                            <div class="col-md-9 col-sm-9"><input type="text" class="form-control" value="EDI" /></div>
+                            <label class="col-md-3 col-sm-3 control-label">Domain:</label>
+                            <div class="col-md-9 col-sm-9"><p class="form-control-static">${app.id}.${domain}</p></div>
                         </div>
-
+                        <div class="form-group">
+                            <label class="col-md-3 col-sm-3 control-label">Name:</label>
+                            <div class="col-md-9 col-sm-9"><input type="text" name="name" class="form-control required" minlength="3" value="${app.name}" /></div>
+                        </div>
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Description :</label>
-                            <div class="col-md-9 col-sm-9"><textarea class="form-control" rows="3"></textarea></div>
+                            <div class="col-md-9 col-sm-9"><textarea name="description" class="form-control" rows="3">${app.description}</textarea></div>
                         </div>
                     </div>
                 </div>
@@ -46,14 +88,29 @@
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">App file:</label>
                             <div class="col-md-9 col-sm-9">
-                                <p class="form-control-static">edi.war (1.2 MB) <br><i class="file-date">2015-07-08 14:11:35</i></p>
-                                <input type="file" name="appFile" />
+                                <p class="form-control-static"><span id="fileInfo">${app.appFile} ( ${app.appFileLengthDisplay} )</span>
+                                    <br><span class="file-date" id="fileDate">${app.appFileDate}</span></p>
+                                <input type="file" id="appFile" class="form-control-static"/>
+                                <input type="hidden" name="fileName"/>
+                                <input type="hidden" name="filePath"/>
+                                <input type="hidden" name="fileLength"/>
+                                <input type="hidden" name="fileDate"/>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-sm-3 control-label">Environment:</label>
+                            <div class="col-md-9 col-sm-9">
+                                <select name="environment" class="form-control required">
+                                    <option value="">:: Select ::</option>
+                                    <option value="java7-wildfly8.2">java7-wildfly8.2</option>
+                                    <option value="php5-apache2">php5-apache2</option>
+                                </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">CPUs:</label>
                             <div class="col-md-9 col-sm-9">
-                                <select  name="cpus" class="form-control col-100">
+                                <select  name="cpus" class="form-control col-100 required">
                                     <option value="0.1">0.1</option>
                                     <option value="0.2">0.2</option>
                                     <option value="0.3">0.3</option>
@@ -70,10 +127,7 @@
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Memory:</label>
                             <div class="col-md-9 col-sm-9">
-                                <select name="memory" class="form-control col-100">
-                                    <option value="50">50MB</option>
-                                    <option value="100">100MB</option>
-                                    <option value="200">200MB</option>
+                                <select name="memory" class="form-control col-100 required">
                                     <option value="300">300MB</option>
                                     <option value="400">400MB</option>
                                     <option value="500">500MB</option>
@@ -88,7 +142,7 @@
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Scale:</label>
                             <div class="col-md-9 col-sm-9">
-                                <select  name="scale"class="form-control col-100">
+                                <select name="scale"class="form-control col-100 required">
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -268,28 +322,46 @@
                         </div>
                     </div>
                 </div>
-            </form>
-
-            <div class="row col-md-12">
-                <hr>
-                <div>
-                    <a href="appInfo" class="btn btn-primary outline">Save all changes</a>
+                <div class="row col-md-12">
+                    <hr>
+                    <div>
+                        <button type="submit" class="btn btn-primary outline">Save all changes</button>
+                    </div>
                 </div>
-            </div>
+            </form>
 
             <div class="row col-md-12">
                 <br>
                 <br>
                 <div class="box" >
                     <div class="pull-right">
-                        <a href="javascript:deleteApp('')" class="btn btn-lg btn-danger outline"><i class="glyphicon glyphicon-trash"></i> Delete App</a>
+                        <button type="button" class="btn btn-lg btn-danger outline" data-toggle="modal" data-target="#deleteModal"><i class="glyphicon glyphicon-trash"></i> Delete App</button>
                     </div>
                     <h2>Delete App</h2>
-                    <p>This will termination running app and permanently delete all app information.</p>
+                    <p>This will terminate running app and permanently delete all app information.</p>
                 </div>
             </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Are you sure?</h4>
+            </div>
+            <div class="modal-body">
+                <p>This will terminate running app and permanently delete all app information.</p>
+                <p><strong class="text-danger">Delete app "${app.id}".</strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" id="deleteAppButton">Yes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <%@include file="bottom.jsp" %>

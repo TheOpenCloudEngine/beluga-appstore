@@ -44,7 +44,7 @@ $(function(){
         rules: {
             appId: {
                 idExists: true,
-                lowercasesymbols : true,
+                lowercase : true,
                 onkeyup: false
             }
         }
@@ -66,7 +66,7 @@ $(function(){
         return ret;
     }, "This app id already exists.");
 
-    $.validator.addMethod('lowercasesymbols', function(value) {
+    $.validator.addMethod("lowercase", function(value) {
         return value.match(/^[^A-Z0-9]+$/);
     }, 'You must use only lowercase letters and symbols in app id');
 })
@@ -90,7 +90,7 @@ $(function(){
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">ID:</label>
-                            <div class="col-md-9 col-sm-9"><input type="text" name="id" id="appId" class="form-control col-150 required"  minlength="3"/></div>
+                            <div class="col-md-9 col-sm-9"><input type="text" name="id" id="appId" class="form-control col-150 required" minlength="3"/>.${domain}</div>
                         </div>
 
                         <div class="form-group">
@@ -111,8 +111,9 @@ $(function(){
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">App file:</label>
                             <div class="col-md-9 col-sm-9">
-                                <p class="form-control-static"><span id="fileInfo"></span><br><span class="file-date" id="fileDate"></span></p>
-                                <input type="file" id="appFile" class="form-control-static"/>
+                                <p class="form-control-static"><span id="fileInfo"></span>
+                                    <br><span class="file-date" id="fileDate"></span></p>
+                                <input type="file" id="appFile" class="form-control-static required"/>
                                 <input type="hidden" name="fileName"/>
                                 <input type="hidden" name="filePath"/>
                                 <input type="hidden" name="fileLength"/>
@@ -123,7 +124,7 @@ $(function(){
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Environment:</label>
                             <div class="col-md-9 col-sm-9">
-                                <select  name="environment" class="form-control">
+                                <select name="environment" class="form-control required">
                                     <option value="">:: Select ::</option>
                                     <option value="java7-wildfly8.2">java7-wildfly8.2</option>
                                     <option value="php5-apache2">php5-apache2</option>
@@ -133,7 +134,7 @@ $(function(){
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">CPUs:</label>
                             <div class="col-md-9 col-sm-9">
-                                <select  name="cpus" class="form-control col-100">
+                                <select  name="cpus" class="form-control col-100 required">
                                     <option value="0.1">0.1</option>
                                     <option value="0.2">0.2</option>
                                     <option value="0.3">0.3</option>
@@ -150,7 +151,7 @@ $(function(){
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Memory:</label>
                             <div class="col-md-9 col-sm-9">
-                                <select name="memory" class="form-control col-100">
+                                <select name="memory" class="form-control col-100 required">
                                     <%--<option value="50">50MB</option>--%>
                                     <%--<option value="100">100MB</option>--%>
                                     <%--<option value="200">200MB</option>--%>
@@ -168,7 +169,7 @@ $(function(){
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Scale:</label>
                             <div class="col-md-9 col-sm-9">
-                                <select  name="scale"class="form-control col-100">
+                                <select name="scale"class="form-control col-100 required">
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
