@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
-<% String menuId = "apps"; %>
+<% String menuId = "manage"; %>
 <%@include file="top.jsp" %>
 
 <script>
@@ -12,7 +12,7 @@ $(function(){
         formData.append("file", $( event.delegateTarget )[0].files[0]);
 //        console.log("target = ", $( event.delegateTarget )[0].files[0]);
         $.ajax({
-            url: 'uploadAppFile',
+            url: '/api/apps/upload',
             processData: false,
             contentType: false,
             data: formData,
@@ -33,6 +33,42 @@ $(function(){
             }
         });
     });
+
+    $("#app-new-form").validate({
+        onkeyup: function(element) {
+            var element_id = $(element).attr('id');
+            if (this.settings.rules[element_id] && this.settings.rules[element_id].onkeyup != false) {
+                $.validator.defaults.onkeyup.apply(this, arguments);
+            }
+        },
+        rules: {
+            appId: {
+                idExists: true,
+                lowercasesymbols : true,
+                onkeyup: false
+            }
+        }
+    });
+
+    $.validator.addMethod("idExists", function(value, element) {
+        var ret = true;
+        $.ajax({
+            url : "/api/apps/" + value,
+            async: false,
+            type : "HEAD",
+            success : function(response) {
+                ret = false;
+            },
+            error : function() {
+                ret = true;
+            }
+        });
+        return ret;
+    }, "This app id already exists.");
+
+    $.validator.addMethod('lowercasesymbols', function(value) {
+        return value.match(/^[^A-Z0-9]+$/);
+    }, 'You must use only lowercase letters and symbols in app id');
 })
 
 </script>
@@ -44,23 +80,22 @@ $(function(){
                 <h1 id="tables">Create New App</h1>
             </div>
 
-            <form action="/o/apps" method="POST">
+            <form id="app-new-form" action="/o/apps" method="POST">
                 <div class="row col-md-12">
                     <a href="/o/manage" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
                     &nbsp;<button type="submit" class="btn btn-primary outline">Save all changes</button>
                 </div>
                 <div class="row col-md-12">
-                    <input type="hidden" name="" value="" />
                     <h4 class="bottom-line">General Information</h4>
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">ID:</label>
-                            <div class="col-md-9 col-sm-9"><input type="text" name="id" class="form-control col-150" /></div>
+                            <div class="col-md-9 col-sm-9"><input type="text" name="id" id="appId" class="form-control col-150 required"  minlength="3"/></div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Name:</label>
-                            <div class="col-md-9 col-sm-9"><input type="text" name="name" class="form-control" /></div>
+                            <div class="col-md-9 col-sm-9"><input type="text" name="name" id="appName" class="form-control required" minlength="3"/></div>
                         </div>
 
                         <div class="form-group">
@@ -116,9 +151,9 @@ $(function(){
                             <label class="col-md-3 col-sm-3 control-label">Memory:</label>
                             <div class="col-md-9 col-sm-9">
                                 <select name="memory" class="form-control col-100">
-                                    <option value="50">50MB</option>
-                                    <option value="100">100MB</option>
-                                    <option value="200">200MB</option>
+                                    <%--<option value="50">50MB</option>--%>
+                                    <%--<option value="100">100MB</option>--%>
+                                    <%--<option value="200">200MB</option>--%>
                                     <option value="300">300MB</option>
                                     <option value="400">400MB</option>
                                     <option value="500">500MB</option>

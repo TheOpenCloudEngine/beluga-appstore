@@ -1,9 +1,16 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
-<% String menuId = "apps"; %>
+<% String menuId = "manage"; %>
 <%@include file="top.jsp" %>
+<script>
 
+    function deleteApp(appId) {
+
+
+    }
+
+</script>
 <div class="container" id="content">
     <div class="row">
         <div class="col-md-12">
@@ -13,7 +20,7 @@
             </div>
 
             <div class="row col-md-12">
-                <a href="manage" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
+                <a href="/o/manage" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
                 &nbsp;<a href="appInfo" class="btn btn-primary outline">Save all changes</a>
             </div>
             <form>
@@ -275,7 +282,7 @@
                 <br>
                 <div class="box" >
                     <div class="pull-right">
-                        <a href="#" class="btn btn-lg btn-danger outline"><i class="glyphicon glyphicon-trash"></i> Delete App</a>
+                        <a href="javascript:deleteApp('')" class="btn btn-lg btn-danger outline"><i class="glyphicon glyphicon-trash"></i> Delete App</a>
                     </div>
                     <h2>Delete App</h2>
                     <p>This will termination running app and permanently delete all app information.</p>

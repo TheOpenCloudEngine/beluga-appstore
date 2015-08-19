@@ -1,25 +1,22 @@
 package org.opencloudengine.serviceportal.controller;
 
-import org.opencloudengine.serviceportal.db.entity.App;
-import org.opencloudengine.serviceportal.db.entity.Organization;
-import org.opencloudengine.serviceportal.db.entity.Resources;
-import org.opencloudengine.serviceportal.db.entity.User;
+import org.opencloudengine.serviceportal.db.entity.*;
 import org.opencloudengine.serviceportal.service.AppManageService;
 import org.opencloudengine.serviceportal.service.GarudaService;
 import org.opencloudengine.serviceportal.service.MemberService;
+import org.opencloudengine.serviceportal.util.DateUtil;
 import org.opencloudengine.serviceportal.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.*;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import java.io.File;
 import java.io.IOException;
 
 /**
@@ -29,6 +26,8 @@ import java.io.IOException;
 @Controller
 public class RestController {
     private static final Logger logger = LoggerFactory.getLogger(RestController.class);
+
+    private static final String clusterId = "test-cluster";
 
     @Autowired
     private MemberService memberService;
@@ -49,17 +48,53 @@ public class RestController {
         }
     }
 
-    @RequestMapping(value = "/api/apps/{appId}/apply", method = RequestMethod.POST)
-    public void appApply(@PathVariable String appId, HttpServletResponse response) {
+    @RequestMapping(value = "/api/apps/upload", method = RequestMethod.POST)
+    public void uploadAppFile(@RequestParam("file") MultipartFile file, HttpServletResponse response, HttpSession session) throws IOException {
+        User user = (User) session.getAttribute(User.USER_KEY);
+        String orgId = user.getOrgId();
+        File appFile = appManageService.saveMultipartFile(file, orgId);
 
-
-
-        String app = "";
-        if(app != null) {
-            response.setStatus(200);
+        if(appFile != null) {
+            // garuda에 올린다.
+            String filePath = garudaService.uploadAppFile(clusterId, orgId, appFile);
+            if(filePath != null) {
+                long length = appFile.length();
+                String fileName = appFile.getName();
+                UploadFile uploadFile = new UploadFile(fileName, filePath, length, DateUtil.getNow());
+                response.setCharacterEncoding("utf-8");
+                response.getWriter().print(JsonUtil.object2String(uploadFile));
+                return;
+            } else {
+                response.sendError(500, "Cannot upload file to remote garuda server.");
+            }
         } else {
-            response.setStatus(404, "no such app : " + appId);
+            response.sendError(500, "File is empty");
         }
+    }
+
+    @RequestMapping(value = "/api/apps/{appId}/apply", method = RequestMethod.POST)
+    public void appApply(@PathVariable String appId, HttpServletResponse response) throws IOException {
+
+        App app = appManageService.getApp(appId);
+
+        if(app != null) {
+            if(garudaService.applyApp(clusterId, app)){
+                response.setStatus(200);
+                return;
+            }
+        } else {
+            response.sendError(404, "no such app : " + appId);
+        }
+    }
+
+    @RequestMapping(value = "/api/apps/{appId}", method = RequestMethod.DELETE)
+    public void deleteApply(@PathVariable String appId, HttpServletResponse response) throws IOException {
+
+        if(garudaService.destoryApp(clusterId, appId)) {
+            response.setStatus(200);
+            return;
+        }
+        response.sendError(500, "cannot delete app : " + appId);
     }
 
     @RequestMapping(value = "/api/user/{userId:.+}", method = RequestMethod.HEAD)

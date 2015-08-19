@@ -26,7 +26,7 @@
                                     <div class="app-provider">${app.orgName}</div>
                                     <div class="app-date">${app.applyDate}&nbsp;</div>
                                     <div class="app-button" align="right">
-                                        <a href="#${app.id}" class="btn btn-primary outline">Launch App</a>
+                                        <a href="http://${app.id}.fastcatsearch.com" target="_pop_${app.id}" class="btn btn-primary outline">Launch App</a>
                                     </div>
                                 </div>
                             </div>

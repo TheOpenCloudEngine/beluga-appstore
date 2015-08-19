@@ -39,9 +39,6 @@ public class OrgController {
     private AppManageService appManageService;
 
     @Autowired
-    private GarudaService garudaService;
-
-    @Autowired
     private MemberService memberService;
 
     private User getUser(HttpSession session) {
@@ -111,16 +108,27 @@ public class OrgController {
     }
 
     @RequestMapping(value = "/apps/{appId}/edit", method = RequestMethod.GET)
-    public ModelAndView appEdit() {
+    public ModelAndView appEdit(@PathVariable String appId) {
+        App app = appManageService.getApp(appId);
+        if(app == null) {
+            throw new NotFoundException();
+        }
         ModelAndView mav = new ModelAndView();
+        mav.addObject("app", app);
+        app.setAppFileLengthDisplay(ParseUtil.toHumanSize(app.getAppFileLength()));
         mav.setViewName("o/appEdit");
         return mav;
     }
 
     @RequestMapping(value = "/apps/{appId}/edit", method = RequestMethod.POST)
-    public ModelAndView appEditUpdate() {
+    public ModelAndView appEditUpdate(@PathVariable String appId) {
+
+
+        //TODO db에 업데이트.
+
+
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("redirect:appInfo");
+        mav.setViewName("redirect:/o/apps/" + appId);
         return mav;
     }
 
@@ -238,33 +246,8 @@ public class OrgController {
         appManageService.createApp(app);
 
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("redirect:appInfo");
+        mav.setViewName("redirect:/o/apps/" + id);
         return mav;
-    }
-
-    @RequestMapping(value = "/uploadAppFile", method = RequestMethod.POST)
-    public void uploadAppFile(@RequestParam("file") MultipartFile file, HttpServletResponse response, HttpSession session) throws IOException {
-        User user = (User) session.getAttribute(User.USER_KEY);
-        String orgId = user.getOrgId();
-        File appFile = appManageService.saveMultipartFile(file, orgId);
-
-        if(appFile != null) {
-            String clusterId = "dev";
-            // garuda에 올린다.
-            String filePath = garudaService.uploadAppFile(clusterId, orgId, appFile);
-            if(filePath != null) {
-                long length = appFile.length();
-                String fileName = appFile.getName();
-                UploadFile uploadFile = new UploadFile(fileName, filePath, length, DateUtil.getNow());
-                response.setCharacterEncoding("utf-8");
-                response.getWriter().print(JsonUtil.object2String(uploadFile));
-                return;
-            } else {
-                response.sendError(500, "Cannot upload file to remote garuda server.");
-            }
-        } else {
-            response.sendError(500, "File is empty");
-        }
     }
 
     @RequestMapping(value = "/profile", method = RequestMethod.GET)

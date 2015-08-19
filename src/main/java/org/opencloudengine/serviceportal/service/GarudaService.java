@@ -7,6 +7,7 @@ import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 import org.opencloudengine.serviceportal.db.entity.App;
 import org.opencloudengine.serviceportal.db.entity.Resources;
 import org.opencloudengine.serviceportal.db.mapper.AppMapper;
+import org.opencloudengine.serviceportal.entity.AppApplyRequest;
 import org.opencloudengine.serviceportal.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -22,6 +23,7 @@ import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
+import java.io.IOException;
 import java.util.Map;
 
 /**
@@ -58,15 +60,30 @@ public class GarudaService {
         return resources;
     }
 
-    public void applyApp(String appId) {
+    public boolean applyApp(String clusterId, App app) throws IOException {
+        // garuda master 에 전송. marathon으로 실행.
+        String appId = app.getId();
+        String uri = String.format("/v1/clusters/%s/apps", clusterId);
+        Client client = ClientBuilder.newClient();
+        WebTarget webTarget = client.target(PROTOCOL + garudaEndPoint).path(uri);
 
-        //TODO
-        App app = appMapper.select(appId);
+        AppApplyRequest request = new AppApplyRequest(app);
+        Response response = webTarget.request(MediaType.APPLICATION_JSON).post(Entity.json(request));
+        if (response.getStatus() == 200) {
+            String str = response.readEntity(String.class);
+            Map<String, Object> entity = JsonUtil.json2Object(str);
+            logger.debug("Apply response : {}", entity);
+            return true;
+        }
+        return false;
+    }
 
-
-        //TODO garuda master 에 전송. marathon으로 실행.
-
-
+    public boolean destoryApp(String clusterId, String appId) throws IOException {
+        String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
+        Client client = ClientBuilder.newClient();
+        WebTarget webTarget = client.target(PROTOCOL + garudaEndPoint).path(uri);
+        Response response = webTarget.request(MediaType.APPLICATION_JSON).delete();
+        return response.getStatus() == 200;
     }
 
     public String uploadAppFile(String clusterId, String appId, File appFile) {

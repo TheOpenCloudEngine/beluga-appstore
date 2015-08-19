@@ -1,7 +1,7 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
-<% String menuId = "apps"; %>
+<% String menuId = "manage"; %>
 <%@include file="top.jsp" %>
 <script>
     function applyApp() {
@@ -35,7 +35,8 @@
                 <br>
                 <div class="box" >
                     <div class="pull-right">
-                        <a href="javascript:applyApp()" class="btn btn-lg btn-primary outline">Apply App</a>
+                        <a href="http://${app.id}.fastcatsearch.com" target="_pop_${app.id}" class="btn btn-lg btn-default">Launch</a>
+                        &nbsp; <a href="javascript:applyApp()" class="btn btn-lg btn-primary outline">Apply App</a>
                         &nbsp; <a href="${app.id}" class="btn btn-lg btn-default"><i class="glyphicon glyphicon-refresh"></i></a>
                     </div>
                     <h2>Running Status</h2>
