@@ -20,35 +20,7 @@
     <meta content='width=device-width' name='viewport'>
     <script>
         $(document).ready(function() {
-            $("#login-form").validate({
-                onkeyup: function(element) {
-                    var element_id = $(element).attr('id');
-                    if (this.settings.rules[element_id] && this.settings.rules[element_id].onkeyup != false) {
-                        $.validator.defaults.onkeyup.apply(this, arguments);
-                    }
-                },
-                rules: {
-                    orgId: {
-                        orgExists: true,
-                        onkeyup: false
-                    }
-                }
-            });
-            $.validator.addMethod("orgExists", function(value, element) {
-                var ret = true;
-                $.ajax({
-                    url : "/api/organization/" + value,
-                    async: false,
-                    type : "GET",
-                    success : function(response) {
-                        ret = true;
-                    },
-                    error : function() {
-                        ret = false;
-                    }
-                });
-                return ret;
-            }, "This organization does not exist.");
+            $("#login-form").validate();
         });
     </script>
 </head>
@@ -57,7 +29,6 @@
     <form class="vertical-form" id="login-form" action="/login" accept-charset="UTF-8" method="post">
         <legend>Log In</legend>
         <input type="hidden" name="redirect" value="<%=redirect %>" />
-        <input placeholder="Organization ID" type="text" class="required" name="orgId" id="orgId" value=""/>
         <input placeholder="Email Address" type="text" class="required email" name="userId" id="userId" />
         <input placeholder="Password" autocomplete="off" type="password" class="required" minlength="4" name="password" id="password" />
         <input type="submit" class="btn btn-success" name="commit" value="Log In" />

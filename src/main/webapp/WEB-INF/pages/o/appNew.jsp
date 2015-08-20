@@ -7,10 +7,7 @@
 <script>
 
 $(function(){
-    $("#appFile").on("change", function(event){
-        var formData = new FormData();
-        formData.append("file", $( event.delegateTarget )[0].files[0]);
-//        console.log("target = ", $( event.delegateTarget )[0].files[0]);
+    function handleUpload(formData, i){
         $.ajax({
             url: '/api/apps/upload',
             processData: false,
@@ -20,18 +17,64 @@ $(function(){
             dataType: 'json',
             success: function(result){
                 console.log(result.name, result.length, result.date);
-                $("#fileInfo").text(result.name + " (" + toHumanSize(result.length) + ")");
-                $("#fileDate").text(result.date);
-                $("input[name=fileName]").val(result.name);
-                $("input[name=filePath]").val(result.path);
-                $("input[name=fileLength]").val(result.length);
-                $("input[name=fileDate]").val(result.date);
+                $(".app-file-detail"+i+"").show();
+                $("#fileInfo"+i).text(result.name + " (" + toHumanSize(result.length) + ")");
+                $("#fileDate"+i).text(result.date);
+                $("input[name=fileName"+i+"]").val(result.name);
+                $("input[name=filePath"+i+"]").val(result.path);
+                $("input[name=fileLength"+i+"]").val(result.length);
+                $("input[name=fileDate"+i+"]").val(result.date);
             },
             error : function (e) {
+                $(".app-file-detail"+i+"").hide();
                 console.log("upload error = ", e);
                 alert("File upload failed :" + e);
             }
         });
+    }
+
+    $("#appFile2").on("change", function(event) {
+        fileList = $(event.delegateTarget)[0].files;
+        if (fileList.length == 0) {
+            return;
+        }
+        var formData = new FormData();
+        formData.append("file", fileList[0]);
+//        console.log("target = ", $( event.delegateTarget )[0].files[0]);
+        handleUpload(formData, 2);
+    });
+    $("#appFile1").on("change", function(event){
+        fileList = $( event.delegateTarget)[0].files;
+        if(fileList.length == 0) {
+            return;
+        }
+        var formData = new FormData();
+        formData.append("file", fileList[0]);
+//        console.log("target = ", $( event.delegateTarget )[0].files[0]);
+        handleUpload(formData, 1);
+//        $.ajax({
+//            url: '/api/apps/upload',
+//            processData: false,
+//            contentType: false,
+//            data: formData,
+//            type: 'POST',
+//            dataType: 'json',
+//            success: function(result){
+//                console.log(result.name, result.length, result.date);
+//                $(".app-file-detail").show();
+//                $("#fileInfo").text(result.name + " (" + toHumanSize(result.length) + ")");
+//                $("#fileDate").text(result.date);
+//                $("input[name=fileName]").val(result.name);
+//                $("input[name=filePath]").val(result.path);
+//                $("input[name=fileLength]").val(result.length);
+//                $("input[name=fileDate]").val(result.date);
+//            },
+//            error : function (e) {
+//                $(".app-file-detail").hide();
+//                console.log("upload error = ", e);
+//                alert("File upload failed :" + e);
+//            }
+//        });
     });
 
     $("#app-new-form").validate({
@@ -89,8 +132,10 @@ $(function(){
                     <h4 class="bottom-line">General Information</h4>
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">ID:</label>
-                            <div class="col-md-9 col-sm-9"><input type="text" name="id" id="appId" class="form-control col-150 required" minlength="3"/>.${domain}</div>
+                            <label class="col-md-3 col-sm-3 control-label">Domain:</label>
+                            <div class="col-md-9 col-sm-9"><input type="text" name="id" id="appId" class="form-control col-150 pull-left required" minlength="3"/>
+                                <p class="form-control-static">&nbsp;.${domain}</p>
+                            </div>
                         </div>
 
                         <div class="form-group">
@@ -111,13 +156,23 @@ $(function(){
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">App file:</label>
                             <div class="col-md-9 col-sm-9">
-                                <p class="form-control-static"><span id="fileInfo"></span>
-                                    <br><span class="file-date" id="fileDate"></span></p>
-                                <input type="file" id="appFile" class="form-control-static required"/>
-                                <input type="hidden" name="fileName"/>
-                                <input type="hidden" name="filePath"/>
-                                <input type="hidden" name="fileLength"/>
-                                <input type="hidden" name="fileDate"/>
+                                <p class="form-control-static app-file-detail1 maybe-hide"><span id="fileInfo1"></span>
+                                    <br><span class="file-date" id="fileDate1"></span></p>
+                                <input type="text" name="context" class="form-control col-150 pull-left" placeholder="/context" value="/">
+                                <input type="file" id="appFile" class="form-control-static required pleft-10 simple-file-btn"/>
+                                <p/>
+                                <p class="form-control-static app-file-detail2 maybe-hide"><span id="fileInfo2">webapp-java-1.0.war (6.5KB)</span>
+                                    <br><span class="file-date" id="fileDate2">2015-08-21 01:00:41</span></p>
+                                <input type="text" name="context2" class="form-control col-150 pull-left" placeholder="/context">
+                                <input type="file" id="appFile2" class="form-control-static required pleft-10 simple-file-btn"/>
+                                <input type="hidden" name="fileName1"/>
+                                <input type="hidden" name="filePath1"/>
+                                <input type="hidden" name="fileLength1"/>
+                                <input type="hidden" name="fileDate1"/>
+                                <input type="hidden" name="fileName2"/>
+                                <input type="hidden" name="filePath2"/>
+                                <input type="hidden" name="fileLength2"/>
+                                <input type="hidden" name="fileDate2"/>
 
                             </div>
                         </div>

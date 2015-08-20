@@ -9,7 +9,7 @@
 
     <select id="selectWithPassword" parameterType="org.opencloudengine.serviceportal.db.entity.User" resultType="org.opencloudengine.serviceportal.db.entity.User">
         select `id`, `orgId`, `type`, `joinDate` from user
-  	    where id = #{id} and `password`=#{password} and orgId = #{orgId}
+  	    where id = #{id} and `password`=#{password}
     </select>
 
     <select id="selectInOrganization" parameterType="java.util.HashMap" resultType="org.opencloudengine.serviceportal.db.entity.User">

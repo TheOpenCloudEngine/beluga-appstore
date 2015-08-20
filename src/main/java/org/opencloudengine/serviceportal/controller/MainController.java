@@ -132,12 +132,11 @@ public class MainController {
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.POST)
-    public ModelAndView doLogin(HttpServletRequest request, @RequestParam String userId, @RequestParam String orgId
-            , @RequestParam String password, @RequestParam(value="redirect", required=false) String redirect) {
+    public ModelAndView doLogin(HttpServletRequest request, @RequestParam String userId, @RequestParam String password
+            , @RequestParam(value="redirect", required=false) String redirect) {
         ModelAndView mav = new ModelAndView();
         User user = new User();
         user.setId(userId);
-        user.setOrgId(orgId);
         user.setPassword(password);
         // 로그인 처리 한다.
         if(!memberService.isUserExistsWithPassword(user)) {
