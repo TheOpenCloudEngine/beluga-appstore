@@ -4,15 +4,15 @@
 <% String menuId = "manage"; %>
 <%@include file="top.jsp" %>
 <script>
-    function applyApp() {
+    function deployApp() {
         $.ajax({
-            url:"/api/apps/${app.id}/apply",
+            url:"/api/apps/${app.id}/deploy",
             type: "POST",
             success:function() {
-                alert("[${app.id}] app apply started.");
+                alert("[${app.id}] app Deploy Success.");
             },
-            error:function(xhr, status, e) {
-                alert("Apply app fails : [" + status + "] " + e);
+            error:function(xhr) {
+                alert("Deploy app fails : " + xhr.responseText);
             }
         });
     }
@@ -35,8 +35,8 @@
                 <br>
                 <div class="box" >
                     <div class="pull-right">
-                        <a href="http://${app.id}.fastcatsearch.com" target="_pop_${app.id}" class="btn btn-lg btn-default">Launch</a>
-                        &nbsp; <a href="javascript:applyApp()" class="btn btn-lg btn-primary outline">Apply App</a>
+                        <a href="http://${app.id}.${domain}" target="_pop_${app.id}" class="btn btn-lg btn-default">Launch</a>
+                        &nbsp; <a href="javascript:deployApp()" class="btn btn-lg btn-primary outline">Deploy App</a>
                         &nbsp; <a href="${app.id}" class="btn btn-lg btn-default"><i class="glyphicon glyphicon-refresh"></i></a>
                     </div>
                     <h2>Running Status</h2>
@@ -62,7 +62,7 @@
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                             <div class="stat-box">
-                                <p class="text-success">ON</p>
+                                <p class="text-danger">OFF</p>
                                 <h4>Auto Scale</h4>
                             </div>
                         </div>

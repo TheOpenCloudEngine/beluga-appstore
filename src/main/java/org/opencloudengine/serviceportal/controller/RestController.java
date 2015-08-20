@@ -41,7 +41,7 @@ public class RestController {
     @RequestMapping(value = "/api/apps/{appId}", method = RequestMethod.HEAD)
     public void apps(@PathVariable String appId, HttpSession session, HttpServletResponse response) throws IOException {
         App app = appManageService.getApp(appId);
-        if(app != null) {
+        if (app != null) {
             response.setStatus(200);
         } else {
             response.setStatus(404, "no such app : " + appId);
@@ -54,10 +54,10 @@ public class RestController {
         String orgId = user.getOrgId();
         File appFile = appManageService.saveMultipartFile(file, orgId);
 
-        if(appFile != null) {
+        if (appFile != null) {
             // garuda에 올린다.
             String filePath = garudaService.uploadAppFile(clusterId, orgId, appFile);
-            if(filePath != null) {
+            if (filePath != null) {
                 long length = appFile.length();
                 String fileName = appFile.getName();
                 UploadFile uploadFile = new UploadFile(fileName, filePath, length, DateUtil.getNow());
@@ -72,27 +72,36 @@ public class RestController {
         }
     }
 
-    @RequestMapping(value = "/api/apps/{appId}/apply", method = RequestMethod.POST)
-    public void appApply(@PathVariable String appId, HttpServletResponse response) throws Exception {
+    @RequestMapping(value = "/api/apps/{appId}/deploy", method = RequestMethod.POST)
+    public void appDeploy(@PathVariable String appId, HttpServletResponse response) throws Exception {
 
-        App app = appManageService.getApp(appId);
+        try {
+            App app = appManageService.getApp(appId);
 
-        if(app != null) {
-            if(garudaService.applyApp(clusterId, app)){
-                response.setStatus(200);
-                return;
+            if (app != null) {
+                if (garudaService.deployApp(clusterId, app)) {
+                    response.setStatus(200);
+                    return;
+                } else {
+                    response.sendError(500, "error : " + appId);
+                }
             } else {
-                response.sendError(500, "error : " + appId);
+                response.sendError(404, "no such app : " + appId);
             }
-        } else {
-            response.sendError(404, "no such app : " + appId);
+        } catch (Exception e) {
+//            logger.error("", e);
+//            response.sendError(500, "error : " + e.getMessage());
+//            response.sendError(500, "error : " + e.getMessage());
+            response.setStatus(500);
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().print(e.getMessage());
         }
     }
 
     @RequestMapping(value = "/api/apps/{appId}", method = RequestMethod.DELETE)
     public void deleteApp(@PathVariable String appId, HttpServletResponse response) throws IOException {
         ModelAndView mav = new ModelAndView();
-        if(garudaService.destoryApp(clusterId, appId)) {
+        if (garudaService.destoryApp(clusterId, appId)) {
             appManageService.deleteApp(appId);
             response.setStatus(200);
             return;
@@ -104,7 +113,7 @@ public class RestController {
     @RequestMapping(value = "/api/user/{userId:.+}", method = RequestMethod.HEAD)
     public void testUser(@PathVariable String userId, HttpServletResponse response) throws IOException {
         User user = memberService.getUser(userId);
-        if(user != null) {
+        if (user != null) {
             response.setStatus(200);
         } else {
             response.sendError(404, "no such user : " + userId);
@@ -114,7 +123,7 @@ public class RestController {
     @RequestMapping(value = "/api/organization/{orgId}", method = RequestMethod.GET)
     public void testOrganization(@PathVariable String orgId, HttpServletResponse response) throws IOException {
         Organization organization = memberService.getOrganization(orgId);
-        if(organization != null) {
+        if (organization != null) {
             response.setCharacterEncoding("utf-8");
             response.getWriter().print(JsonUtil.object2String(organization));
         } else {
@@ -129,13 +138,13 @@ public class RestController {
         User user = new User();
         user.setId(id);
         user.setPassword(password);
-        if(!memberService.isUserExistsWithPassword(user)) {
+        if (!memberService.isUserExistsWithPassword(user)) {
             response.sendError(401, "Incorrect user information : " + id);
             return;
         }
         user = memberService.getUser(id);
         String orgId = user.getOrgId();
-        if(appManageService.isGranted(orgId, appId)) {
+        if (appManageService.isGranted(orgId, appId)) {
             // 사용가능한 리소스 정보를 전달.
             Resources allResources = garudaService.getResources();
             //조직별 사용할 리소스를 산출한다.
@@ -152,6 +161,7 @@ public class RestController {
     public void oauth2Token(@RequestBody String json, HttpServletResponse response) throws IOException {
         //TODO
     }
+
     @RequestMapping(value = "/api/oauth2/authorization", method = RequestMethod.POST)
     public void oauth2Authrozation(@RequestBody String json, HttpServletResponse response) throws IOException {
         //TODO

@@ -66,7 +66,7 @@ public class GarudaService {
         return resources;
     }
 
-    public boolean applyApp(String clusterId, App app) throws Exception {
+    public boolean deployApp(String clusterId, App app) throws Exception {
         // garuda master 에 전송. marathon으로 실행.
         String appId = app.getId();
         String uri = String.format("/v1/clusters/%s/apps", clusterId);
@@ -76,9 +76,9 @@ public class GarudaService {
         AppApplyRequest request = new AppApplyRequest(app);
         Response response = webTarget.request(MediaType.APPLICATION_JSON).post(Entity.json(request));
         if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
-            String str = response.readEntity(String.class);
-            Map<String, Object> entity = JsonUtil.json2Object(str);
-            logger.debug("Apply response : {}", entity);
+//            String str = response.readEntity(String.class);
+//            Map<String, Object> entity = JsonUtil.json2Object(str);
+//            logger.debug("Apply response : {}", entity);
             return true;
         } else {
             String entity = response.readEntity(String.class);

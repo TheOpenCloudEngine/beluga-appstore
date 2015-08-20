@@ -25,7 +25,7 @@
                                     <div class="app-provider">${app.orgName}</div>
                                     <div class="app-date">${app.applyDate}&nbsp;</div>
                                     <div class="app-button" align="right">
-                                        <a href="#${app.id}" class="btn btn-primary outline">Use App</a>
+                                        <a href="#${app.id}" class="btn btn-primary outline">Subscribe</a>
                                     </div>
                                 </div>
                             </div>
