@@ -50,12 +50,12 @@ public class AppManageService {
         appMapper.insert(app);
     }
 
-    public void addGrant(String orgId, String appId) {
-        appMapper.addGrant(orgId, appId);
-    }
-
     public boolean isGranted(String orgId, String appId) {
         return appMapper.getGrant(orgId, appId) > 0;
+    }
+
+    public void setGrant(String orgId, String appId) {
+        appMapper.setGrant(orgId, appId);
     }
 
     public void deleteApp(String appId) {

@@ -3,7 +3,21 @@
          pageEncoding="utf-8" %>
 <% String menuId = "store"; %>
 <%@include file="top.jsp" %>
+<script>
+    function subscribeApp(appId) {
+        $.ajax({
+            url:"/api/subscribe/"+appId,
+            type: "POST",
+            success:function(data) {
+                alert(data);
+            },
+            error:function(xhr) {
+                alert("Subscription fails : " + xhr.responseText);
+            }
+        });
+    }
 
+</script>
 <div class="container" id="content">
     <div class="row">
         <div class="col-md-12">
@@ -25,7 +39,7 @@
                                     <div class="app-provider">${app.orgName}</div>
                                     <div class="app-date">${app.applyDate}&nbsp;</div>
                                     <div class="app-button" align="right">
-                                        <a href="#${app.id}" class="btn btn-primary outline">Subscribe</a>
+                                        <a href="javascript:subscribeApp('${app.id}')" class="btn btn-primary outline">Subscribe</a>
                                     </div>
                                 </div>
                             </div>

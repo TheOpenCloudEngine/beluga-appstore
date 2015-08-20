@@ -167,4 +167,21 @@ public class RestController {
         //TODO
     }
 
+    @RequestMapping(value = "/api/subscribe/{appId}", method = RequestMethod.POST)
+    @ResponseBody
+    public String subscribe(@PathVariable String appId, HttpServletResponse response, HttpSession session) {
+        User user = (User) session.getAttribute(User.USER_KEY);
+        if(!user.getType().equals(User.ADMIN_TYPE)) {
+            return "Only admin can subscribe apps.";
+        }
+
+        String orgId = user.getOrgId();
+        if(appManageService.isGranted(orgId, appId)) {
+            return "Already subscribed.";
+        }
+
+        appManageService.setGrant(orgId, appId);
+        return "[SUCCESS] Now your organization members can use this app.";
+    }
+
 }

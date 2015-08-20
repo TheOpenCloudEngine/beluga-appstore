@@ -51,6 +51,16 @@
         )
     </update>
 
+    <select id="getGrant" parameterType="map" resultType="int">
+        select count(1) from apps_grant
+        where orgId = #{orgId} and appId = #{appId}
+    </select>
+
+    <insert id="setGrant" parameterType="map">
+        INSERT INTO apps_grant (orgId, appId)
+        VALUES (#{orgId}, #{appId})
+    </insert>
+
     <delete id="delete">
         DELETE FROM apps
         WHERE id = #{id}
