@@ -102,6 +102,7 @@ $(function() {
                             <div class="col-md-9 col-sm-9">
                                 <select name="environment" class="form-control required">
                                     <option value="">:: Select ::</option>
+                                    <option value="java7_tomcat7">java7_tomcat7</option>
                                     <option value="java7_wildfly8.2">java7_wildfly8.2</option>
                                     <option value="php5_apache2">php5_apache2</option>
                                 </select>
