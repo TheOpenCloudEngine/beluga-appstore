@@ -23,12 +23,20 @@ public class App {
     private String description;
 
     /* Operating Plan */
+    private String appContext;
     private String appFile;
     private String appFilePath;
     private Long appFileLength;
     private String appFileLengthDisplay; // human readable 수치.
     private String appFileDate;
     private char appFileUpdated;
+    private String appContext2;
+    private String appFile2;
+    private String appFilePath2;
+    private Long appFileLength2;
+    private String appFileLengthDisplay2; // human readable 수치.
+    private String appFileDate2;
+    private char appFileUpdated2;
     private String environment;
     private Float cpus;
     private Integer memory;
@@ -92,6 +100,14 @@ public class App {
         this.description = description;
     }
 
+    public String getAppContext() {
+        return appContext;
+    }
+
+    public void setAppContext(String appContext) {
+        this.appContext = appContext;
+    }
+
     public String getAppFile() {
         return appFile;
     }
@@ -138,6 +154,62 @@ public class App {
 
     public void setAppFileUpdated(char appFileUpdated) {
         this.appFileUpdated = appFileUpdated;
+    }
+
+    public String getAppContext2() {
+        return appContext2;
+    }
+
+    public void setAppContext2(String appContext2) {
+        this.appContext2 = appContext2;
+    }
+
+    public String getAppFile2() {
+        return appFile2;
+    }
+
+    public void setAppFile2(String appFile2) {
+        this.appFile2 = appFile2;
+    }
+
+    public String getAppFilePath2() {
+        return appFilePath2;
+    }
+
+    public void setAppFilePath2(String appFilePath2) {
+        this.appFilePath2 = appFilePath2;
+    }
+
+    public Long getAppFileLength2() {
+        return appFileLength2;
+    }
+
+    public void setAppFileLength2(Long appFileLength2) {
+        this.appFileLength2 = appFileLength2;
+    }
+
+    public String getAppFileLengthDisplay2() {
+        return appFileLengthDisplay2;
+    }
+
+    public void setAppFileLengthDisplay2(String appFileLengthDisplay2) {
+        this.appFileLengthDisplay2 = appFileLengthDisplay2;
+    }
+
+    public String getAppFileDate2() {
+        return appFileDate2;
+    }
+
+    public void setAppFileDate2(String appFileDate2) {
+        this.appFileDate2 = appFileDate2;
+    }
+
+    public char getAppFileUpdated2() {
+        return appFileUpdated2;
+    }
+
+    public void setAppFileUpdated2(char appFileUpdated2) {
+        this.appFileUpdated2 = appFileUpdated2;
     }
 
     public String getEnvironment() {

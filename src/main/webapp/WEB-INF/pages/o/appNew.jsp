@@ -148,7 +148,7 @@ $(function(){
                             <div class="col-md-9 col-sm-9">
                                 <!--file1-->
                                 <p class="form-control-static pull-left">Context</p>
-                                <input type="text" name="context" class="form-control col-150 pull-left mleft-10" placeholder="/context" value="/">
+                                <input type="text" name="context1" class="form-control col-150 pull-left mleft-10" placeholder="/context" value="/">
                                 <input type="file" id="appFile1" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
                                 <p class="form-control-static app-file-detail1 maybe-hide"><span id="fileInfo1"></span>
                                     <br><span class="file-date" id="fileDate1"></span>

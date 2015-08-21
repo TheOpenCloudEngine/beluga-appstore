@@ -94,8 +94,17 @@
                     <div class="form-group">
                         <label class="col-md-3 col-sm-3 control-label">App file:</label>
                         <div class="col-md-9 col-sm-9">
-                            <p class="form-control-static">${app.appFile} ( ${app.appFileLengthDisplay} ) <br><i class="file-date">${app.appFileDate}</i></p>
+                            <p class="form-control-static">Context : ${app.appContext}
+                                <br>${app.appFile} ( ${app.appFileLengthDisplay} )
+                                <br><i class="file-date">${app.appFileDate}</i></p>
                         </div>
+                        <c:if test="${not empty app.appFile2}">
+                        <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
+                            <p class="form-control-static">Context : ${app.appContext2}
+                                <br>${app.appFile2} ( ${app.appFileLengthDisplay2} )
+                                <br><i class="file-date">${app.appFileDate2}</i></p>
+                        </div>
+                        </c:if>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 col-sm-3 control-label">CPUs:</label>

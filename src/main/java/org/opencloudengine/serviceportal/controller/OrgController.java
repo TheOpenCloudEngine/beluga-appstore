@@ -150,6 +150,7 @@ public class OrgController {
         ModelAndView mav = new ModelAndView();
         mav.addObject("elapsed", elapsed);
         app.setAppFileLengthDisplay(ParseUtil.toHumanSize(app.getAppFileLength()));
+        app.setAppFileLengthDisplay2(ParseUtil.toHumanSize(app.getAppFileLength2()));
         app.setMemoryDisplay(ParseUtil.toHumanSizeOverMB(app.getMemory() * SizeUnit.MB));
         mav.addObject("app", app);
         mav.addObject("domain", garudaService.getDomainName());
@@ -176,10 +177,22 @@ public class OrgController {
         String id = (String) data.get("id");
         String name = (String) data.get("name");
         String description = (String) data.get("description");
-        String appFile = (String) data.get("fileName");
-        String appFilePath = (String) data.get("filePath");
-        String appFileLength = (String) data.get("fileLength");
-        String appFileDate = (String) data.get("fileDate");
+
+        String appContext = (String) data.get("context1");
+        String appFile = (String) data.get("fileName1");
+        String appFilePath = (String) data.get("filePath1");
+        String appFileLength = (String) data.get("fileLength1");
+        String appFileDate = (String) data.get("fileDate1");
+
+        String appContext2 = (String) data.get("context2");
+        String appFile2 = (String) data.get("fileName2");
+        String appFilePath2 = (String) data.get("filePath2");
+        String appFileLength2 = (String) data.get("fileLength2");
+        String appFileDate2 = (String) data.get("fileDate2");
+        if(appFile2.length() == 0) {
+            appContext2 = null;
+        }
+
         String environment = (String) data.get("environment");
         String cpus = (String) data.get("cpus");
         String memory = (String) data.get("memory");
@@ -202,10 +215,19 @@ public class OrgController {
         app.setOrgId(orgId);
         app.setName(name);
         app.setDescription(description);
+        //app file1
+        app.setAppContext(appContext);
         app.setAppFile(appFile);
         app.setAppFilePath(appFilePath);
         app.setAppFileLength(ParseUtil.parseLong(appFileLength));
         app.setAppFileDate(appFileDate);
+        app.setAppContext2(appContext2);
+        //app file2
+        app.setAppFile2(appFile2);
+        app.setAppFilePath2(appFilePath2);
+        app.setAppFileLength2(ParseUtil.parseLong(appFileLength2));
+        app.setAppFileDate2(appFileDate2);
+        //environment
         app.setEnvironment(environment);
         app.setCpus(ParseUtil.parseFloat(cpus));
         app.setMemory(ParseUtil.parseInt(memory));

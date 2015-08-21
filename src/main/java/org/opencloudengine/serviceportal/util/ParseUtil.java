@@ -45,7 +45,10 @@ public class ParseUtil {
         return null;
     }
 
-    public static String toHumanSize(long fileLength) {
+    public static String toHumanSize(Long fileLength) {
+        if(fileLength == null) {
+            return null;
+        }
         if(fileLength < SizeUnit.KB) {
             return fileLength + "B";
         } else if(fileLength < SizeUnit.MB) {
@@ -58,7 +61,10 @@ public class ParseUtil {
         return fileLength + "B";
     }
 
-    public static String toHumanSizeOverMB(long fileLength) {
+    public static String toHumanSizeOverMB(Long fileLength) {
+        if(fileLength == null) {
+            return null;
+        }
         if(fileLength < SizeUnit.GB) {
             return String.format("%.0fMB", fileLength / 1000.0 / 1000.0);
         } else if(fileLength >= SizeUnit.GB) {

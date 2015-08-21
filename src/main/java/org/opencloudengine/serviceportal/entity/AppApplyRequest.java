@@ -8,8 +8,10 @@ import org.opencloudengine.serviceportal.db.entity.App;
 public class AppApplyRequest {
     private String id;
     private String cmd;
-    private Integer port;
+    private String context;
     private String file;
+    private String context2;
+    private String file2;
     private String type;
     private Float cpus;
     private Integer memory;
@@ -19,8 +21,10 @@ public class AppApplyRequest {
 
     public AppApplyRequest(App app) {
         this.id = app.getId();
-        this.port = app.getEnvironment().startsWith("java") ? 8080 : 80; //WAS 면 8080을 연다.
+        this.context = app.getAppContext();
         this.file = app.getAppFilePath();
+        this.context2 = app.getAppContext2();
+        this.file2 = app.getAppFilePath2();
         this.type = app.getEnvironment();
         this.cpus = app.getCpus();
         this.memory = app.getMemory();
@@ -43,12 +47,12 @@ public class AppApplyRequest {
         this.cmd = cmd;
     }
 
-    public Integer getPort() {
-        return port;
+    public String getContext() {
+        return context;
     }
 
-    public void setPort(Integer port) {
-        this.port = port;
+    public void setContext(String context) {
+        this.context = context;
     }
 
     public String getFile() {
@@ -57,6 +61,22 @@ public class AppApplyRequest {
 
     public void setFile(String file) {
         this.file = file;
+    }
+
+    public String getContext2() {
+        return context2;
+    }
+
+    public void setContext2(String context2) {
+        this.context2 = context2;
+    }
+
+    public String getFile2() {
+        return file2;
+    }
+
+    public void setFile2(String file2) {
+        this.file2 = file2;
     }
 
     public String getType() {
