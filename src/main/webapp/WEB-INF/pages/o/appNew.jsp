@@ -16,7 +16,7 @@ $(function(){
             type: 'POST',
             dataType: 'json',
             success: function(result){
-                console.log(result.name, result.length, result.date);
+//                console.log(result.name, result.length, result.date);
                 $(".app-file-detail"+i+"").show();
                 $("#fileInfo"+i).text(result.name + " (" + toHumanSize(result.length) + ")");
                 $("#fileDate"+i).text(result.date);
@@ -33,49 +33,39 @@ $(function(){
         });
     }
 
-    $("#appFile2").on("change", function(event) {
-        fileList = $(event.delegateTarget)[0].files;
-        if (fileList.length == 0) {
-            return;
-        }
-        var formData = new FormData();
-        formData.append("file", fileList[0]);
-//        console.log("target = ", $( event.delegateTarget )[0].files[0]);
-        handleUpload(formData, 2);
-    });
+    function cancelUpload(i) {
+        $("#fileInfo"+i).text("");
+        $("#fileDate"+i).text("");
+        $("input[name=fileName"+i+"]").val("");
+        $("input[name=filePath"+i+"]").val("");
+        $("input[name=fileLength"+i+"]").val("");
+        $("input[name=fileDate"+i+"]").val("");
+        $(".app-file-detail"+i+"").hide();
+    }
+
+    //파일선택시 처리.
     $("#appFile1").on("change", function(event){
         fileList = $( event.delegateTarget)[0].files;
         if(fileList.length == 0) {
+            cancelUpload(1);
             return;
         }
         var formData = new FormData();
         formData.append("file", fileList[0]);
-//        console.log("target = ", $( event.delegateTarget )[0].files[0]);
         handleUpload(formData, 1);
-//        $.ajax({
-//            url: '/api/apps/upload',
-//            processData: false,
-//            contentType: false,
-//            data: formData,
-//            type: 'POST',
-//            dataType: 'json',
-//            success: function(result){
-//                console.log(result.name, result.length, result.date);
-//                $(".app-file-detail").show();
-//                $("#fileInfo").text(result.name + " (" + toHumanSize(result.length) + ")");
-//                $("#fileDate").text(result.date);
-//                $("input[name=fileName]").val(result.name);
-//                $("input[name=filePath]").val(result.path);
-//                $("input[name=fileLength]").val(result.length);
-//                $("input[name=fileDate]").val(result.date);
-//            },
-//            error : function (e) {
-//                $(".app-file-detail").hide();
-//                console.log("upload error = ", e);
-//                alert("File upload failed :" + e);
-//            }
-//        });
     });
+
+    $("#appFile2").on("change", function(event) {
+        fileList = $(event.delegateTarget)[0].files;
+        if (fileList.length == 0) {
+            cancelUpload(2);
+            return;
+        }
+        var formData = new FormData();
+        formData.append("file", fileList[0]);
+        handleUpload(formData, 2);
+    });
+
 
     $("#app-new-form").validate({
         onkeyup: function(element) {
@@ -156,15 +146,24 @@ $(function(){
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">App file:</label>
                             <div class="col-md-9 col-sm-9">
+                                <!--file1-->
+                                <p class="form-control-static pull-left">Context</p>
+                                <input type="text" name="context" class="form-control col-150 pull-left mleft-10" placeholder="/context" value="/">
+                                <input type="file" id="appFile1" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
                                 <p class="form-control-static app-file-detail1 maybe-hide"><span id="fileInfo1"></span>
-                                    <br><span class="file-date" id="fileDate1"></span></p>
-                                <input type="text" name="context" class="form-control col-150 pull-left" placeholder="/context" value="/">
-                                <input type="file" id="appFile" class="form-control-static required pleft-10 simple-file-btn"/>
+                                    <br><span class="file-date" id="fileDate1"></span>
+                                </p>
+                                <!--// file1-->
                                 <p/>
+                                <!--file2-->
+                                <p class="form-control-static pull-left">Context</p>
+                                <input type="text" name="context2" class="form-control col-150 pull-left mleft-10" placeholder="/context">
+                                <input type="file" id="appFile2" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
                                 <p class="form-control-static app-file-detail2 maybe-hide"><span id="fileInfo2">webapp-java-1.0.war (6.5KB)</span>
-                                    <br><span class="file-date" id="fileDate2">2015-08-21 01:00:41</span></p>
-                                <input type="text" name="context2" class="form-control col-150 pull-left" placeholder="/context">
-                                <input type="file" id="appFile2" class="form-control-static required pleft-10 simple-file-btn"/>
+                                    <br><span class="file-date" id="fileDate2">2015-08-21 01:00:41</span>
+                                </p>
+                                <!--// file2-->
+                                <!--hidden info-->
                                 <input type="hidden" name="fileName1"/>
                                 <input type="hidden" name="filePath1"/>
                                 <input type="hidden" name="fileLength1"/>
