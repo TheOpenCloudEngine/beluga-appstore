@@ -26,7 +26,7 @@
 
             <div class="box" >
                 <div class="pull-right">
-                    <a href="#${user.id}" class="btn btn-danger outline">Delete Account</a>
+                    <a href="#${user.id}" class="btn btn-lg btn-danger outline">Delete Account</a>
                 </div>
                 <h2>Delete Account</h2>
                 <p>This will permanently delete all account information.</p>

@@ -9,6 +9,10 @@
     function showUsers() {
         $('#user-list').modal();
     }
+    function deleteOrganization() {
+        confirm("Delete Orginazation.");
+        $("#delete-organization-form").submit();
+    }
 </script>
 <div class="container" id="content">
     <div class="row">
@@ -33,7 +37,9 @@
 
             <div class="box" >
                 <div class="pull-right">
-                    <a href="#${organization.id}" class="btn btn-lg btn-danger outline">Delete Organization</a>
+                    <form id="delete-organization-form" action="/organization/${organization.id}/delete" method="post">
+                    </form>
+                    <a href="javascript:deleteOrganization()" class="btn btn-lg btn-danger outline">Delete Organization</a>
                 </div>
                 <h2>Delete Organization</h2>
                 <p>This will permanently delete all users, apps and organization information.</p>

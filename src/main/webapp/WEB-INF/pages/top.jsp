@@ -41,15 +41,18 @@
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <%--<li class="dropdown">--%>
-                    <%--<a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">user@mydomain.com <span class="caret"></span></a>--%>
-                    <%--<ul class="dropdown-menu" aria-labelledby="themes">--%>
-                        <%--<li><a href="#">My Profile</a></li>--%>
-                        <%--<li class="divider"></li>--%>
-                        <%--<li><a href="login.jsp">Log Out</a></li>--%>
-                    <%--</ul>--%>
-                <%--</li>--%>
-                <li><a href="/logout" class="btn btn-primary outline">Log Out</a></li>
+                <li class="dropdown">
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes"><c:out value="${sessionScope._user.id}" /><span class="caret"></span></a>
+                    <ul class="dropdown-menu" aria-labelledby="themes">
+                        <li><a href="/o/profile">My Profile</a></li>
+                        <li><a href="/o/organization">Organization</a></li>
+                        <li class="divider"></li>
+                        <li><a href="/logout">Log Out</a></li>
+                    </ul>
+                </li>
+                <%--<c:if test="${sessionScope._user.type == 'A'}" >--%>
+                    <%--<li><a href="/o/settings" class="btn btn-default"><i class="glyphicon glyphicon-cog"></i></a></li>--%>
+                <%--</c:if>--%>
             </ul>
 
         </div>

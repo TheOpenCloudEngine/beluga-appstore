@@ -35,7 +35,8 @@
                 <br>
                 <div class="box" >
                     <div class="pull-right">
-                        <a href="http://${app.id}.${domain}" target="_pop_${app.id}" class="btn btn-lg btn-default">Launch</a>
+                        <a href="#" class="btn btn-lg btn-primary outline">Scale</a>
+                        &nbsp; <a href="http://${app.id}.${domain}" target="_pop_${app.id}" class="btn btn-lg btn-default">Launch</a>
                         &nbsp; <a href="javascript:deployApp()" class="btn btn-lg btn-primary outline">Deploy App</a>
                         &nbsp; <a href="${app.id}" class="btn btn-lg btn-default"><i class="glyphicon glyphicon-refresh"></i></a>
                     </div>

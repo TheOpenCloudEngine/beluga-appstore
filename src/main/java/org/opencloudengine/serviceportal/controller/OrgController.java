@@ -304,7 +304,7 @@ public class OrgController {
         return mav;
     }
 
-    @RequestMapping(value = "/settings", method = RequestMethod.GET)
+    @RequestMapping(value = "/organization", method = RequestMethod.GET)
     public ModelAndView settings(HttpSession session) {
         User user = (User) session.getAttribute(User.USER_KEY);
         Organization organization = memberService.getOrganization(user.getOrgId());
@@ -314,7 +314,7 @@ public class OrgController {
         mav.addObject("joinDate", joinDate);
         mav.addObject("organization", organization);
         mav.addObject("users", users);
-        mav.setViewName("o/settings");
+        mav.setViewName("o/organization");
         return mav;
     }
 }

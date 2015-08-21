@@ -15,6 +15,7 @@ import org.springframework.web.servlet.ModelAndView;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import javax.ws.rs.PathParam;
 import java.io.IOException;
 import java.net.URLDecoder;
 import java.util.List;
@@ -97,21 +98,30 @@ public class MainController {
         return mav;
     }
 
-    @RequestMapping(value = "/user", method = RequestMethod.DELETE)
-    public ModelAndView deleteUser(@RequestParam String userId) {
+    @RequestMapping(value = "/user/{userId}/delete", method = RequestMethod.POST)
+    public ModelAndView deleteUser(@PathVariable String userId, HttpSession session) {
         ModelAndView mav = new ModelAndView();
 
         //TODO ajax로 관리자여부를 확인하여 관리자이면 삭제가 안되도록. 다른 사람을 관리자로 먼저 지정필요.
+        User user = memberService.getUser(userId);
+        if(user.getType().equals(User.ADMIN_TYPE)) {
 
+            //TODO 불가메시지.
+            return null;
+        }
+
+//        memberService.deleteUser(userId);
+        session.invalidate();
+        mav.setViewName("redirect:/login");
         return mav;
     }
 
-    @RequestMapping(value = "/organization", method = RequestMethod.DELETE)
-    public ModelAndView deleteOrganization(@RequestParam String orgId) {
+    @RequestMapping(value = "/organization/{orgId}/delete", method = RequestMethod.POST)
+    public ModelAndView deleteOrganization(@PathVariable String orgId, HttpSession session) {
         ModelAndView mav = new ModelAndView();
-
-        //TODO 하위 사용자까지 모두 삭제.
-
+//        memberService.deleteOrganization(orgId);
+        session.invalidate();
+        mav.setViewName("redirect:/login");
         return mav;
     }
 
