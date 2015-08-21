@@ -189,7 +189,7 @@ public class OrgController {
         String appFilePath2 = (String) data.get("filePath2");
         String appFileLength2 = (String) data.get("fileLength2");
         String appFileDate2 = (String) data.get("fileDate2");
-        if(appFile2.length() == 0) {
+        if(appFile2.length() == 0 || appFile2.length() == 0) {
             appContext2 = null;
         }
 
@@ -221,12 +221,14 @@ public class OrgController {
         app.setAppFilePath(appFilePath);
         app.setAppFileLength(ParseUtil.parseLong(appFileLength));
         app.setAppFileDate(appFileDate);
-        app.setAppContext2(appContext2);
         //app file2
-        app.setAppFile2(appFile2);
-        app.setAppFilePath2(appFilePath2);
-        app.setAppFileLength2(ParseUtil.parseLong(appFileLength2));
-        app.setAppFileDate2(appFileDate2);
+        if(appContext2 != null) {
+            app.setAppContext2(appContext2);
+            app.setAppFile2(appFile2);
+            app.setAppFilePath2(appFilePath2);
+            app.setAppFileLength2(ParseUtil.parseLong(appFileLength2));
+            app.setAppFileDate2(appFileDate2);
+        }
         //environment
         app.setEnvironment(environment);
         app.setCpus(ParseUtil.parseFloat(cpus));

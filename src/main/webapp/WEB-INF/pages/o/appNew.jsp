@@ -159,8 +159,8 @@ $(function(){
                                 <p class="form-control-static pull-left">Context</p>
                                 <input type="text" name="context2" class="form-control col-150 pull-left mleft-10" placeholder="/context">
                                 <input type="file" id="appFile2" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
-                                <p class="form-control-static app-file-detail2 maybe-hide"><span id="fileInfo2">webapp-java-1.0.war (6.5KB)</span>
-                                    <br><span class="file-date" id="fileDate2">2015-08-21 01:00:41</span>
+                                <p class="form-control-static app-file-detail2 maybe-hide"><span id="fileInfo2"></span>
+                                    <br><span class="file-date" id="fileDate2"></span>
                                 </p>
                                 <!--// file2-->
                                 <!--hidden info-->
