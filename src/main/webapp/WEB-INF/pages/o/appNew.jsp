@@ -75,11 +75,32 @@ $(function(){
             }
         },
         rules: {
-            appId: {
+            id: {
                 idExists: true,
                 lowercase : true,
                 onkeyup: false
+            },
+
+            appFile1: {
+                required: true
+            },
+            context1: {
+                required: true
+            },
+            appFile2 : {
+                required: function(element){
+                    return $("#context2").val().length > 0;
+                }
+            },
+            context2 : {
+                required: function(element){
+                    return $("#appFile2").val().length > 0;
+                }
             }
+        },
+        messages: {
+            appFile1: "Upload file is required.",
+            appFile2: "Upload file is required."
         }
     });
 
@@ -100,8 +121,10 @@ $(function(){
     }, "This app id already exists.");
 
     $.validator.addMethod("lowercase", function(value) {
-        return value.match(/^[^A-Z0-9]+$/);
-    }, 'You must use only lowercase letters and symbols in app id');
+        // Marathon documentation에서 가져온 정규식.
+        // https://mesosphere.github.io/marathon/docs/rest-api.html#post-v2-apps
+        return value.match(/^(([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9])\\.)*([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9])$/);
+    }, 'You must use only lowercase letters, dot and dash in app id');
 })
 
 </script>
@@ -148,8 +171,8 @@ $(function(){
                             <div class="col-md-9 col-sm-9">
                                 <!--file1-->
                                 <p class="form-control-static pull-left">Context</p>
-                                <input type="text" name="context1" class="form-control col-150 pull-left mleft-10" placeholder="/context" value="/">
-                                <input type="file" id="appFile1" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
+                                <input type="text" id="context1" name="context1" class="form-control col-150 pull-left mleft-10" placeholder="/context" value="/">
+                                <input type="file" id="appFile1" name="appFile1" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
                                 <p class="form-control-static app-file-detail1 maybe-hide"><span id="fileInfo1"></span>
                                     <br><span class="file-date" id="fileDate1"></span>
                                 </p>
@@ -157,8 +180,8 @@ $(function(){
                                 <p/>
                                 <!--file2-->
                                 <p class="form-control-static pull-left">Context</p>
-                                <input type="text" name="context2" class="form-control col-150 pull-left mleft-10" placeholder="/context">
-                                <input type="file" id="appFile2" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
+                                <input type="text" id="context2" name="context2" class="form-control col-150 pull-left mleft-10" placeholder="/context">
+                                <input type="file" id="appFile2" name="appFile2" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
                                 <p class="form-control-static app-file-detail2 maybe-hide"><span id="fileInfo2"></span>
                                     <br><span class="file-date" id="fileDate2"></span>
                                 </p>
@@ -172,7 +195,6 @@ $(function(){
                                 <input type="hidden" name="filePath2"/>
                                 <input type="hidden" name="fileLength2"/>
                                 <input type="hidden" name="fileDate2"/>
-
                             </div>
                         </div>
                         <div class="form-group">
