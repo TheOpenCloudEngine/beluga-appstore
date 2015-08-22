@@ -16,4 +16,6 @@ public interface UserMapper {
     public void truncate();
 
     public List<User> selectInOrganization(String orgId);
+
+    public void delete(@Param("id") String id);
 }

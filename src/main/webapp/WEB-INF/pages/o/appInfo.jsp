@@ -17,6 +17,23 @@
         });
     }
 
+    $(function(){
+        $("#scaleConfirmButton").on("click", function(){
+
+            $.ajax({
+                url : "/api/apps/${app.id}/scale/" + $("#scaleSize").val(),
+                type : "POST",
+                success : function() {
+                    alert("Scaling started : " + $("#scaleSize").val());
+                },
+                error : function(xhr) {
+                    alert("Scale fails.");
+                }
+            });
+        });
+
+    });
+
 </script>
 <div class="container" id="content">
     <div class="row">
@@ -35,7 +52,7 @@
                 <br>
                 <div class="box" >
                     <div class="pull-right">
-                        <a href="#" class="btn btn-lg btn-primary outline">Scale</a>
+                        <button type="button" class="btn btn-lg btn-primary outline" data-toggle="modal" data-target="#scaleModal">Scale</button>
                         &nbsp; <a href="http://${app.id}.${domain}" target="_pop_${app.id}" class="btn btn-lg btn-default">Launch</a>
                         &nbsp; <a href="javascript:deployApp()" class="btn btn-lg btn-primary outline">Deploy App</a>
                         &nbsp; <a href="${app.id}" class="btn btn-lg btn-default"><i class="glyphicon glyphicon-refresh"></i></a>
@@ -97,13 +114,15 @@
                         <div class="col-md-9 col-sm-9">
                             <p class="form-control-static">Context : ${app.appContext}
                                 <br>${app.appFile} ( ${app.appFileLengthDisplay} )
-                                <br><i class="file-date">${app.appFileDate}</i></p>
+                                <br><i class="file-date">${app.appFileDate}</i>
+                            </p>
                         </div>
                         <c:if test="${not empty app.appFile2}">
                         <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
                             <p class="form-control-static">Context : ${app.appContext2}
                                 <br>${app.appFile2} ( ${app.appFileLengthDisplay2} )
-                                <br><i class="file-date">${app.appFileDate2}</i></p>
+                                <br><i class="file-date">${app.appFileDate2}</i>
+                            </p>
                         </div>
                         </c:if>
                     </div>
@@ -202,5 +221,31 @@
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="scaleModal" tabindex="-1" role="dialog" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">App scale</h4>
+            </div>
+            <div class="modal-body">
+                <p>This will scale-in or scale-out app.</p>
+                <p><strong class="text-primary">Scale app "${app.id}".</strong></p>
+                <select id="scaleSize" class="form-control">
+                    <option value="1">1</option>
+                    <option value="2">2</option>
+                    <option value="3">3</option>
+                    <option value="4">4</option>
+                    <option value="5">5</option>
+                </select>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-primary outline" id="scaleConfirmButton">Confirm</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <%@include file="bottom.jsp" %>

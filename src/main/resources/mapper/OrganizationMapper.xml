@@ -18,4 +18,9 @@
     <delete id="truncate">
         truncate table organization
     </delete>
+
+    <delete id="delete">
+        delete from organization
+        where id = #{id}
+    </delete>
 </mapper>

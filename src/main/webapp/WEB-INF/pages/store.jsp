@@ -39,7 +39,9 @@
                                     <div class="app-provider">${app.orgName}</div>
                                     <div class="app-date">${app.applyDate}&nbsp;</div>
                                     <div class="app-button" align="right">
-                                        <a href="javascript:subscribeApp('${app.id}')" class="btn btn-primary outline">Subscribe</a>
+                                        <c:if test="${not empty sessionScope._user}">
+                                            <a href="javascript:subscribeApp('${app.id}')" class="btn btn-primary outline">Subscribe</a>
+                                        </c:if>
                                     </div>
                                 </div>
                             </div>

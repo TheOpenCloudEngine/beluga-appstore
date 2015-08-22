@@ -1,23 +1,22 @@
 package org.opencloudengine.serviceportal.controller;
 
-import org.opencloudengine.serviceportal.db.entity.*;
+import org.opencloudengine.serviceportal.db.entity.App;
+import org.opencloudengine.serviceportal.db.entity.Organization;
+import org.opencloudengine.serviceportal.db.entity.User;
 import org.opencloudengine.serviceportal.service.AppManageService;
-import org.opencloudengine.serviceportal.service.GarudaService;
 import org.opencloudengine.serviceportal.service.MemberService;
-import org.opencloudengine.serviceportal.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import javax.ws.rs.PathParam;
-import java.io.IOException;
-import java.net.URLDecoder;
 import java.util.List;
 
 /**
@@ -98,28 +97,27 @@ public class MainController {
         return mav;
     }
 
-    @RequestMapping(value = "/user/{userId}/delete", method = RequestMethod.POST)
-    public ModelAndView deleteUser(@PathVariable String userId, HttpSession session) {
+    @RequestMapping(value = "/account/{userId}/delete", method = RequestMethod.POST)
+    public ModelAndView deleteAccount(@PathVariable String userId, HttpSession session) {
         ModelAndView mav = new ModelAndView();
 
-        //TODO ajax로 관리자여부를 확인하여 관리자이면 삭제가 안되도록. 다른 사람을 관리자로 먼저 지정필요.
+        // 관리자이면 삭제가 안됨. 다른 사람을 관리자로 먼저 지정필요.
         User user = memberService.getUser(userId);
         if(user.getType().equals(User.ADMIN_TYPE)) {
-
-            //TODO 불가메시지.
-            return null;
+            //삭제 불가메시지.
+            mav.setViewName("redirect:/o/profile?message=Cannot delete admin account.");
+        } else {
+            memberService.deleteUser(userId);
+            session.invalidate();
+            mav.setViewName("redirect:/login");
         }
-
-//        memberService.deleteUser(userId);
-        session.invalidate();
-        mav.setViewName("redirect:/login");
         return mav;
     }
 
     @RequestMapping(value = "/organization/{orgId}/delete", method = RequestMethod.POST)
     public ModelAndView deleteOrganization(@PathVariable String orgId, HttpSession session) {
         ModelAndView mav = new ModelAndView();
-//        memberService.deleteOrganization(orgId);
+        memberService.deleteOrganization(orgId);
         session.invalidate();
         mav.setViewName("redirect:/login");
         return mav;

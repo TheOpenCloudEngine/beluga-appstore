@@ -55,7 +55,7 @@ $(function() {
         <div class="col-md-12">
 
             <div class="page-header">
-                <h1 id="tables">EDI</h1>
+                <h1 id="tables">${app.name}</h1>
             </div>
 
             <form id="app-edit-form" action="/o/apps/${app.id}/edit" method="POST">

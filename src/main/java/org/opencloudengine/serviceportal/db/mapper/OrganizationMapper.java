@@ -11,4 +11,5 @@ public interface OrganizationMapper {
 
     public void truncate();
 
+	public void delete(@Param("id") String id);
 }

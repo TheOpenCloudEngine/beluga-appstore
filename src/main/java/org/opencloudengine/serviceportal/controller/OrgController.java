@@ -1,11 +1,13 @@
 package org.opencloudengine.serviceportal.controller;
 
-import org.opencloudengine.serviceportal.db.entity.*;
+import org.opencloudengine.serviceportal.db.entity.App;
+import org.opencloudengine.serviceportal.db.entity.Organization;
+import org.opencloudengine.serviceportal.db.entity.ResourcePlan;
+import org.opencloudengine.serviceportal.db.entity.User;
 import org.opencloudengine.serviceportal.service.AppManageService;
 import org.opencloudengine.serviceportal.service.GarudaService;
 import org.opencloudengine.serviceportal.service.MemberService;
 import org.opencloudengine.serviceportal.util.DateUtil;
-import org.opencloudengine.serviceportal.util.JsonUtil;
 import org.opencloudengine.serviceportal.util.ParseUtil;
 import org.opencloudengine.serviceportal.util.SizeUnit;
 import org.slf4j.Logger;
@@ -16,13 +18,10 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
-import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.NotFoundException;
-import java.io.*;
 import java.util.List;
 import java.util.Map;
 
@@ -129,8 +128,10 @@ public class OrgController {
     }
 
     @RequestMapping(value = "/apps/{appId}/edit", method = RequestMethod.POST)
-    public ModelAndView appEditUpdate(@PathVariable String appId) {
-
+    public ModelAndView appEditUpdate(@PathVariable String appId, @RequestParam Map<String, Object> data, HttpSession session) {
+        logger.debug("appNew data : {}", data);
+        User user = getUser(session);
+        String orgId = user.getOrgId();
 
         //TODO db에 업데이트.
 

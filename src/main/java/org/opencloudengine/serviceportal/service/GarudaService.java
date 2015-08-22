@@ -6,12 +6,10 @@ import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 import org.opencloudengine.serviceportal.db.entity.App;
 import org.opencloudengine.serviceportal.db.entity.Resources;
-import org.opencloudengine.serviceportal.db.mapper.AppMapper;
 import org.opencloudengine.serviceportal.entity.AppApplyRequest;
 import org.opencloudengine.serviceportal.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
@@ -19,7 +17,6 @@ import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.GenericType;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
@@ -64,6 +61,20 @@ public class GarudaService {
 
         Resources resources = null;
         return resources;
+    }
+    public boolean updateApp(String clusterId, App app) throws Exception {
+        String appId = app.getId();
+        String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
+        Client client = ClientBuilder.newClient();
+        WebTarget webTarget = client.target(PROTOCOL + garudaEndPoint).path(uri);
+        AppApplyRequest request = new AppApplyRequest(app);
+        Response response = webTarget.request(MediaType.APPLICATION_JSON).put(Entity.json(request));
+        if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
+            return true;
+        } else {
+            String entity = response.readEntity(String.class);
+            throw new Exception(entity);
+        }
     }
 
     public boolean deployApp(String clusterId, App app) throws Exception {

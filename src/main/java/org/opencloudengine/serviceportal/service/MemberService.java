@@ -52,4 +52,11 @@ public class MemberService {
         userMapper.insert(user);
     }
 
+    public void deleteUser(String userId) {
+        userMapper.delete(userId);
+    }
+
+    public void deleteOrganization(String orgId) {
+        orgMapper.delete(orgId);
+    }
 }

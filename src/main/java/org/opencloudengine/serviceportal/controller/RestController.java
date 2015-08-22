@@ -39,7 +39,7 @@ public class RestController {
     private GarudaService garudaService;
 
     @RequestMapping(value = "/api/apps/{appId}", method = RequestMethod.HEAD)
-    public void apps(@PathVariable String appId, HttpSession session, HttpServletResponse response) throws IOException {
+    public void apps(@PathVariable String appId, HttpServletResponse response) throws IOException {
         App app = appManageService.getApp(appId);
         if (app != null) {
             response.setStatus(200);
@@ -89,9 +89,31 @@ public class RestController {
                 response.sendError(404, "no such app : " + appId);
             }
         } catch (Exception e) {
-//            logger.error("", e);
-//            response.sendError(500, "error : " + e.getMessage());
-//            response.sendError(500, "error : " + e.getMessage());
+            response.setStatus(500);
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().print(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/api/apps/{appId}/scale/{scale}", method = RequestMethod.POST)
+    public void appScale(@PathVariable String appId, @PathVariable String scale, HttpServletResponse response) throws Exception {
+
+        try {
+            int scaleInt = Integer.parseInt(scale);
+            App app = new App();
+            app.setId(appId);
+            app.setScale(scaleInt);
+            if (app != null) {
+                if (garudaService.updateApp(clusterId, app)) {
+                    response.setStatus(200);
+                    return;
+                } else {
+                    response.sendError(500, "error : " + appId);
+                }
+            } else {
+                response.sendError(404, "no such app : " + appId);
+            }
+        } catch (Exception e) {
             response.setStatus(500);
             response.setCharacterEncoding("utf-8");
             response.getWriter().print(e.getMessage());
@@ -132,8 +154,16 @@ public class RestController {
         }
     }
 
+    /*
+    *
+    * TODO 로그인하면 결과로 사용가능 리소스정보를 넘겨준다.
+    * */
     @RequestMapping(value = "/api/users", method = RequestMethod.POST)
-    public void loginAPI(@RequestBody String appId, @RequestBody String id, @RequestBody String password, HttpServletResponse response) throws IOException {
+    public void loginAPI(@RequestBody String json, HttpServletResponse response) throws IOException {
+
+        String appId = null;
+        String id = null;
+        String password = null;
 
         User user = new User();
         user.setId(id);

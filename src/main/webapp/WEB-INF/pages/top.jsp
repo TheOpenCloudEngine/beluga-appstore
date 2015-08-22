@@ -41,15 +41,20 @@
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes"><c:out value="${sessionScope._user.id}" /><span class="caret"></span></a>
-                    <ul class="dropdown-menu" aria-labelledby="themes">
-                        <li><a href="/o/profile">My Profile</a></li>
-                        <li><a href="/o/organization">Organization</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/logout">Log Out</a></li>
-                    </ul>
-                </li>
+                <c:if test="${empty sessionScope._user}">
+                    <li><a href="/login" class="btn btn-primary outline">Log In</a></li>
+                </c:if>
+                <c:if test="${not empty sessionScope._user}">
+                    <li class="dropdown">
+                        <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes"><c:out value="${sessionScope._user.id}" /><span class="caret"></span></a>
+                        <ul class="dropdown-menu" aria-labelledby="themes">
+                            <li><a href="/o/profile">My Profile</a></li>
+                            <li><a href="/o/organization">Organization</a></li>
+                            <li class="divider"></li>
+                            <li><a href="/logout">Log Out</a></li>
+                        </ul>
+                    </li>
+                </c:if>
                 <%--<c:if test="${sessionScope._user.type == 'A'}" >--%>
                     <%--<li><a href="/o/settings" class="btn btn-default"><i class="glyphicon glyphicon-cog"></i></a></li>--%>
                 <%--</c:if>--%>

@@ -25,6 +25,11 @@
         )
     </insert>
 
+    <delete id="delete">
+        delete from user
+        where id = #{id}
+    </delete>
+
     <delete id="truncate">
         truncate table user
     </delete>
