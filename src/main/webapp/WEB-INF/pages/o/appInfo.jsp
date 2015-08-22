@@ -251,6 +251,7 @@
                 <p>This will scale-in or scale-out app.</p>
                 <p><strong class="text-primary">Scale app "${app.id}".</strong></p>
                 <select id="scaleSize" class="form-control">
+                    <option value="0" <c:if test="${app.scale == 0}">selected</c:if>>0</option>
                     <option value="1" <c:if test="${app.scale == 1}">selected</c:if>>1</option>
                     <option value="2" <c:if test="${app.scale == 2}">selected</c:if>>2</option>
                     <option value="3" <c:if test="${app.scale == 3}">selected</c:if>>3</option>

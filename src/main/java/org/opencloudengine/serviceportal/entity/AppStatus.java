@@ -6,7 +6,7 @@ package org.opencloudengine.serviceportal.entity;
 public class AppStatus {
     public static final String STATUS_OK = "OK";
     public static final String STATUS_OFF = "OFF";
-    public static final String STATUS_DEPLOY = "DEPLOY";
+    public static final String STATUS_SCALE = "SCALE";
     private String status;
     private String elapsed;
     private String scale;

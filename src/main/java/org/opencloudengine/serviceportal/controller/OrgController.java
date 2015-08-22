@@ -88,7 +88,7 @@ public class OrgController {
         if(appList != null) {
             for(App app : appList) {
                 totalCpus += app.getCpus();
-                totalMemory += app.getMemory();
+                totalMemory += app.getMemory() * app.getScale();
             }
         }
         String totalMemoryString = ParseUtil.toHumanSizeOverMB(totalMemory * 1000000L);

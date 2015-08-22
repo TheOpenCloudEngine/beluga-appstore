@@ -46,11 +46,29 @@
     </insert>
 
     <update id="update" parameterType="org.opencloudengine.serviceportal.db.entity.App">
-        UPDATE TABLE apps VALUES (
-        `id`, `name`, orgId
-        ) VALUES(
-        #{id}, #{name}
-        )
+        UPDATE apps
+        SET `name`=#{name},
+            description=#{description},
+            appContext=#{appContext},
+            appFile=#{appFile},
+            appFilePath=#{appFilePath},
+            appFileLength=#{appFileLength},
+            appFileDate=#{appFileDate},
+            appContext2=#{appContext2},
+            appFile2=#{appFile2},
+            appFilePath2=#{appFilePath2},
+            appFileLength2=#{appFileLength2},
+            appFileDate2=#{appFileDate2},
+            environment=#{environment},
+            cpus=#{cpus},
+            memory=#{memory},
+            `scale`=#{scale},
+            resources=#{resources},
+            autoScaleOutUse=#{autoScaleOutUse},
+            autoScaleInUse=#{autoScaleInUse},
+            autoScaleOutConf=#{autoScaleOutConf},
+            autoScaleInConf=#{autoScaleInConf}
+        WHERE id = #{id}
     </update>
 
     <select id="getGrant" parameterType="map" resultType="int">

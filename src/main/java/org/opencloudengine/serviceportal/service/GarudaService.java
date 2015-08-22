@@ -69,8 +69,7 @@ public class GarudaService {
         return resources;
     }
 
-    public JsonNode getApp(String clusterId, String appId) {
-        String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
+    private JsonNode getGarudaResponse(String uri, String clusterId, String appId) {
         Client client = ClientBuilder.newClient();
         WebTarget webTarget = client.target(PROTOCOL + garudaEndPoint).path(uri);
         Response response = webTarget.request(MediaType.APPLICATION_JSON).get();
@@ -88,12 +87,13 @@ public class GarudaService {
         }
     }
     public AppStatus getAppStatus(String clusterId, String appId) {
-        JsonNode root = getApp(clusterId, appId);
-        JsonNode app = root.get("app");
-        if(app == null) {
+        String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
+        JsonNode root = getGarudaResponse(uri, clusterId, appId);
+        if(root == null || !root.has("app")) {
             //존재하지 않음.
             return new AppStatus("-", "-", "-");
         }
+        JsonNode app = root.get("app");
         int instances = app.get("instances").asInt();
         int running = app.get("tasksRunning").asInt();
         String dateString = app.get("version").asText();
@@ -110,7 +110,7 @@ public class GarudaService {
             status = AppStatus.STATUS_OK;
             scale = String.valueOf(instances);
         } else if(running < instances) {
-            status = AppStatus.STATUS_DEPLOY;
+            status = AppStatus.STATUS_SCALE;
             scale = running + " / " + instances;
         }
 

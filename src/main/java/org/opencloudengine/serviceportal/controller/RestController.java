@@ -115,6 +115,9 @@ public class RestController {
             app.setScale(scaleInt);
             if (app != null) {
                 if (garudaService.updateApp(clusterId, app)) {
+                    App dbApp = appManageService.getApp(appId);
+                    dbApp.setScale(scaleInt);
+                    appManageService.updateApp(dbApp);
                     response.setStatus(200);
                     return;
                 } else {
