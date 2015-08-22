@@ -24,6 +24,7 @@
                 url : "/api/apps/${app.id}/scale/" + $("#scaleSize").val(),
                 type : "POST",
                 success : function() {
+                    $("#scaleModal").modal('hide');
                     alert("Scaling started : " + $("#scaleSize").val());
                 },
                 error : function(xhr) {
@@ -250,15 +251,15 @@
                 <p>This will scale-in or scale-out app.</p>
                 <p><strong class="text-primary">Scale app "${app.id}".</strong></p>
                 <select id="scaleSize" class="form-control">
-                    <option value="1">1</option>
-                    <option value="2">2</option>
-                    <option value="3">3</option>
-                    <option value="4">4</option>
-                    <option value="5">5</option>
+                    <option value="1" <c:if test="${app.scale == 1}">selected</c:if>>1</option>
+                    <option value="2" <c:if test="${app.scale == 2}">selected</c:if>>2</option>
+                    <option value="3" <c:if test="${app.scale == 3}">selected</c:if>>3</option>
+                    <option value="4" <c:if test="${app.scale == 4}">selected</c:if>>4</option>
+                    <option value="5" <c:if test="${app.scale == 5}">selected</c:if>>5</option>
                 </select>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal">Close</button>
                 <button type="button" class="btn btn-primary outline" id="scaleConfirmButton">Confirm</button>
             </div>
         </div><!-- /.modal-content -->

@@ -43,7 +43,7 @@ public class DateUtil {
         } else if(hours != 0){
             return sb.append(hours).append("h").append(" ").append(minutes).append("m").toString();
         } else if(minutes != 0){
-            return sb.append(minutes).append("m").append(seconds).append("s").toString();
+            return sb.append(minutes).append("m").append(" ").append(seconds).append("s").toString();
         } else if(seconds != 0){
             return sb.append(seconds).append("s").toString();
         } else {
@@ -67,7 +67,11 @@ public class DateUtil {
     }
 
     public static long getElapsedTime(Date startTime) {
-        return new Date().getTime() - startTime.getTime();
+        long diff = new Date().getTime() - startTime.getTime();
+        if(diff < 0) {
+            diff = 0;
+        }
+        return diff;
     }
 
 }
