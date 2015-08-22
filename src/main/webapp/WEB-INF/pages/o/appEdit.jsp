@@ -3,36 +3,43 @@
          pageEncoding="utf-8" %>
 <% String menuId = "manage"; %>
 <%@include file="top.jsp" %>
+
+<script src="/resources/js/appEdit.js"></script>
 <script>
 $(function() {
-    $("#appFile").on("change", function (event) {
-        var formData = new FormData();
-        formData.append("file", $(event.delegateTarget)[0].files[0]);
-//        console.log("target = ", $( event.delegateTarget )[0].files[0]);
-        $.ajax({
-            url: '/api/apps/upload',
-            processData: false,
-            contentType: false,
-            data: formData,
-            type: 'POST',
-            dataType: 'json',
-            success: function (result) {
-                console.log(result.name, result.length, result.date);
-                $("#fileInfo").text(result.name + " (" + toHumanSize(result.length) + ")");
-                $("#fileDate").text(result.date);
-                $("input[name=fileName]").val(result.name);
-                $("input[name=filePath]").val(result.path);
-                $("input[name=fileLength]").val(result.length);
-                $("input[name=fileDate]").val(result.date);
-            },
-            error: function (xhr, status, e) {
-                console.log("upload error = ", e);
-                alert("File upload failed :" + e);
-            }
-        });
-    });
 
-    $("#app-edit-form").validate();
+    $("#app-edit-form").validate({
+        onkeyup: function(element) {
+            var element_id = $(element).attr('id');
+            if (this.settings.rules[element_id] && this.settings.rules[element_id].onkeyup != false) {
+                $.validator.defaults.onkeyup.apply(this, arguments);
+            }
+        },
+        rules: {
+            appFile1: {
+                required: function(element){
+                    return $("#fileName1").val().length == 0;
+                }
+            },
+            context1: {
+                required: true
+            },
+            appFile2 : {
+                required: function(element){
+                    return $("#context2").val().length > 0 && $("#fileName2").val().length == 0;
+                }
+            },
+            context2 : {
+                required: function(element){
+                    return $("#appFile2").val().length > 0;
+                }
+            }
+        },
+        messages: {
+            appFile1: "Upload file is required.",
+            appFile2: "Upload file is required."
+        }
+    });
 
     $("#deleteAppButton").on("click", function(){
         $.ajax({
@@ -61,7 +68,7 @@ $(function() {
             <form id="app-edit-form" action="/o/apps/${app.id}/edit" method="POST">
                 <div class="row col-md-12">
                     <a href="/o/manage" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
-                    &nbsp;<a href="appInfo" class="btn btn-primary outline">Save all changes</a>
+                    &nbsp;<button type="submit" class="btn btn-primary outline">Save all changes</button>
                 </div>
                 <div class="row col-md-12">
                     <input type="hidden" name="" value="" />
@@ -88,13 +95,32 @@ $(function() {
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">App file:</label>
                             <div class="col-md-9 col-sm-9">
-                                <p class="form-control-static"><span id="fileInfo">${app.appFile} ( ${app.appFileLengthDisplay} )</span>
-                                    <br><span class="file-date" id="fileDate">${app.appFileDate}</span></p>
-                                <input type="file" id="appFile" class="form-control-static"/>
-                                <input type="hidden" name="fileName"/>
-                                <input type="hidden" name="filePath"/>
-                                <input type="hidden" name="fileLength"/>
-                                <input type="hidden" name="fileDate"/>
+                                <!--file1-->
+                                <p class="form-control-static pull-left">Context</p>
+                                <input type="text" id="context1" name="context1" class="form-control col-150 pull-left mleft-10" placeholder="/context" value="${app.appContext}">
+                                <input type="file" id="appFile1" name="appFile1" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
+                                <p class="form-control-static app-file-detail1 <c:if test="${empty app.appFile}">maybe-hide</c:if>"><span id="fileInfo1">${app.appFile} ( ${app.appFileLengthDisplay} )</span>
+                                    <br><span class="file-date" id="fileDate1">${app.appFileDate}</span>
+                                </p>
+                                <!--// file1-->
+                                <p/>
+                                <!--file2-->
+                                <p class="form-control-static pull-left">Context</p>
+                                <input type="text" id="context2" name="context2" class="form-control col-150 pull-left mleft-10" placeholder="/context" value="${app.appContext2}">
+                                <input type="file" id="appFile2" name="appFile2" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
+                                <p class="form-control-static app-file-detail2 <c:if test="${empty app.appFile2}">maybe-hide</c:if>"><span id="fileInfo2">${app.appFile2} ( ${app.appFileLengthDisplay2} )</span>
+                                    <br><span class="file-date" id="fileDate2">${app.appFileDate2}</span>
+                                </p>
+                                <!--// file2-->
+                                <!--hidden info-->
+                                <input type="hidden" id="fileName1" name="fileName1" value="${app.appFile}"/>
+                                <input type="hidden" name="filePath1" value="${app.appFilePath}"/>
+                                <input type="hidden" name="fileLength1" value="${app.appFileLength}"/>
+                                <input type="hidden" name="fileDate1" value="${app.appFileDate}"/>
+                                <input type="hidden" id="fileName2" name="fileName2" value="${app.appFile2}"/>
+                                <input type="hidden" name="filePath2" value="${app.appFilePath2}"/>
+                                <input type="hidden" name="fileLength2" value="${app.appFileLength2}"/>
+                                <input type="hidden" name="fileDate2" value="${app.appFileDate2}"/>
                             </div>
                         </div>
                         <div class="form-group">
@@ -102,26 +128,26 @@ $(function() {
                             <div class="col-md-9 col-sm-9">
                                 <select name="environment" class="form-control required">
                                     <option value="">:: Select ::</option>
-                                    <option value="java7_tomcat7">java7_tomcat7</option>
-                                    <option value="java7_wildfly8.2">java7_wildfly8.2</option>
-                                    <option value="php5_apache2">php5_apache2</option>
+                                    <option value="java7_tomcat7" <c:if test="${app.environment == 'java7_tomcat7'}">selected</c:if>>java7_tomcat7</option>
+                                    <option value="java7_wildfly8.2" <c:if test="${app.environment == 'java7_wildfly8.2'}">selected</c:if>>java7_wildfly8.2</option>
+                                    <option value="php5_apache2" <c:if test="${app.environment == 'php5_apache2'}">selected</c:if>>php5_apache2</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">CPUs:</label>
                             <div class="col-md-9 col-sm-9">
-                                <select  name="cpus" class="form-control col-100 required">
-                                    <option value="0.1">0.1</option>
-                                    <option value="0.2">0.2</option>
-                                    <option value="0.3">0.3</option>
-                                    <option value="0.4">0.4</option>
-                                    <option value="0.5">0.5</option>
-                                    <option value="0.6">0.6</option>
-                                    <option value="0.7">0.7</option>
-                                    <option value="0.8">0.8</option>
-                                    <option value="0.9">0.9</option>
-                                    <option value="1.0">1.0</option>
+                                <select name="cpus" class="form-control col-100 required">
+                                    <option value="0.1" <c:if test="${app.cpus == 0.1}">selected</c:if>>0.1</option>
+                                    <option value="0.2" <c:if test="${app.cpus == 0.2}">selected</c:if>>0.2</option>
+                                    <option value="0.3" <c:if test="${app.cpus == 0.3}">selected</c:if>>0.3</option>
+                                    <option value="0.4" <c:if test="${app.cpus == 0.4}">selected</c:if>>0.4</option>
+                                    <option value="0.5" <c:if test="${app.cpus == 0.5}">selected</c:if>>0.5</option>
+                                    <option value="0.6" <c:if test="${app.cpus == 0.6}">selected</c:if>>0.6</option>
+                                    <option value="0.7" <c:if test="${app.cpus == 0.7}">selected</c:if>>0.7</option>
+                                    <option value="0.8" <c:if test="${app.cpus == 0.8}">selected</c:if>>0.8</option>
+                                    <option value="0.9" <c:if test="${app.cpus == 0.9}">selected</c:if>>0.9</option>
+                                    <option value="1.0" <c:if test="${app.cpus == 1.0}">selected</c:if>>1.0</option>
                                 </select>
                             </div>
                         </div>
@@ -129,14 +155,14 @@ $(function() {
                             <label class="col-md-3 col-sm-3 control-label">Memory:</label>
                             <div class="col-md-9 col-sm-9">
                                 <select name="memory" class="form-control col-100 required">
-                                    <option value="300">300MB</option>
-                                    <option value="400">400MB</option>
-                                    <option value="500">500MB</option>
-                                    <option value="600">600MB</option>
-                                    <option value="700">700MB</option>
-                                    <option value="800">800MB</option>
-                                    <option value="900">900MB</option>
-                                    <option value="1000">1GB</option>
+                                    <option value="300" <c:if test="${app.memory == 300}">selected</c:if>>300MB</option>
+                                    <option value="400" <c:if test="${app.memory == 400}">selected</c:if>>400MB</option>
+                                    <option value="500" <c:if test="${app.memory == 500}">selected</c:if>>500MB</option>
+                                    <option value="600" <c:if test="${app.memory == 600}">selected</c:if>>600MB</option>
+                                    <option value="700" <c:if test="${app.memory == 700}">selected</c:if>>700MB</option>
+                                    <option value="800" <c:if test="${app.memory == 800}">selected</c:if>>800MB</option>
+                                    <option value="900" <c:if test="${app.memory == 900}">selected</c:if>>900MB</option>
+                                    <option value="1000" <c:if test="${app.memory == 1000}">selected</c:if>>1GB</option>
                                 </select>
                             </div>
                         </div>
@@ -144,10 +170,11 @@ $(function() {
                             <label class="col-md-3 col-sm-3 control-label">Scale:</label>
                             <div class="col-md-9 col-sm-9">
                                 <select name="scale"class="form-control col-100 required">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
+                                    <option value="1" <c:if test="${app.scale == 1}">selected</c:if>>1</option>
+                                    <option value="2" <c:if test="${app.scale == 2}">selected</c:if>>2</option>
+                                    <option value="3" <c:if test="${app.scale == 3}">selected</c:if>>3</option>
+                                    <option value="4" <c:if test="${app.scale == 4}">selected</c:if>>4</option>
+                                    <option value="5" <c:if test="${app.scale == 5}">selected</c:if>>4</option>
                                 </select>
                             </div>
                         </div>

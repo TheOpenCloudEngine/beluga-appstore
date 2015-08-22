@@ -29,14 +29,14 @@ public class App {
     private Long appFileLength;
     private String appFileLengthDisplay; // human readable 수치.
     private String appFileDate;
-    private char appFileUpdated;
+    private Character appFileUpdated;
     private String appContext2;
     private String appFile2;
     private String appFilePath2;
     private Long appFileLength2;
     private String appFileLengthDisplay2; // human readable 수치.
     private String appFileDate2;
-    private char appFileUpdated2;
+    private Character appFileUpdated2;
     private String environment;
     private Float cpus;
     private Integer memory;
@@ -56,7 +56,7 @@ public class App {
     private AutoScaleInConfig autoScaleInConfig;
 
     /* Apply state */
-    private char applied;
+    private Character applied;
     private String applyDate;
 
 
@@ -148,11 +148,11 @@ public class App {
         this.appFileDate = appFileDate;
     }
 
-    public char getAppFileUpdated() {
+    public Character getAppFileUpdated() {
         return appFileUpdated;
     }
 
-    public void setAppFileUpdated(char appFileUpdated) {
+    public void setAppFileUpdated(Character appFileUpdated) {
         this.appFileUpdated = appFileUpdated;
     }
 
@@ -204,11 +204,11 @@ public class App {
         this.appFileDate2 = appFileDate2;
     }
 
-    public char getAppFileUpdated2() {
+    public Character getAppFileUpdated2() {
         return appFileUpdated2;
     }
 
-    public void setAppFileUpdated2(char appFileUpdated2) {
+    public void setAppFileUpdated2(Character appFileUpdated2) {
         this.appFileUpdated2 = appFileUpdated2;
     }
 
@@ -345,11 +345,11 @@ public class App {
         return autoScaleInConfig;
     }
 
-    public char getApplied() {
+    public Character getApplied() {
         return applied;
     }
 
-    public void setApplied(char applied) {
+    public void setApplied(Character applied) {
         this.applied = applied;
     }
 
@@ -383,31 +383,31 @@ public class App {
     }
 
     public static class AutoScaleOutConfig {
-        private int cpuHigher;
-        private int cpuHigherDuring;
-        private int addScale;
+        private Integer cpuHigher;
+        private Integer cpuHigherDuring;
+        private Integer addScale;
 
-        public int getCpuHigher() {
+        public Integer getCpuHigher() {
             return cpuHigher;
         }
 
-        public void setCpuHigher(int cpuHigher) {
+        public void setCpuHigher(Integer cpuHigher) {
             this.cpuHigher = cpuHigher;
         }
 
-        public int getCpuHigherDuring() {
+        public Integer getCpuHigherDuring() {
             return cpuHigherDuring;
         }
 
-        public void setCpuHigherDuring(int cpuHigherDuring) {
+        public void setCpuHigherDuring(Integer cpuHigherDuring) {
             this.cpuHigherDuring = cpuHigherDuring;
         }
 
-        public int getAddScale() {
+        public Integer getAddScale() {
             return addScale;
         }
 
-        public void setAddScale(int addScale) {
+        public void setAddScale(Integer addScale) {
             this.addScale = addScale;
         }
 
@@ -415,22 +415,22 @@ public class App {
 
     public static class AutoScaleInConfig {
 
-        private int cpuLower;
-        private int cpuLowerDuring;
+        private Integer cpuLower;
+        private Integer cpuLowerDuring;
 
-        public int getCpuLower() {
+        public Integer getCpuLower() {
             return cpuLower;
         }
 
-        public void setCpuLower(int cpuLower) {
+        public void setCpuLower(Integer cpuLower) {
             this.cpuLower = cpuLower;
         }
 
-        public int getCpuLowerDuring() {
+        public Integer getCpuLowerDuring() {
             return cpuLowerDuring;
         }
 
-        public void setCpuLowerDuring(int cpuLowerDuring) {
+        public void setCpuLowerDuring(Integer cpuLowerDuring) {
             this.cpuLowerDuring = cpuLowerDuring;
         }
 

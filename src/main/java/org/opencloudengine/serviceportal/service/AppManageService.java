@@ -4,6 +4,7 @@ import org.opencloudengine.serviceportal.db.entity.App;
 import org.opencloudengine.serviceportal.db.entity.ResourcePlan;
 import org.opencloudengine.serviceportal.db.entity.Resources;
 import org.opencloudengine.serviceportal.db.mapper.AppMapper;
+import org.opencloudengine.serviceportal.util.ParseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import java.io.*;
 import java.net.URLDecoder;
 import java.util.Iterator;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by swsong on 2015. 8. 17..
@@ -38,12 +40,130 @@ public class AppManageService {
         return appMapper.listOuterApp(orgId);
     }
 
+    public App getApp(String appId) {
+        return appMapper.select(appId);
+    }
+
+    public String updateApp(Map<String, Object> data) {
+        App app = parseApp(data);
+        appMapper.update(app);
+        return app.getId();
+    }
+
     public void updateApp(App app) {
         appMapper.update(app);
     }
 
-    public App getApp(String appId) {
-        return appMapper.select(appId);
+    private App parseApp(Map<String, Object> data) {
+        String id = (String) data.get("id");
+        String orgId = (String) data.get("orgId");
+        String name = (String) data.get("name");
+        String description = (String) data.get("description");
+
+        String appContext = (String) data.get("context1");
+        String appFile = (String) data.get("fileName1");
+        String appFilePath = (String) data.get("filePath1");
+        String appFileLength = (String) data.get("fileLength1");
+        String appFileDate = (String) data.get("fileDate1");
+
+        String appContext2 = (String) data.get("context2");
+        String appFile2 = (String) data.get("fileName2");
+        String appFilePath2 = (String) data.get("filePath2");
+        String appFileLength2 = (String) data.get("fileLength2");
+        String appFileDate2 = (String) data.get("fileDate2");
+        if(appFile2.length() == 0 || appFile2.length() == 0) {
+            appContext2 = null;
+        }
+
+        String environment = (String) data.get("environment");
+        String cpus = (String) data.get("cpus");
+        String memory = (String) data.get("memory");
+        String scale = (String) data.get("scale");
+
+        Integer dbResourceSize = ParseUtil.parseInt(data.get("db_resource_size"));
+        Integer ftpResourceSize = ParseUtil.parseInt(data.get("ftp_resource_size"));
+
+        String resources = (String) data.get("resources");
+        String autoScaleOutUse = (String) data.get("autoScaleOutUse");
+        Integer cpuHigher = ParseUtil.parseInt(data.get("cpuHigher"));
+        Integer cpuHigherDuring = ParseUtil.parseInt(data.get("cpuHigherDuring"));
+        Integer autoScaleOutSize = ParseUtil.parseInt(data.get("autoScaleOutSize"));
+        String autoScaleInUse = (String) data.get("autoScaleInUse");
+        Integer cpuLower = ParseUtil.parseInt(data.get("cpuLower"));
+        Integer cpuLowerDuring = ParseUtil.parseInt(data.get("cpuLowerDuring"));
+
+        App app = new App();
+        app.setId(id);
+        app.setOrgId(orgId);
+        app.setName(name);
+        app.setDescription(description);
+        //app file1
+        app.setAppContext(appContext);
+        app.setAppFile(appFile);
+        app.setAppFilePath(appFilePath);
+        app.setAppFileLength(ParseUtil.parseLong(appFileLength));
+        app.setAppFileDate(appFileDate);
+        //app file2
+        if(appContext2 != null) {
+            app.setAppContext2(appContext2);
+            app.setAppFile2(appFile2);
+            app.setAppFilePath2(appFilePath2);
+            app.setAppFileLength2(ParseUtil.parseLong(appFileLength2));
+            app.setAppFileDate2(appFileDate2);
+        }
+        //environment
+        app.setEnvironment(environment);
+        app.setCpus(ParseUtil.parseFloat(cpus));
+        app.setMemory(ParseUtil.parseInt(memory));
+        app.setScale(ParseUtil.parseInt(scale));
+
+        /* resources plan */
+        App.ResourcesPlan resourcesPlan = new App.ResourcesPlan();
+        String dbPrefix = "db";
+        String ftpPrefix = "ftp";
+        String optionSuffix = "_option";
+        for (int i = 0; i < dbResourceSize; i++){
+            String key = dbPrefix + i;
+            String dbId = (String) data.get(key);
+            if(dbId != null) {
+                String optionKey = key + optionSuffix;
+                String option = (String) data.get(optionKey);
+                ResourcePlan p = new ResourcePlan(dbId, option);
+                resourcesPlan.addPlan(p);
+            }
+        }
+        for (int i = 0; i < ftpResourceSize; i++){
+            String key = ftpPrefix + i;
+            String ftpId = (String) data.get(key);
+            if(ftpId != null) {
+                String optionKey = key + optionSuffix;
+                String option = (String) data.get(optionKey);
+                ResourcePlan p = new ResourcePlan(ftpId, option);
+                resourcesPlan.addPlan(p);
+            }
+        }
+        app.setResourcesPlan(resourcesPlan);
+
+        /* auto scale */
+        App.AutoScaleOutConfig autoScaleOutConfig = new App.AutoScaleOutConfig();
+        autoScaleOutConfig.setCpuHigher(cpuHigher);
+        autoScaleOutConfig.setCpuHigherDuring(cpuHigherDuring);
+        autoScaleOutConfig.setAddScale(autoScaleOutSize);
+
+        App.AutoScaleInConfig autoScaleInConfig = new App.AutoScaleInConfig();
+        autoScaleInConfig.setCpuLower(cpuLower);
+        autoScaleInConfig.setCpuLowerDuring(cpuLowerDuring);
+
+        app.setAutoScaleOutUse(ParseUtil.parseChar(autoScaleOutUse));
+        app.setAutoScaleInUse(ParseUtil.parseChar(autoScaleInUse));
+        app.setAutoScaleOutConfig(autoScaleOutConfig);
+        app.setAutoScaleInConfig(autoScaleInConfig);
+        return app;
+    }
+    public String createApp(Map<String, Object> data) {
+        App app = parseApp(data);
+        appMapper.insert(app);
+        return app.getId();
     }
 
     public void createApp(App app) {
