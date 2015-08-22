@@ -1,6 +1,10 @@
 package org.opencloudengine.serviceportal.util;
 
+import org.apache.http.client.utils.DateUtils;
 import org.junit.Test;
+
+import java.text.ParseException;
+import java.util.Date;
 
 /**
  * Created by swsong on 2015. 8. 18..
@@ -13,5 +17,14 @@ public class DateUtilTest {
             String elapsed = DateUtil.getElapsedTime(l);
             System.out.println(l + " : " + elapsed);
         }
+    }
+
+    @Test
+    public void testUTCTime() throws ParseException {
+        String str = "2015-08-22T14:42:48.523Z";
+        Date date = DateUtil.getUTCDateFormat().parse(str);
+        System.out.println(date);
+        Date date2 = DateUtil.getUtc2LocalTime(str);
+        System.out.println(date2);
     }
 }

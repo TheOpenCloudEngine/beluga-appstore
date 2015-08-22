@@ -4,6 +4,7 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.TimeZone;
 
 /**
  * Created by swsong on 2015. 8. 17..
@@ -19,6 +20,9 @@ public class DateUtil {
     }
     public static SimpleDateFormat getShortDateFormat() {
         return new SimpleDateFormat("yyyy.MM.dd");
+    }
+    public static SimpleDateFormat getUTCDateFormat() {
+        return new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS");
     }
 
     public static String convertDateString(String dateString) {
@@ -63,5 +67,11 @@ public class DateUtil {
 
     public static String getShortDateString(Date date) {
         return getShortDateFormat().format(date);
+    }
+
+    public static Date getUtc2LocalTime(String string) throws ParseException {
+        Date gmtTime = getUTCDateFormat().parse(string);
+        Date newTime = new Date(gmtTime.getTime() + TimeZone.getDefault().getOffset(gmtTime.getTime()));
+        return newTime;
     }
 }
