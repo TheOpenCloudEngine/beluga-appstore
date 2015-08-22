@@ -13,11 +13,18 @@
             },
             error:function(xhr) {
                 alert("Deploy app fails : " + xhr.responseText);
+            },
+            complete: function(){
+                $("#deployButton").button("reset");
             }
         });
     }
 
     $(function(){
+        $("#deployButton").on("click", function(){
+            $(this).button('loading');
+            deployApp();
+        });
         $("#scaleConfirmButton").on("click", function(){
 
             $.ajax({
@@ -72,7 +79,7 @@
                     <div class="pull-right">
                         <button type="button" class="btn btn-lg btn-primary outline" data-toggle="modal" data-target="#scaleModal">Scale</button>
                         &nbsp; <a href="http://${app.id}.${domain}" target="_pop_${app.id}" class="btn btn-lg btn-default">Launch</a>
-                        &nbsp; <a href="javascript:deployApp()" class="btn btn-lg btn-primary outline">Deploy App</a>
+                        &nbsp; <a href="javascript:void(0)" id="deployButton" class="btn btn-lg btn-primary outline" data-loading-text="Deploying..">Deploy App</a>
                         &nbsp; <a href="javascript:updateAppStatus()" class="btn btn-lg btn-default"><i class="glyphicon glyphicon-refresh"></i></a>
                     </div>
                     <h2>Running Status</h2>
