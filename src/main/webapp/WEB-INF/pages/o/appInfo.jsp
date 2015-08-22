@@ -27,13 +27,30 @@
                     alert("Scaling started : " + $("#scaleSize").val());
                 },
                 error : function(xhr) {
-                    alert("Scale fails.");
+                    alert("Scale fails : " + xhr.responseText);
                 }
             });
         });
 
+        updateAppStatus();
+
     });
 
+    function updateAppStatus() {
+        $.ajax({
+            url: "/api/apps/${app.id}/status",
+            type: "GET",
+            dataType: "json",
+            success: function(data) {
+                $("#appStatus").text(data.status);
+                $("#appElapsed").text(data.elapsed);
+                $("#appScale").text(data.scale);
+            },
+            error: function(xhr) {
+                alert("App status update error : " + xhr.responseText);
+            }
+        });
+    }
 </script>
 <div class="container" id="content">
     <div class="row">
@@ -55,26 +72,26 @@
                         <button type="button" class="btn btn-lg btn-primary outline" data-toggle="modal" data-target="#scaleModal">Scale</button>
                         &nbsp; <a href="http://${app.id}.${domain}" target="_pop_${app.id}" class="btn btn-lg btn-default">Launch</a>
                         &nbsp; <a href="javascript:deployApp()" class="btn btn-lg btn-primary outline">Deploy App</a>
-                        &nbsp; <a href="${app.id}" class="btn btn-lg btn-default"><i class="glyphicon glyphicon-refresh"></i></a>
+                        &nbsp; <a href="javascript:updateAppStatus()" class="btn btn-lg btn-default"><i class="glyphicon glyphicon-refresh"></i></a>
                     </div>
                     <h2>Running Status</h2>
                     <br>
                     <div class="row">
                         <div class="col-md-3 col-sm-3 col-xs-3">
                             <div class="stat-box">
-                                <p class="text-success">OK</p>
+                                <p class="text-success" id="appStatus"></p>
                                 <h4>Status</h4>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                             <div class="stat-box">
-                                <p class="text-warning"></p>
+                                <p class="text-warning" id="appElapsed"></p>
                                 <h4>Elapsed</h4>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                             <div class="stat-box">
-                                <p class="text-primary"></p>
+                                <p class="text-primary" id="appScale"></p>
                                 <h4>Scale</h4>
                             </div>
                         </div>
