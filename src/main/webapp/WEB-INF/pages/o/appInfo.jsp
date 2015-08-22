@@ -68,13 +68,13 @@
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                             <div class="stat-box">
-                                <p class="text-warning">${elapsed}</p>
+                                <p class="text-warning"></p>
                                 <h4>Elapsed</h4>
                             </div>
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                             <div class="stat-box">
-                                <p class="text-primary">${app.scale}</p>
+                                <p class="text-primary"></p>
                                 <h4>Scale</h4>
                             </div>
                         </div>

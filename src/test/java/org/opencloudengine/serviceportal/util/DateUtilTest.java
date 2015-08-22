@@ -1,6 +1,5 @@
 package org.opencloudengine.serviceportal.util;
 
-import org.apache.http.client.utils.DateUtils;
 import org.junit.Test;
 
 import java.text.ParseException;
@@ -14,7 +13,7 @@ public class DateUtilTest {
     @Test
     public void testElapsedTime() {
         for(long l = 0 ; l < 48 * 60 * 60 * 1000; l+=1000) {
-            String elapsed = DateUtil.getElapsedTime(l);
+            String elapsed = DateUtil.getElapsedTimeDisplay(l);
             System.out.println(l + " : " + elapsed);
         }
     }

@@ -1,5 +1,7 @@
 package org.opencloudengine.serviceportal.service;
 
+import com.fasterxml.jackson.databind.JsonNode;
+import org.apache.http.client.utils.DateUtils;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPart;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
@@ -7,7 +9,10 @@ import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 import org.opencloudengine.serviceportal.db.entity.App;
 import org.opencloudengine.serviceportal.db.entity.Resources;
 import org.opencloudengine.serviceportal.entity.AppApplyRequest;
+import org.opencloudengine.serviceportal.entity.AppStatus;
+import org.opencloudengine.serviceportal.util.DateUtil;
 import org.opencloudengine.serviceportal.util.JsonUtil;
+import org.opencloudengine.serviceportal.util.ParseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -21,6 +26,7 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
+import java.util.Date;
 import java.util.Map;
 
 /**
@@ -62,6 +68,55 @@ public class GarudaService {
         Resources resources = null;
         return resources;
     }
+
+    public JsonNode getApp(String clusterId, String appId) {
+        String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
+        Client client = ClientBuilder.newClient();
+        WebTarget webTarget = client.target(PROTOCOL + garudaEndPoint).path(uri);
+        Response response = webTarget.request(MediaType.APPLICATION_JSON).get();
+        try {
+            if (response.getStatus() == 200) {
+                String json = response.readEntity(String.class);
+                JsonNode entity = JsonUtil.toJsonNode(json);
+                return entity;
+            } else {
+                return null;
+            }
+        }catch (Throwable t) {
+            logger.error("", t);
+            return null;
+        }
+    }
+    public AppStatus getAppStatus(String clusterId, String appId) {
+        JsonNode root = getApp(clusterId, appId);
+        JsonNode app = root.get("app");
+        if(app == null) {
+            //존재하지 않음.
+            return new AppStatus("-", "-", "-");
+        }
+        int instances = app.get("instances").asInt();
+        int running = app.get("tasksRunning").asInt();
+        String dateString = app.get("version").asText();
+        Date launchDate = DateUtil.getUtc2LocalTime(dateString);
+        long elapseTime = DateUtil.getElapsedTime(launchDate);
+        String elapseTimeDisplay = DateUtil.getElapsedTimeDisplay(elapseTime);
+
+        String status = "-";
+        String scale = "-";
+        if(running == 0) {
+            status = AppStatus.STATUS_OFF;
+            scale = "0";
+        } else if(running == instances) {
+            status = AppStatus.STATUS_OK;
+            scale = String.valueOf(instances);
+        } else if(running < instances) {
+            status = AppStatus.STATUS_DEPLOY;
+            scale = running + " / " + instances;
+        }
+
+        return new AppStatus(status, elapseTimeDisplay, scale);
+    }
+
     public boolean updateApp(String clusterId, App app) throws Exception {
         String appId = app.getId();
         String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);

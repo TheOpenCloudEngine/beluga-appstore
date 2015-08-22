@@ -1,6 +1,8 @@
 package org.opencloudengine.serviceportal.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.opencloudengine.serviceportal.db.entity.*;
+import org.opencloudengine.serviceportal.entity.AppStatus;
 import org.opencloudengine.serviceportal.service.AppManageService;
 import org.opencloudengine.serviceportal.service.GarudaService;
 import org.opencloudengine.serviceportal.service.MemberService;
@@ -46,6 +48,14 @@ public class RestController {
         } else {
             response.setStatus(404, "no such app : " + appId);
         }
+    }
+
+    @RequestMapping(value = "/api/apps/{appId}/status", method = RequestMethod.GET)
+    public void appStatus(@PathVariable String appId, HttpServletResponse response) throws IOException {
+        AppStatus appStatus = garudaService.getAppStatus(clusterId, appId);
+        response.setStatus(200);
+        response.setCharacterEncoding("utf-8");
+        response.getWriter().print(JsonUtil.object2String(appStatus));
     }
 
     @RequestMapping(value = "/api/apps/upload", method = RequestMethod.POST)

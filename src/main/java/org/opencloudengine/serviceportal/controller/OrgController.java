@@ -147,9 +147,9 @@ public class OrgController {
         if(app == null) {
             throw new NotFoundException();
         }
-        String elapsed = DateUtil.getElapsedTime(app.getApplyDate());
+//        String elapsed = DateUtil.getElapsedTimeDisplay(app.getApplyDate());
         ModelAndView mav = new ModelAndView();
-        mav.addObject("elapsed", elapsed);
+//        mav.addObject("elapsed", elapsed);
         app.setAppFileLengthDisplay(ParseUtil.toHumanSize(app.getAppFileLength()));
         app.setAppFileLengthDisplay2(ParseUtil.toHumanSize(app.getAppFileLength2()));
         app.setMemoryDisplay(ParseUtil.toHumanSizeOverMB(app.getMemory() * SizeUnit.MB));

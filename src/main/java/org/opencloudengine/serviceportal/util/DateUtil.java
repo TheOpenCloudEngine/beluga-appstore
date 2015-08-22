@@ -2,7 +2,6 @@ package org.opencloudengine.serviceportal.util;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.TimeZone;
 
@@ -32,20 +31,7 @@ public class DateUtil {
         return dateString.substring(0, 10).replaceAll("-", ".");
     }
 
-    public static String getElapsedTime(String dateTimeString) {
-        if(dateTimeString == null) {
-            return "-";
-        }
-        try {
-            Date date = getDateFormat().parse(dateTimeString);
-            long diff = System.currentTimeMillis() - date.getTime();
-            return getElapsedTime(diff);
-        } catch (ParseException ignore) {
-        }
-        return "";
-    }
-
-    public static String getElapsedTime(long elapsed) {
+    public static String getElapsedTimeDisplay(long elapsed) {
         int seconds = (int) (elapsed / 1000) % 60;
         int minutes = (int) ((elapsed / (1000 * 60)) % 60);
         int hours = (int) ((elapsed / (1000 * 60 * 60)) % 24);
@@ -69,9 +55,19 @@ public class DateUtil {
         return getShortDateFormat().format(date);
     }
 
-    public static Date getUtc2LocalTime(String string) throws ParseException {
-        Date gmtTime = getUTCDateFormat().parse(string);
-        Date newTime = new Date(gmtTime.getTime() + TimeZone.getDefault().getOffset(gmtTime.getTime()));
-        return newTime;
+    public static Date getUtc2LocalTime(String string) {
+        Date gmtTime = null;
+        try {
+            gmtTime = getUTCDateFormat().parse(string);
+            Date newTime = new Date(gmtTime.getTime() + TimeZone.getDefault().getOffset(gmtTime.getTime()));
+            return newTime;
+        } catch (ParseException ignore) {
+        }
+        return null;
     }
+
+    public static long getElapsedTime(Date startTime) {
+        return new Date().getTime() - startTime.getTime();
+    }
+
 }
