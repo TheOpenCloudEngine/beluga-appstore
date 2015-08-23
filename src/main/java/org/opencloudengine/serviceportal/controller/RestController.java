@@ -8,6 +8,7 @@ import org.opencloudengine.serviceportal.service.GarudaService;
 import org.opencloudengine.serviceportal.service.MemberService;
 import org.opencloudengine.serviceportal.util.DateUtil;
 import org.opencloudengine.serviceportal.util.JsonUtil;
+import org.opencloudengine.serviceportal.util.MessageDigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -73,7 +74,8 @@ public class RestController {
             if (filePath != null) {
                 long length = appFile.length();
                 String fileName = appFile.getName();
-                UploadFile uploadFile = new UploadFile(fileName, filePath, length, DateUtil.getNow());
+                String checksum = MessageDigestUtils.getMD5Checksum(appFile);
+                UploadFile uploadFile = new UploadFile(fileName, filePath, length, checksum, DateUtil.getNow());
                 response.setCharacterEncoding("utf-8");
                 response.getWriter().print(JsonUtil.object2String(uploadFile));
                 return;

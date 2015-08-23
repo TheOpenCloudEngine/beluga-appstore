@@ -117,10 +117,12 @@ $(function() {
                                 <input type="hidden" name="filePath1" value="${app.appFilePath}"/>
                                 <input type="hidden" name="fileLength1" value="${app.appFileLength}"/>
                                 <input type="hidden" name="fileDate1" value="${app.appFileDate}"/>
+                                <input type="hidden" name="fileChecksum1" value="${app.appFileChecksum}"/>
                                 <input type="hidden" id="fileName2" name="fileName2" value="${app.appFile2}"/>
                                 <input type="hidden" name="filePath2" value="${app.appFilePath2}"/>
                                 <input type="hidden" name="fileLength2" value="${app.appFileLength2}"/>
                                 <input type="hidden" name="fileDate2" value="${app.appFileDate2}"/>
+                                <input type="hidden" name="fileChecksum2" value="${app.appFileChecksum2}"/>
                             </div>
                         </div>
                         <div class="form-group">

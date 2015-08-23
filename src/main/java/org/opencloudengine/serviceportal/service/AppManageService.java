@@ -67,6 +67,8 @@ public class AppManageService {
         } else {
             //달라졌으면
             app.setAppFileUpdated(App.CHECK_YES);
+            //revision 을 1증가시킨다.
+            app.setAppFileRevision(oldApp.getAppFileRevision() + 1);
         }
         appMapper.update(app);
         return app.getId();
@@ -93,12 +95,14 @@ public class AppManageService {
         String appFilePath = (String) data.get("filePath1");
         String appFileLength = (String) data.get("fileLength1");
         String appFileDate = (String) data.get("fileDate1");
+        String appFileChecksum = (String) data.get("fileChecksum1");
 
         String appContext2 = (String) data.get("context2");
         String appFile2 = (String) data.get("fileName2");
         String appFilePath2 = (String) data.get("filePath2");
         String appFileLength2 = (String) data.get("fileLength2");
         String appFileDate2 = (String) data.get("fileDate2");
+        String appFileChecksum2 = (String) data.get("fileChecksum2");
         if(appFile2.length() == 0 || appFile2.length() == 0) {
             appContext2 = null;
         }
@@ -130,6 +134,7 @@ public class AppManageService {
         app.setAppFilePath(appFilePath);
         app.setAppFileLength(ParseUtil.parseLong(appFileLength));
         app.setAppFileDate(appFileDate);
+        app.setAppFileChecksum(appFileChecksum);
         //app file2
         if(appContext2 != null) {
             app.setAppContext2(appContext2);
@@ -137,6 +142,7 @@ public class AppManageService {
             app.setAppFilePath2(appFilePath2);
             app.setAppFileLength2(ParseUtil.parseLong(appFileLength2));
             app.setAppFileDate2(appFileDate2);
+            app.setAppFileChecksum2(appFileChecksum2);
         }
         //environment
         app.setEnvironment(environment);

@@ -16,6 +16,7 @@ $(function() {
                 $("input[name=filePath" + i + "]").val(result.path);
                 $("input[name=fileLength" + i + "]").val(result.length);
                 $("input[name=fileDate" + i + "]").val(result.date);
+                $("input[name=fileChecksum" + i + "]").val(result.checksum);
             },
             error: function (e) {
                 $(".app-file-detail" + i + "").hide();
@@ -32,6 +33,7 @@ $(function() {
         $("input[name=filePath" + i + "]").val("");
         $("input[name=fileLength" + i + "]").val("");
         $("input[name=fileDate" + i + "]").val("");
+        $("input[name=fileChecksum" + i + "]").val("");
         $(".app-file-detail" + i + "").hide();
     }
 

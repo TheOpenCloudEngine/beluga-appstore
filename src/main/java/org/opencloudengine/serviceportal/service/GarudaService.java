@@ -119,13 +119,13 @@ public class GarudaService {
 
     public boolean updateApp(String clusterId, App app, boolean force) throws Exception {
         String appId = app.getId();
-        String uriPath = "/v1/clusters/%s/apps/%s";
-        if(force) {
-            uriPath += "?force=true";
-        }
-        String uri = String.format(uriPath, clusterId, appId);
+        String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
         Client client = ClientBuilder.newClient();
-        WebTarget webTarget = client.target(PROTOCOL + garudaEndPoint).path(uri);
+        WebTarget webTarget = client.target(PROTOCOL + garudaEndPoint);
+        if(force) {
+            webTarget = webTarget.queryParam("force", "true");
+        }
+        webTarget = webTarget.path(uri);
         AppApplyRequest request = new AppApplyRequest(app);
         Response response = webTarget.request(MediaType.APPLICATION_JSON).put(Entity.json(request));
         if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {

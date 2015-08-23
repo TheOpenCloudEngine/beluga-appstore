@@ -147,7 +147,6 @@ public class OrgController {
         }
 //        String elapsed = DateUtil.getElapsedTimeDisplay(app.getApplyDate());
         ModelAndView mav = new ModelAndView();
-//        mav.addObject("elapsed", elapsed);
         app.setAppFileLengthDisplay(ParseUtil.toHumanSize(app.getAppFileLength()));
         app.setAppFileLengthDisplay2(ParseUtil.toHumanSize(app.getAppFileLength2()));
         app.setMemoryDisplay(ParseUtil.toHumanSizeOverMB(app.getMemory() * SizeUnit.MB));

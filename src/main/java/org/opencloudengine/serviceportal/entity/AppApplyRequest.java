@@ -8,6 +8,7 @@ import org.opencloudengine.serviceportal.db.entity.App;
 public class AppApplyRequest {
     private String id;
     private String cmd;
+    private Integer revision;
     private String context;
     private String file;
     private String context2;
@@ -21,6 +22,7 @@ public class AppApplyRequest {
 
     public AppApplyRequest(App app) {
         this.id = app.getId();
+        this.revision = app.getAppFileRevision();
         this.context = app.getAppContext();
         this.file = app.getAppFilePath();
         this.context2 = app.getAppContext2();
@@ -45,6 +47,14 @@ public class AppApplyRequest {
 
     public void setCmd(String cmd) {
         this.cmd = cmd;
+    }
+
+    public Integer getRevision() {
+        return revision;
+    }
+
+    public void setRevision(Integer revision) {
+        this.revision = revision;
     }
 
     public String getContext() {

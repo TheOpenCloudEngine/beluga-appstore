@@ -7,13 +7,15 @@ public class UploadFile {
     private String name;
     private String path;
     private long length;
+    private String checksum;
     private String date;
 
     public UploadFile() {}
-    public UploadFile(String name, String path, long length, String date) {
+    public UploadFile(String name, String path, long length, String checksum, String date) {
         this.name = name;
         this.path = path;
         this.length = length;
+        this.checksum = checksum;
         this.date = date;
     }
 
@@ -39,6 +41,14 @@ public class UploadFile {
 
     public void setLength(long length) {
         this.length = length;
+    }
+
+    public String getChecksum() {
+        return checksum;
+    }
+
+    public void setChecksum(String checksum) {
+        this.checksum = checksum;
     }
 
     public String getDate() {

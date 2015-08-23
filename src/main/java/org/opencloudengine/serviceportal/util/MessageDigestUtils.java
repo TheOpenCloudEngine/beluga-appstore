@@ -62,8 +62,13 @@ public class MessageDigestUtils {
 		return sb.toString();
 	}
 
-	public static String getMD5Checksum(File file) throws Exception {
-		byte[] byteData = createMD5Checksum(file);
+	public static String getMD5Checksum(File file) {
+		byte[] byteData = new byte[0];
+		try {
+			byteData = createMD5Checksum(file);
+		} catch (Exception e) {
+			return null;
+		}
 		return toHexString(byteData);
 	}
 

@@ -11,11 +11,13 @@ import java.util.TimeZone;
 public class DateUtil {
 
     public static String getNow() {
-        return getDateFormat().format(new Date());
+        return getDateFormat2().format(new Date());
     }
-
     public static SimpleDateFormat getDateFormat() {
-        return new SimpleDateFormat("yyyy-MM-dd hh:mm:ss");
+        return new SimpleDateFormat("yyyy.MM.dd hh:mm:ss");
+    }
+    public static SimpleDateFormat getDateFormat2() {
+        return new SimpleDateFormat("yyyy.MM.dd hh:mm");
     }
     public static SimpleDateFormat getShortDateFormat() {
         return new SimpleDateFormat("yyyy.MM.dd");

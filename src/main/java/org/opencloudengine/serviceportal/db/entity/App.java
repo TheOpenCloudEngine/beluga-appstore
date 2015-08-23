@@ -43,6 +43,7 @@ public class App {
     private String appFileDate2;
     private String appFileChecksum2;
     private Character appFileUpdated;   //appFile이 update 되었는지 여부. context, appFileChecksum을 기존값과 비교해서 셋팅해준다.
+    private Integer appFileRevision;    //docker image revision을 설정한다.
     private String environment;
     private Float cpus;
     private Integer memory;
@@ -221,6 +222,14 @@ public class App {
 
     public void setAppFileUpdated(Character appFileUpdated) {
         this.appFileUpdated = appFileUpdated;
+    }
+
+    public Integer getAppFileRevision() {
+        return appFileRevision;
+    }
+
+    public void setAppFileRevision(Integer appFileRevision) {
+        this.appFileRevision = appFileRevision;
     }
 
     public String getEnvironment() {

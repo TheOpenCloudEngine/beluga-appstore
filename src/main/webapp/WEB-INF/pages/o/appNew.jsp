@@ -131,10 +131,12 @@ $(function(){
                                 <input type="hidden" name="filePath1"/>
                                 <input type="hidden" name="fileLength1"/>
                                 <input type="hidden" name="fileDate1"/>
+                                <input type="hidden" name="fileChecksum1"/>
                                 <input type="hidden" name="fileName2"/>
                                 <input type="hidden" name="filePath2"/>
                                 <input type="hidden" name="fileLength2"/>
                                 <input type="hidden" name="fileDate2"/>
+                                <input type="hidden" name="fileChecksum2"/>
                             </div>
                         </div>
                         <div class="form-group">

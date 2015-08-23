@@ -35,8 +35,8 @@
     <insert id="insert" parameterType="org.opencloudengine.serviceportal.db.entity.App">
         INSERT INTO apps(
             `id`, orgId, `name`, description, appContext, appFile, appFilePath, appFileLength, appFileDate, appFileChecksum
-            , appContext2, appFile2, appFilePath2, appFileLength2, appFileDate2, appFileChecksum2, appFileUpdated, environment, cpus, memory
-            , `scale`, resources, autoScaleOutUse, autoScaleInUse, autoScaleOutConf, autoScaleInConf, updateDate
+            , appContext2, appFile2, appFilePath2, appFileLength2, appFileDate2, appFileChecksum2, appFileUpdated
+            , environment, cpus, memory, `scale`, resources, autoScaleOutUse, autoScaleInUse, autoScaleOutConf, autoScaleInConf, updateDate
         ) VALUES(
             #{id}, #{orgId}, #{name}, #{description}, #{appContext}, #{appFile}, #{appFilePath}, #{appFileLength}, #{appFileDate}, #{appFileChecksum}
             , #{appContext2}, #{appFile2}, #{appFilePath2}, #{appFileLength2}, #{appFileDate2}, #{appFileChecksum2}, 'Y'
@@ -60,6 +60,7 @@
             appFileLength2=#{appFileLength2},
             appFileDate2=#{appFileDate2},
             appFileUpdated=#{appFileUpdated},
+            appFileRevision=#{appFileRevision},
             environment=#{environment},
             cpus=#{cpus},
             memory=#{memory},
