@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 /**
@@ -46,6 +47,7 @@ public class App {
     private Integer memory;
     private String memoryDisplay;
     private Integer scale;
+    private Date updateDate;
 
     /* Resource Plan */
     private String resources;
@@ -58,6 +60,7 @@ public class App {
     private String autoScaleInConf;
     private AutoScaleOutConfig autoScaleOutConfig;
     private AutoScaleInConfig autoScaleInConfig;
+
 
     public String getId() {
         return id;
@@ -257,6 +260,14 @@ public class App {
 
     public void setScale(Integer scale) {
         this.scale = scale;
+    }
+
+    public Date getUpdateDate() {
+        return updateDate;
+    }
+
+    public void setUpdateDate(Date updateDate) {
+        this.updateDate = updateDate;
     }
 
     public String getResources() {
