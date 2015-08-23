@@ -104,13 +104,14 @@
                 </tbody>
             </table>
             <div>
-                <div class="pull-left">
-                    <a href="javascript:refreshList()" class="btn btn-default"> Add Instance</a>
-                    &nbsp;<a href="javascript:refreshList()" class="btn btn-danger outline"> Remove Instance</a>
-                </div>
+                <%--<div class="pull-left">--%>
+                    <%--<a href="javascript:refreshList()" class="btn btn-default"> Add Instance</a>--%>
+                    <%--&nbsp;<a href="javascript:refreshList()" class="btn btn-danger outline"> Remove Instance</a>--%>
+                <%--</div>--%>
                 <div class="pull-right">
-                    <a href="javascript:refreshList()" class="btn btn-default"> Stop Cluster</a>
-                    &nbsp;<a href="javascript:refreshList()" class="btn btn-danger outline">Destroy Cluster</a>
+                    <%--<a href="javascript:refreshList()" class="btn btn-default"> Stop Cluster</a>--%>
+                    <%--&nbsp;--%>
+                    <a href="javascript:refreshList()" class="btn btn-danger outline">Destroy Cluster</a>
                 </div>
             </div>
 

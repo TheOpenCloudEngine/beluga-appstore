@@ -13,24 +13,24 @@ import javax.servlet.http.HttpSession;
 /**
  * Created by swsong on 2015. 5. 11..
  */
-@Controller("adminController")
+@Controller
 @RequestMapping("/a")
-public class MainController {
+public class AdminController {
 
     @Autowired
     private GarudaService garudaService;
 
-    @RequestMapping(value = "/index", method = RequestMethod.GET)
+    @RequestMapping(value = { "", "/", "/index" }, method = RequestMethod.GET)
     public ModelAndView index() throws Exception {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("redirect:/cluster");
+        mav.setViewName("redirect:/a/cluster");
         return mav;
     }
 
     @RequestMapping(value = "/login", method = RequestMethod.GET)
     public ModelAndView login() {
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("login");
+        mav.setViewName("a/login");
         return mav;
     }
 
@@ -59,7 +59,14 @@ public class MainController {
         session.invalidate();
         // 로긴 화면으로 이동한다.
         ModelAndView mav = new ModelAndView();
-        mav.setViewName("redirect:/index");
+        mav.setViewName("redirect:/a");
+        return mav;
+    }
+
+    @RequestMapping(value = "/settings", method = RequestMethod.GET)
+    public ModelAndView settings() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("a/settings");
         return mav;
     }
 

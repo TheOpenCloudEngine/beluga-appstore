@@ -1,11 +1,10 @@
-<%@ page language="java" contentType="text/html; charset=utf-8"
-         pageEncoding="utf-8" %>
+<%@ page language="java" contentType="text/html; charset=utf-8" pageEncoding="utf-8" %>
 <!DOCTYPE html>
 <html lang="ko">
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>Garuda</title>
+    <title>Garuda Console</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Favicon -->
@@ -20,7 +19,7 @@
 <div class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <a href="http://garuda.com/" class="navbar-brand">Garuda</a>
+            <a href="#" class="navbar-brand">Garuda</a>
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -30,30 +29,30 @@
         <div class="navbar-collapse collapse" id="navbar-main">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="/cluster" class="current">Cluster</a>
+                    <a href="/a/cluster" class="current">Cluster</a>
                 </li>
                 <li>
-                    <a href="/apps">Apps</a>
+                    <a href="http://master.fastcatsearch.com:8080" target="_pop_marathon_admin">Apps</a>
                 </li>
-                <li>
-                    <a href="/monitoring">Monitoring</a>
-                </li>
-                <li>
-                    <a href="https://github.com/TheOpenCloudEngine/garuda/blob/master/README.md" target="_blank">Docs</a>
-                </li>
+                <%--<li>--%>
+                    <%--<a href="/a/monitoring">Monitoring</a>--%>
+                <%--</li>--%>
+                <%--<li>--%>
+                    <%--<a href="https://github.com/TheOpenCloudEngine/garuda/blob/master/README.md" target="_blank">Docs</a>--%>
+                <%--</li>--%>
             </ul>
 
             <ul class="nav navbar-nav navbar-right">
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">개발클러스터 <span class="caret"></span></a>
-                    <ul class="dropdown-menu" aria-labelledby="themes">
-                        <li><a href="#">개발클러스터</a></li>
-                        <li><a href="#">운영클러스터</a></li>
-                        <li class="divider"></li>
-                        <li><a href="/login">New Cluster</a></li>
-                    </ul>
-                </li>
-                <li><a href="/settings"><i class="glyphicon glyphicon-cog"></i></a></li>
+                <%--<li class="dropdown">--%>
+                    <%--<a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes">개발클러스터 <span class="caret"></span></a>--%>
+                    <%--<ul class="dropdown-menu" aria-labelledby="themes">--%>
+                        <%--<li><a href="#">개발클러스터</a></li>--%>
+                        <%--<li><a href="#">운영클러스터</a></li>--%>
+                        <%--<li class="divider"></li>--%>
+                        <%--<li><a href="/login">New Cluster</a></li>--%>
+                    <%--</ul>--%>
+                <%--</li>--%>
+                <li><a href="/a/settings"><i class="glyphicon glyphicon-cog"></i></a></li>
             </ul>
 
         </div>

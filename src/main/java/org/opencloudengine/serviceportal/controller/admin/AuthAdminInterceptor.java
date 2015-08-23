@@ -24,16 +24,16 @@ public class AuthAdminInterceptor extends HandlerInterceptorAdapter {
 
         HttpSession session = request.getSession(true);
 
-        User user = (User) session.getAttribute(User.USER_KEY);
-
-        if(user == null) {
-            if(request.getHeader("dev") != null) {
-                session.setAttribute(User.USER_KEY, new User("songaal@gmail.com", "fastcat", "A"));
-            } else {
-                checkLoginRedirect(request, response);
-                return false;
-            }
-        }
+//        User user = (User) session.getAttribute(User.USER_KEY);
+//
+//        if(user == null) {
+//            if(request.getHeader("dev") != null) {
+//                session.setAttribute(User.USER_KEY, new User("songaal@gmail.com", "fastcat", "A"));
+//            } else {
+//                checkLoginRedirect(request, response);
+//                return false;
+//            }
+//        }
         return super.preHandle(request, response, handler);
     }
 
