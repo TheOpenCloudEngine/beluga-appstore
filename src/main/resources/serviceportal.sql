@@ -1,6 +1,7 @@
 CREATE DATABASE `serviceportal` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
 
-CREATE TABLE `apps` (
+SELECT id, name, appFileRevision, appContext, appFile, appContext2, appFile2, appFileUpdated, updateDate FROM serviceportal.apps
+where id = 'ddd'CREATE TABLE `apps` (
   `id` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `orgId` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
@@ -17,9 +18,10 @@ CREATE TABLE `apps` (
   `appFileLength2` int(11) DEFAULT NULL,
   `appFileDate2` datetime DEFAULT NULL,
   `appFileChecksum2` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `appFileUpdated` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
+  `appFileUpdated` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
+  `appFileRevision` int(11) NOT NULL DEFAULT '1',
   `environment` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
-  `cpus` float NOT NULL,
+  `cpus` float(2,1) NOT NULL,
   `memory` int(11) NOT NULL,
   `scale` int(11) NOT NULL,
   `resources` mediumtext COLLATE utf8_unicode_ci,
@@ -27,6 +29,7 @@ CREATE TABLE `apps` (
   `autoScaleInUse` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
   `autoScaleOutConf` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
   `autoScaleInConf` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `updateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `fk_apps_org_id_idx` (`orgId`),
   CONSTRAINT `fk_apps_org_id` FOREIGN KEY (`orgId`) REFERENCES `organization` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
