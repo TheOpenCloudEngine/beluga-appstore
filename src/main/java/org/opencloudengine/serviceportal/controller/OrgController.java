@@ -61,8 +61,6 @@ public class OrgController {
         String orgId = user.getOrgId();
         List<App> appList = appManageService.getOrgApps(orgId);
         List<App> outerAppList = appManageService.getOuterApps(orgId);
-        makeUserFriendlyApp(appList);
-        makeUserFriendlyApp(outerAppList);
         ModelAndView mav = new ModelAndView();
         mav.addObject("domain", garudaService.getDomainName());
         mav.addObject("appList", appList);
@@ -77,8 +75,6 @@ public class OrgController {
         String orgId = user.getOrgId();
         List<App> appList = appManageService.getOrgApps(orgId);
         List<App> outerAppList = appManageService.getOuterApps(orgId);
-        makeUserFriendlyApp(appList);
-        makeUserFriendlyApp(outerAppList);
         ModelAndView mav = new ModelAndView();
         int appSize = appList != null ? appList.size() : 0;
         int outerAppSize = outerAppList != null ? outerAppList.size() : 0;
@@ -103,15 +99,6 @@ public class OrgController {
         mav.setViewName("o/manage");
         return mav;
     }
-    private void makeUserFriendlyApp(List<App> appList) {
-        if(appList == null) {
-            return;
-        }
-        // applied date "yyyy-MM-dd hh:mm:ss" => "yyyy.MM.dd"
-        for(App app : appList) {
-            app.setApplyDate(DateUtil.convertDateString(app.getApplyDate()));
-        }
-    }
 
     @RequestMapping(value = "/apps/{appId}/edit", method = RequestMethod.GET)
     public ModelAndView appEdit(@PathVariable String appId) {
@@ -133,9 +120,7 @@ public class OrgController {
         String orgId = user.getOrgId();
         data.put("id", appId);
         data.put("orgId", orgId);
-        logger.debug("Update app data : {}", data);
         appManageService.updateApp(data);
-
         ModelAndView mav = new ModelAndView();
         mav.setViewName("redirect:/o/apps/" + appId);
         return mav;

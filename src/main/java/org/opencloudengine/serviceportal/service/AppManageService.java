@@ -44,17 +44,45 @@ public class AppManageService {
         return appMapper.select(appId);
     }
 
-    public String updateApp(Map<String, Object> data) {
-        App app = parseApp(data);
-        appMapper.update(app);
-        return app.getId();
-    }
-
     public void updateApp(App app) {
         appMapper.update(app);
     }
 
-    private App parseApp(Map<String, Object> data) {
+    public String updateApp(Map<String, Object> data) {
+        App app = parseApp(data);
+        String id = (String) data.get("id");
+        App oldApp = appMapper.select(id);
+
+        /*
+        * 1. file이 바뀌었는지 체크한다. checksum비교.
+        * */
+        if(isEquals(oldApp.getAppContext(), app.getAppContext())
+                && isEquals(oldApp.getAppContext2(), app.getAppContext2())
+                && isEquals(oldApp.getAppFileChecksum(), app.getAppFileChecksum())
+                && isEquals(oldApp.getAppFileChecksum2(), app.getAppFileChecksum2())
+                && isEquals(oldApp.getEnvironment(), app.getEnvironment())
+        ) {
+            //같으면
+            app.setAppFileUpdated(App.CHECK_NO);
+        } else {
+            //달라졌으면
+            app.setAppFileUpdated(App.CHECK_YES);
+        }
+        appMapper.update(app);
+        return app.getId();
+    }
+
+    private boolean isEquals(String a, String b) {
+        if(a == null && b == null) {
+            return true;
+        }
+        if(a != null && b != null) {
+            return a.equals(b);
+        }
+        return false;
+    }
+
+    public App parseApp(Map<String, Object> data) {
         String id = (String) data.get("id");
         String orgId = (String) data.get("orgId");
         String name = (String) data.get("name");
@@ -83,7 +111,6 @@ public class AppManageService {
         Integer dbResourceSize = ParseUtil.parseInt(data.get("db_resource_size"));
         Integer ftpResourceSize = ParseUtil.parseInt(data.get("ftp_resource_size"));
 
-        String resources = (String) data.get("resources");
         String autoScaleOutUse = (String) data.get("autoScaleOutUse");
         Integer cpuHigher = ParseUtil.parseInt(data.get("cpuHigher"));
         Integer cpuHigherDuring = ParseUtil.parseInt(data.get("cpuHigherDuring"));

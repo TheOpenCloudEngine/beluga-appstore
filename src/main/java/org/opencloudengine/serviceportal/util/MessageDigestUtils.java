@@ -3,6 +3,9 @@ package org.opencloudengine.serviceportal.util;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.InputStream;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
@@ -44,7 +47,11 @@ public class MessageDigestUtils {
 	public static String getMessageDigestString(MessageDigest md, byte[] bytes) {
 		md.update(bytes);
 		byte byteData[] = md.digest();
-		StringBuffer sb = new StringBuffer();
+		return toHexString(byteData);
+	}
+
+	public static String toHexString(byte[] byteData) {
+		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < byteData.length; i++) {
 			String hex = Integer.toHexString(byteData[i] & 0xff);
 			if (hex.length() == 1) {
@@ -53,6 +60,28 @@ public class MessageDigestUtils {
 			sb.append(hex);
 		}
 		return sb.toString();
+	}
 
+	public static String getMD5Checksum(File file) throws Exception {
+		byte[] byteData = createMD5Checksum(file);
+		return toHexString(byteData);
+	}
+
+	public static byte[] createMD5Checksum(File file) throws Exception {
+		InputStream fis =  new FileInputStream(file);
+
+		byte[] buffer = new byte[1024];
+		MessageDigest complete = MessageDigest.getInstance("MD5");
+		int numRead;
+
+		do {
+			numRead = fis.read(buffer);
+			if (numRead > 0) {
+				complete.update(buffer, 0, numRead);
+			}
+		} while (numRead != -1);
+
+		fis.close();
+		return complete.digest();
 	}
 }

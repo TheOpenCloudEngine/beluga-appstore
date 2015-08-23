@@ -69,7 +69,7 @@ public class GarudaService {
         return resources;
     }
 
-    private JsonNode getGarudaResponse(String uri, String clusterId, String appId) {
+    private JsonNode getGarudaResponse(String uri) {
         Client client = ClientBuilder.newClient();
         WebTarget webTarget = client.target(PROTOCOL + garudaEndPoint).path(uri);
         Response response = webTarget.request(MediaType.APPLICATION_JSON).get();
@@ -88,10 +88,10 @@ public class GarudaService {
     }
     public AppStatus getAppStatus(String clusterId, String appId) {
         String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
-        JsonNode root = getGarudaResponse(uri, clusterId, appId);
+        JsonNode root = getGarudaResponse(uri);
         if(root == null || !root.has("app")) {
             //존재하지 않음.
-            return new AppStatus("-", "-", "-");
+            return null;
         }
         JsonNode app = root.get("app");
         int instances = app.get("instances").asInt();
@@ -117,9 +117,13 @@ public class GarudaService {
         return new AppStatus(status, elapseTimeDisplay, scale);
     }
 
-    public boolean updateApp(String clusterId, App app) throws Exception {
+    public boolean updateApp(String clusterId, App app, boolean force) throws Exception {
         String appId = app.getId();
-        String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
+        String uriPath = "/v1/clusters/%s/apps/%s";
+        if(force) {
+            uriPath += "?force=true";
+        }
+        String uri = String.format(uriPath, clusterId, appId);
         Client client = ClientBuilder.newClient();
         WebTarget webTarget = client.target(PROTOCOL + garudaEndPoint).path(uri);
         AppApplyRequest request = new AppApplyRequest(app);

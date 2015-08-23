@@ -15,6 +15,9 @@ public class App {
 
     private static final Logger logger = LoggerFactory.getLogger(App.class);
 
+    public static final Character CHECK_YES = 'Y';
+    public static final Character CHECK_NO = 'N';
+
     /* General Information */
     private String id;
     private String orgId;
@@ -29,14 +32,15 @@ public class App {
     private Long appFileLength;
     private String appFileLengthDisplay; // human readable 수치.
     private String appFileDate;
-    private Character appFileUpdated;
+    private String appFileChecksum;
     private String appContext2;
     private String appFile2;
     private String appFilePath2;
     private Long appFileLength2;
     private String appFileLengthDisplay2; // human readable 수치.
     private String appFileDate2;
-    private Character appFileUpdated2;
+    private String appFileChecksum2;
+    private Character appFileUpdated;   //appFile이 update 되었는지 여부. context, appFileChecksum을 기존값과 비교해서 셋팅해준다.
     private String environment;
     private Float cpus;
     private Integer memory;
@@ -54,11 +58,6 @@ public class App {
     private String autoScaleInConf;
     private AutoScaleOutConfig autoScaleOutConfig;
     private AutoScaleInConfig autoScaleInConfig;
-
-    /* Apply state */
-    private Character applied;
-    private String applyDate;
-
 
     public String getId() {
         return id;
@@ -148,12 +147,12 @@ public class App {
         this.appFileDate = appFileDate;
     }
 
-    public Character getAppFileUpdated() {
-        return appFileUpdated;
+    public String getAppFileChecksum() {
+        return appFileChecksum;
     }
 
-    public void setAppFileUpdated(Character appFileUpdated) {
-        this.appFileUpdated = appFileUpdated;
+    public void setAppFileChecksum(String appFileChecksum) {
+        this.appFileChecksum = appFileChecksum;
     }
 
     public String getAppContext2() {
@@ -204,12 +203,20 @@ public class App {
         this.appFileDate2 = appFileDate2;
     }
 
-    public Character getAppFileUpdated2() {
-        return appFileUpdated2;
+    public String getAppFileChecksum2() {
+        return appFileChecksum2;
     }
 
-    public void setAppFileUpdated2(Character appFileUpdated2) {
-        this.appFileUpdated2 = appFileUpdated2;
+    public void setAppFileChecksum2(String appFileChecksum2) {
+        this.appFileChecksum2 = appFileChecksum2;
+    }
+
+    public Character getAppFileUpdated() {
+        return appFileUpdated;
+    }
+
+    public void setAppFileUpdated(Character appFileUpdated) {
+        this.appFileUpdated = appFileUpdated;
     }
 
     public String getEnvironment() {
@@ -343,22 +350,6 @@ public class App {
 
     public AutoScaleInConfig getAutoScaleInConfig() {
         return autoScaleInConfig;
-    }
-
-    public Character getApplied() {
-        return applied;
-    }
-
-    public void setApplied(Character applied) {
-        this.applied = applied;
-    }
-
-    public String getApplyDate() {
-        return applyDate;
-    }
-
-    public void setApplyDate(String applyDate) {
-        this.applyDate = applyDate;
     }
 
     public static class ResourcesPlan {

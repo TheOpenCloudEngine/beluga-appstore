@@ -53,6 +53,9 @@ public class RestController {
     @RequestMapping(value = "/api/apps/{appId}/status", method = RequestMethod.GET)
     public void appStatus(@PathVariable String appId, HttpServletResponse response) throws IOException {
         AppStatus appStatus = garudaService.getAppStatus(clusterId, appId);
+        if(appStatus == null) {
+            appStatus = new AppStatus("-", "-", "-");
+        }
         response.setStatus(200);
         response.setCharacterEncoding("utf-8");
         response.getWriter().print(JsonUtil.object2String(appStatus));
@@ -87,9 +90,24 @@ public class RestController {
 
         try {
             App app = appManageService.getApp(appId);
-
             if (app != null) {
-                if (garudaService.deployApp(clusterId, app)) {
+                // 이미 실행중인 marathon app이 있는지 확인한다.
+                AppStatus appStatus = garudaService.getAppStatus(clusterId, appId);
+                boolean isSuccess = false;
+                if (appStatus == null) {
+                    //신규실행.
+                    isSuccess = garudaService.deployApp(clusterId, app);
+                } else {
+                    //업데이트 실행.
+                    Character isAppFileUpdated = app.getAppFileUpdated();
+                    if(isAppFileUpdated != null && isAppFileUpdated.charValue() == App.CHECK_NO) {
+                        //app 이 업데이트 되지 않았다면,
+                        app.setAppContext(null);
+                        app.setAppContext2(null);
+                    }
+                    isSuccess = garudaService.updateApp(clusterId, app, true);
+                }
+                if (isSuccess) {
                     response.setStatus(200);
                     return;
                 } else {
@@ -114,7 +132,7 @@ public class RestController {
             app.setId(appId);
             app.setScale(scaleInt);
             if (app != null) {
-                if (garudaService.updateApp(clusterId, app)) {
+                if (garudaService.updateApp(clusterId, app, true)) {
                     App dbApp = appManageService.getApp(appId);
                     dbApp.setScale(scaleInt);
                     appManageService.updateApp(dbApp);

@@ -52,7 +52,7 @@ public class ParseUtil {
         if(fileLength < SizeUnit.KB) {
             return fileLength + "B";
         } else if(fileLength < SizeUnit.MB) {
-            return String.format("%.1fKB", fileLength / SizeUnit.K / SizeUnit.K);
+            return String.format("%.1fKB", fileLength / SizeUnit.K);
         } else if(fileLength < SizeUnit.GB) {
             return String.format("%.1fMB", fileLength / SizeUnit.K / SizeUnit.K);
         } else if(fileLength >= SizeUnit.GB) {

@@ -67,7 +67,7 @@ $(function() {
 
             <form id="app-edit-form" action="/o/apps/${app.id}/edit" method="POST">
                 <div class="row col-md-12">
-                    <a href="/o/manage" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
+                    <a href="/o/apps/${app.id}" class="btn btn-default">Cancel</a>
                     &nbsp;<button type="submit" class="btn btn-primary outline">Save all changes</button>
                 </div>
                 <div class="row col-md-12">
@@ -353,6 +353,8 @@ $(function() {
                 <div class="row col-md-12">
                     <hr>
                     <div>
+                        <a href="/o/apps/${app.id}" class="btn btn-default">Cancel</a>
+                        &nbsp;
                         <button type="submit" class="btn btn-primary outline">Save all changes</button>
                     </div>
                 </div>

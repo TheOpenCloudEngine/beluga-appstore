@@ -69,8 +69,7 @@
                                 <td>${app.scale}</td>
                                 <td>${app.applyDate}</td>
                                 <td><span class="glyphicon glyphicon-ok-sign running-status"></span></td>
-                                <td><a href="http://${app.id}.${domain}" target="_pop_${app.id}" class="btn btn-primary outline">Launch</a>
-                                    &nbsp;<a href="apps/${app.id}/edit" class="btn btn-default">Edit</a></td>
+                                <td><a href="http://${app.id}.${domain}" target="_pop_${app.id}" class="btn btn-primary outline">Launch</a></td>
                             </tr>
                         </c:forEach>
                     </tbody>
