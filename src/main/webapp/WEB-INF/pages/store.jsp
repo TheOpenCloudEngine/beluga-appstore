@@ -37,7 +37,7 @@
                                 <div class="app-info">
                                     <div class="app-title">${app.name}</div>
                                     <div class="app-provider">${app.orgName}</div>
-                                    <div class="app-date">${app.updateDate}&nbsp;</div>
+                                    <div class="app-date">${app.updateDateDisplay}&nbsp;</div>
                                     <div class="app-button" align="right">
                                         <c:if test="${not empty sessionScope._user}">
                                             <a href="javascript:subscribeApp('${app.id}')" class="btn btn-primary outline">Subscribe</a>

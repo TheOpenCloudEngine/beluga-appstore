@@ -5,6 +5,7 @@ import org.opencloudengine.serviceportal.db.entity.Organization;
 import org.opencloudengine.serviceportal.db.entity.User;
 import org.opencloudengine.serviceportal.service.AppManageService;
 import org.opencloudengine.serviceportal.service.MemberService;
+import org.opencloudengine.serviceportal.util.DateUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -51,12 +52,21 @@ public class MainController {
     @RequestMapping(value = "/store", method = RequestMethod.GET)
     public ModelAndView viewStore() {
         List<App> appList = appManageService.getAllApps();
+        makeUserFriendlyApp(appList);
         ModelAndView mav = new ModelAndView();
         mav.addObject("appList", appList);
         mav.setViewName("store");
         return mav;
     }
-
+    private void makeUserFriendlyApp(List<App> appList) {
+        if(appList == null) {
+            return;
+        }
+        // applied date "yyyy.MM.dd"
+        for(App app : appList) {
+            app.fillUpdateDateDisplay(DateUtil.getShortDateFormat());
+        }
+    }
     @RequestMapping(value = "/signUp", method = RequestMethod.GET)
     public ModelAndView signUp() {
         ModelAndView mav = new ModelAndView();

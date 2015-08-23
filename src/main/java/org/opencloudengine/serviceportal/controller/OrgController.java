@@ -61,6 +61,8 @@ public class OrgController {
         String orgId = user.getOrgId();
         List<App> appList = appManageService.getOrgApps(orgId);
         List<App> outerAppList = appManageService.getOuterApps(orgId);
+        makeUserFriendlyApp(appList);
+        makeUserFriendlyApp(outerAppList);
         ModelAndView mav = new ModelAndView();
         mav.addObject("domain", garudaService.getDomainName());
         mav.addObject("appList", appList);
@@ -75,6 +77,8 @@ public class OrgController {
         String orgId = user.getOrgId();
         List<App> appList = appManageService.getOrgApps(orgId);
         List<App> outerAppList = appManageService.getOuterApps(orgId);
+        makeUserFriendlyApp(appList);
+        makeUserFriendlyApp(outerAppList);
         ModelAndView mav = new ModelAndView();
         int appSize = appList != null ? appList.size() : 0;
         int outerAppSize = outerAppList != null ? outerAppList.size() : 0;
@@ -98,6 +102,15 @@ public class OrgController {
         mav.addObject("domain", garudaService.getDomainName());
         mav.setViewName("o/manage");
         return mav;
+    }
+    private void makeUserFriendlyApp(List<App> appList) {
+        if(appList == null) {
+            return;
+        }
+        // applied date "yyyy.MM.dd"
+        for(App app : appList) {
+            app.fillUpdateDateDisplay(DateUtil.getShortDateFormat());
+        }
     }
 
     @RequestMapping(value = "/apps/{appId}/edit", method = RequestMethod.GET)

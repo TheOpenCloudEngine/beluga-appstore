@@ -5,6 +5,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -48,6 +49,7 @@ public class App {
     private String memoryDisplay;
     private Integer scale;
     private Date updateDate;
+    private String updateDateDisplay;
 
     /* Resource Plan */
     private String resources;
@@ -60,7 +62,6 @@ public class App {
     private String autoScaleInConf;
     private AutoScaleOutConfig autoScaleOutConfig;
     private AutoScaleInConfig autoScaleInConfig;
-
 
     public String getId() {
         return id;
@@ -268,6 +269,18 @@ public class App {
 
     public void setUpdateDate(Date updateDate) {
         this.updateDate = updateDate;
+    }
+
+    public String getUpdateDateDisplay() {
+        return updateDateDisplay;
+    }
+
+    public void setUpdateDateDisplay(String updateDateDisplay) {
+        this.updateDateDisplay = updateDateDisplay;
+    }
+
+    public void fillUpdateDateDisplay(DateFormat dateFormat) {
+        this.updateDateDisplay = dateFormat.format(updateDate);
     }
 
     public String getResources() {

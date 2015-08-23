@@ -67,7 +67,7 @@
                                 <td>${app.cpus}</td>
                                 <td>${app.memory}MB</td>
                                 <td>${app.scale}</td>
-                                <td>${app.applyDate}</td>
+                                <td>${app.updateDateDisplay}</td>
                                 <td><span class="glyphicon glyphicon-ok-sign running-status"></span></td>
                                 <td><a href="http://${app.id}.${domain}" target="_pop_${app.id}" class="btn btn-primary outline">Launch</a></td>
                             </tr>
