@@ -59,7 +59,7 @@
             appFilePath2=#{appFilePath2},
             appFileLength2=#{appFileLength2},
             appFileDate2=#{appFileDate2},
-            appFileUpdated=#{appFileUpdated}
+            appFileUpdated=#{appFileUpdated},
             environment=#{environment},
             cpus=#{cpus},
             memory=#{memory},
