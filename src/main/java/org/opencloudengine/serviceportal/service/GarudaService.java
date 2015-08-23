@@ -96,6 +96,8 @@ public class GarudaService {
         JsonNode app = root.get("app");
         int instances = app.get("instances").asInt();
         int running = app.get("tasksRunning").asInt();
+        int staged = app.get("tasksStaged").asInt();
+        int totalRunning = running + staged;
         String dateString = app.get("version").asText();
         Date launchDate = DateUtil.getUtc2LocalTime(dateString);
         long elapseTime = DateUtil.getElapsedTime(launchDate);
@@ -103,15 +105,20 @@ public class GarudaService {
 
         String status = "-";
         String scale = "-";
-        if(running == 0) {
+        if(totalRunning == 0) {
             status = AppStatus.STATUS_OFF;
             scale = "0";
-        } else if(running == instances) {
-            status = AppStatus.STATUS_OK;
-            scale = String.valueOf(instances);
-        } else if(running < instances) {
-            status = AppStatus.STATUS_SCALE;
-            scale = running + " / " + instances;
+        } else {
+            if(totalRunning == instances) {
+                scale = String.valueOf(instances);
+            } else {
+                scale = totalRunning + " / " + instances;
+            }
+            if(running == instances && staged == 0) {
+                status = AppStatus.STATUS_OK;
+            } else {
+                status = AppStatus.STATUS_SCALE;
+            }
         }
 
         return new AppStatus(status, elapseTimeDisplay, scale);

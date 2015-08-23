@@ -10,12 +10,14 @@
             type: "POST",
             success:function() {
                 alert("[${app.id}] app Deploy Success.");
+
             },
             error:function(xhr) {
                 alert("Deploy app fails : " + xhr.responseText);
             },
             complete: function(){
                 $("#deployButton").button("reset");
+                updateAppStatus();
             }
         });
     }
@@ -31,11 +33,14 @@
                 url : "/api/apps/${app.id}/scale/" + $("#scaleSize").val(),
                 type : "POST",
                 success : function() {
-                    $("#scaleModal").modal('hide');
                     alert("Scaling started : " + $("#scaleSize").val());
                 },
                 error : function(xhr) {
                     alert("Scale fails : " + xhr.responseText);
+                },
+                complete: function(){
+                    $("#scaleModal").modal('hide');
+                    updateAppStatus();
                 }
             });
         });
