@@ -27,6 +27,17 @@ public class ParseUtil {
         }
     }
 
+    public static Double parseDouble(Object s) {
+        return parseDouble(s, null);
+    }
+    public static Double parseDouble(Object s, Double defaultValue) {
+        try {
+            return new Double(Double.parseDouble((String) s));
+        } catch (Exception e) {
+            return defaultValue;
+        }
+    }
+
     public static Integer parseInt(Object s) {
         return parseInt(s, null);
     }

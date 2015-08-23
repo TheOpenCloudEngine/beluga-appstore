@@ -56,6 +56,7 @@ public class AppManageService {
         /*
         * 1. file이 바뀌었는지 체크한다. checksum비교.
         * */
+        int revision = oldApp.getAppFileRevision();
         if(isEquals(oldApp.getAppContext(), app.getAppContext())
                 && isEquals(oldApp.getAppContext2(), app.getAppContext2())
                 && isEquals(oldApp.getAppFileChecksum(), app.getAppFileChecksum())
@@ -63,13 +64,16 @@ public class AppManageService {
                 && isEquals(oldApp.getEnvironment(), app.getEnvironment())
         ) {
             //같으면
-            app.setAppFileUpdated(App.CHECK_NO);
+            //중요: deploy를 안하고 여러번 수정했을 경우, 중간에 appFile을 바꿨으면 그대로 바꾼상태로 놔둔다.
+            // 그렇지 않으면, 중간에 바꼈음에도 불구하고, 마지막에 updated가 N이 되면, 도커를 교체하지 않는 버그가 생기게 된다.
+            app.setAppFileUpdated(oldApp.getAppFileUpdated());
         } else {
             //달라졌으면
             app.setAppFileUpdated(App.CHECK_YES);
             //revision 을 1증가시킨다.
-            app.setAppFileRevision(oldApp.getAppFileRevision() + 1);
+            revision++;
         }
+        app.setAppFileRevision(revision);
         appMapper.update(app);
         return app.getId();
     }
@@ -278,5 +282,9 @@ public class AppManageService {
             is.close();
         }
         return f;
+    }
+
+    public void setAppFileUpdatedDone(String appId) {
+        appMapper.setAppFileUpdatedDone(appId);
     }
 }

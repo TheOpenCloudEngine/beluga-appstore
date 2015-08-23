@@ -110,6 +110,8 @@ public class RestController {
                     isSuccess = garudaService.updateApp(clusterId, app, true);
                 }
                 if (isSuccess) {
+                    // 앱파일을 적용했으므로, 변경되지 않음으로 갱신한다.
+                    appManageService.setAppFileUpdatedDone(appId);
                     response.setStatus(200);
                     return;
                 } else {

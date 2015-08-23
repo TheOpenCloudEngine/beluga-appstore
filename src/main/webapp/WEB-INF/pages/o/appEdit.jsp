@@ -140,16 +140,16 @@ $(function() {
                             <label class="col-md-3 col-sm-3 control-label">CPUs:</label>
                             <div class="col-md-9 col-sm-9">
                                 <select name="cpus" class="form-control col-100 required">
-                                    <option value="0.1" <c:if test="${app.cpus == 0.1}">selected</c:if>>0.1</option>
-                                    <option value="0.2" <c:if test="${app.cpus == 0.2}">selected</c:if>>0.2</option>
-                                    <option value="0.3" <c:if test="${app.cpus == 0.3}">selected</c:if>>0.3</option>
-                                    <option value="0.4" <c:if test="${app.cpus == 0.4}">selected</c:if>>0.4</option>
-                                    <option value="0.5" <c:if test="${app.cpus == 0.5}">selected</c:if>>0.5</option>
-                                    <option value="0.6" <c:if test="${app.cpus == 0.6}">selected</c:if>>0.6</option>
-                                    <option value="0.7" <c:if test="${app.cpus == 0.7}">selected</c:if>>0.7</option>
-                                    <option value="0.8" <c:if test="${app.cpus == 0.8}">selected</c:if>>0.8</option>
-                                    <option value="0.9" <c:if test="${app.cpus == 0.9}">selected</c:if>>0.9</option>
-                                    <option value="1.0" <c:if test="${app.cpus == 1.0}">selected</c:if>>1.0</option>
+                                    <option value="0.1" <c:if test="${(app.cpus * 10).intValue() == 1}">selected</c:if>>0.1</option>
+                                    <option value="0.2" <c:if test="${(app.cpus * 10).intValue() == 2}">selected</c:if>>0.2</option>
+                                    <option value="0.3" <c:if test="${(app.cpus * 10).intValue() == 3}">selected</c:if>>0.3</option>
+                                    <option value="0.4" <c:if test="${(app.cpus * 10).intValue() == 4}">selected</c:if>>0.4</option>
+                                    <option value="0.5" <c:if test="${(app.cpus * 10).intValue() == 5}">selected</c:if>>0.5</option>
+                                    <option value="0.6" <c:if test="${(app.cpus * 10).intValue() == 6}">selected</c:if>>0.6</option>
+                                    <option value="0.7" <c:if test="${(app.cpus * 10).intValue() == 7}">selected</c:if>>0.7</option>
+                                    <option value="0.8" <c:if test="${(app.cpus * 10).intValue() == 8}">selected</c:if>>0.8</option>
+                                    <option value="0.9" <c:if test="${(app.cpus * 10).intValue() == 9}">selected</c:if>>0.9</option>
+                                    <option value="1.0" <c:if test="${(app.cpus * 10).intValue() == 10}">selected</c:if>>1.0</option>
                                 </select>
                             </div>
                         </div>

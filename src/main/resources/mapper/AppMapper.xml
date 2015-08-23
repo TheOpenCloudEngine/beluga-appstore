@@ -74,6 +74,12 @@
         WHERE id = #{id}
     </update>
 
+    <update id="setAppFileUpdatedDone" parameterType="map">
+        UPDATE apps
+        SET appFileUpdated='N'
+        WHERE id = #{id}
+    </update>
+
     <select id="getGrant" parameterType="map" resultType="int">
         select count(1) from apps_grant
         where orgId = #{orgId} and appId = #{appId}
