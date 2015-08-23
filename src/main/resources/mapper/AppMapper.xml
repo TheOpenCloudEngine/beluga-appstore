@@ -34,14 +34,14 @@
 
     <insert id="insert" parameterType="org.opencloudengine.serviceportal.db.entity.App">
         INSERT INTO apps(
-            `id`, orgId, `name`, description, appContext, appFile, appFilePath, appFileLength, appFileDate
-            , appContext2, appFile2, appFilePath2, appFileLength2, appFileDate2, environment, cpus, memory
-            , `scale`, resources, autoScaleOutUse, autoScaleInUse, autoScaleOutConf, autoScaleInConf
+            `id`, orgId, `name`, description, appContext, appFile, appFilePath, appFileLength, appFileDate, appFileChecksum
+            , appContext2, appFile2, appFilePath2, appFileLength2, appFileDate2, appFileChecksum2, appFileUpdated, environment, cpus, memory
+            , `scale`, resources, autoScaleOutUse, autoScaleInUse, autoScaleOutConf, autoScaleInConf, updateDate
         ) VALUES(
-            #{id}, #{orgId}, #{name}, #{description}, #{appContext}, #{appFile}, #{appFilePath}, #{appFileLength}, #{appFileDate}
-            , #{appContext2}, #{appFile2}, #{appFilePath2}, #{appFileLength2}, #{appFileDate2}
+            #{id}, #{orgId}, #{name}, #{description}, #{appContext}, #{appFile}, #{appFilePath}, #{appFileLength}, #{appFileDate}, #{appFileChecksum}
+            , #{appContext2}, #{appFile2}, #{appFilePath2}, #{appFileLength2}, #{appFileDate2}, #{appFileChecksum2}, 'Y'
             , #{environment}, #{cpus}, #{memory}, #{scale}, #{resources}, #{autoScaleOutUse}, #{autoScaleInUse}
-            , #{autoScaleOutConf}, #{autoScaleInConf}
+            , #{autoScaleOutConf}, #{autoScaleInConf}, CURRENT_TIMESTAMP
         )
     </insert>
 
@@ -59,6 +59,7 @@
             appFilePath2=#{appFilePath2},
             appFileLength2=#{appFileLength2},
             appFileDate2=#{appFileDate2},
+            appFileUpdated=#{appFileUpdated}
             environment=#{environment},
             cpus=#{cpus},
             memory=#{memory},
@@ -67,7 +68,8 @@
             autoScaleOutUse=#{autoScaleOutUse},
             autoScaleInUse=#{autoScaleInUse},
             autoScaleOutConf=#{autoScaleOutConf},
-            autoScaleInConf=#{autoScaleInConf}
+            autoScaleInConf=#{autoScaleInConf},
+            updateDate=CURRENT_TIMESTAMP
         WHERE id = #{id}
     </update>
 
@@ -80,6 +82,11 @@
         INSERT INTO apps_grant (orgId, appId)
         VALUES (#{orgId}, #{appId})
     </insert>
+
+    <delete id="removeGrant" parameterType="map">
+        DELETE from apps_grant
+        where orgId = #{orgId} and appId = #{appId}
+    </delete>
 
     <delete id="delete">
         DELETE FROM apps
