@@ -19,7 +19,6 @@
         <mvc:interceptor>
             <mvc:mapping path="/o/**/*"/>
             <mvc:mapping path="/api/**/*"/>
-            <mvc:exclude-mapping path="/a/**/*"/>
             <mvc:exclude-mapping path="/api/user/*"/>
             <mvc:exclude-mapping path="/api/organization/*"/>
             <mvc:exclude-mapping path="/store"/>
@@ -27,12 +26,6 @@
             <mvc:exclude-mapping path="/logout"/>
             <mvc:exclude-mapping path="/signUp"/>
             <bean id="authMainInterceptor" class="org.opencloudengine.serviceportal.controller.AuthMainInterceptor"/>
-        </mvc:interceptor>
-    </mvc:interceptors>
-    <mvc:interceptors>
-        <mvc:interceptor>
-            <mvc:mapping path="/a/**/*"/>
-            <bean id="authAdminInterceptor" class="org.opencloudengine.serviceportal.controller.admin.AuthAdminInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 
