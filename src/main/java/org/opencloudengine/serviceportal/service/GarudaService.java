@@ -18,6 +18,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
 import javax.ws.rs.client.Entity;
@@ -40,17 +41,29 @@ public class GarudaService {
 
     private static final String PROTOCOL = "http://";
 
+    /**
+     * Format : <ip>:<port>/<cluster id>
+     * */
     @Value("#{systemProperties['garuda.endpoint']}")
     private String garudaEndPoint;
 
-    @Value("#{systemProperties['garuda.cluster']}")
+    private String hostId;
     private String clusterId;
 
     private String domainName;
 
+    @PostConstruct
+    public void init(){
+        if(garudaEndPoint == null) {
+            throw new IllegalArgumentException("Error : Please set system variable 'garuda.endpoint'.");
+        }
+        String[] els = garudaEndPoint.split("/");
+        hostId = PROTOCOL + els[0].trim();
+        clusterId = els[1].trim();
+    }
     private WebTarget getWebTarget(String path) {
         Client client = ClientBuilder.newClient();
-        return client.target(PROTOCOL + garudaEndPoint).path(path);
+        return client.target(hostId).path(path);
     }
 
     public String getEndPoint() {
@@ -73,8 +86,7 @@ public class GarudaService {
     }
 
     private JsonNode getGarudaResponse(String uri) {
-        Client client = ClientBuilder.newClient();
-        WebTarget webTarget = client.target(PROTOCOL + garudaEndPoint).path(uri);
+        WebTarget webTarget = getWebTarget(uri);
         Response response = webTarget.request(MediaType.APPLICATION_JSON).get();
         try {
             if (response.getStatus() == 200) {
@@ -130,12 +142,10 @@ public class GarudaService {
     public boolean updateApp(App app, boolean force) throws Exception {
         String appId = app.getId();
         String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
-        Client client = ClientBuilder.newClient();
-        WebTarget webTarget = client.target(PROTOCOL + garudaEndPoint);
+        WebTarget webTarget = getWebTarget(uri);
         if(force) {
             webTarget = webTarget.queryParam("force", "true");
         }
-        webTarget = webTarget.path(uri);
         AppApplyRequest request = new AppApplyRequest(app);
         Response response = webTarget.request(MediaType.APPLICATION_JSON).put(Entity.json(request));
         if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
@@ -150,8 +160,7 @@ public class GarudaService {
         // garuda master 에 전송. marathon으로 실행.
         String appId = app.getId();
         String uri = String.format("/v1/clusters/%s/apps", clusterId);
-        Client client = ClientBuilder.newClient();
-        WebTarget webTarget = client.target(PROTOCOL + garudaEndPoint).path(uri);
+        WebTarget webTarget = getWebTarget(uri);
 
         AppApplyRequest request = new AppApplyRequest(app);
         Response response = webTarget.request(MediaType.APPLICATION_JSON).post(Entity.json(request));
@@ -168,8 +177,7 @@ public class GarudaService {
 
     public boolean destoryApp(String appId) throws IOException {
         String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
-        Client client = ClientBuilder.newClient();
-        WebTarget webTarget = client.target(PROTOCOL + garudaEndPoint).path(uri);
+        WebTarget webTarget = getWebTarget(uri);
         Response response = webTarget.request(MediaType.APPLICATION_JSON).delete();
         return response.getStatus() == 200;
     }
@@ -183,8 +191,7 @@ public class GarudaService {
 
         String uri = String.format("/v1/clusters/%s/apps/%s/file", clusterId, appId);
         logger.debug("Upload file to garuda : {} > {}", appFile.getName(), uri);
-        Client client = ClientBuilder.newClient().register(MultiPartFeature.class).register(JacksonFeature.class);
-        WebTarget webTarget = client.target(PROTOCOL + garudaEndPoint).path(uri);
+        WebTarget webTarget = getWebTarget(uri);
         logger.debug("Upload URI : {}", webTarget.getUri());
         MultiPart multiPart = new MultiPart();
         multiPart.setMediaType(MediaType.MULTIPART_FORM_DATA_TYPE);
