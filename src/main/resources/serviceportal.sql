@@ -1,7 +1,6 @@
 CREATE DATABASE `serviceportal` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
 
-SELECT id, name, appFileRevision, appContext, appFile, appContext2, appFile2, appFileUpdated, updateDate FROM serviceportal.apps
-where id = 'ddd'CREATE TABLE `apps` (
+CREATE TABLE `apps` (
   `id` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `orgId` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
@@ -61,3 +60,4 @@ CREATE TABLE `user` (
   KEY `fk_org_id_idx` (`orgId`),
   CONSTRAINT `fk_org_id` FOREIGN KEY (`orgId`) REFERENCES `organization` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
+
