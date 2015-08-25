@@ -43,6 +43,9 @@ public class GarudaService {
     @Value("#{systemProperties['garuda.endpoint']}")
     private String garudaEndPoint;
 
+    @Value("#{systemProperties['garuda.cluster']}")
+    private String clusterId;
+
     private String domainName;
 
     private WebTarget getWebTarget(String path) {
@@ -86,7 +89,7 @@ public class GarudaService {
             return null;
         }
     }
-    public AppStatus getAppStatus(String clusterId, String appId) {
+    public AppStatus getAppStatus(String appId) {
         String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
         JsonNode root = getGarudaResponse(uri);
         if(root == null || !root.has("app")) {
@@ -124,7 +127,7 @@ public class GarudaService {
         return new AppStatus(status, elapseTimeDisplay, scale);
     }
 
-    public boolean updateApp(String clusterId, App app, boolean force) throws Exception {
+    public boolean updateApp(App app, boolean force) throws Exception {
         String appId = app.getId();
         String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
         Client client = ClientBuilder.newClient();
@@ -143,7 +146,7 @@ public class GarudaService {
         }
     }
 
-    public boolean deployApp(String clusterId, App app) throws Exception {
+    public boolean deployApp(App app) throws Exception {
         // garuda master 에 전송. marathon으로 실행.
         String appId = app.getId();
         String uri = String.format("/v1/clusters/%s/apps", clusterId);
@@ -163,7 +166,7 @@ public class GarudaService {
         }
     }
 
-    public boolean destoryApp(String clusterId, String appId) throws IOException {
+    public boolean destoryApp(String appId) throws IOException {
         String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
         Client client = ClientBuilder.newClient();
         WebTarget webTarget = client.target(PROTOCOL + garudaEndPoint).path(uri);
@@ -171,7 +174,7 @@ public class GarudaService {
         return response.getStatus() == 200;
     }
 
-    public String uploadAppFile(String clusterId, String appId, File appFile) {
+    public String uploadAppFile(String appId, File appFile) {
 
         /*
          * POST /v1/clusters/{clusterId}/apps/{appId}/file

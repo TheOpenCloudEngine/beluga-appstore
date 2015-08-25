@@ -30,8 +30,6 @@ import java.io.IOException;
 public class RestController {
     private static final Logger logger = LoggerFactory.getLogger(RestController.class);
 
-    private static final String clusterId = "test-cluster";
-
     @Autowired
     private MemberService memberService;
 
@@ -53,7 +51,7 @@ public class RestController {
 
     @RequestMapping(value = "/api/apps/{appId}/status", method = RequestMethod.GET)
     public void appStatus(@PathVariable String appId, HttpServletResponse response) throws IOException {
-        AppStatus appStatus = garudaService.getAppStatus(clusterId, appId);
+        AppStatus appStatus = garudaService.getAppStatus(appId);
         if(appStatus == null) {
             appStatus = new AppStatus("-", "-", "-");
         }
@@ -70,7 +68,7 @@ public class RestController {
 
         if (appFile != null) {
             // garuda에 올린다.
-            String filePath = garudaService.uploadAppFile(clusterId, orgId, appFile);
+            String filePath = garudaService.uploadAppFile(orgId, appFile);
             if (filePath != null) {
                 long length = appFile.length();
                 String fileName = appFile.getName();
@@ -94,11 +92,11 @@ public class RestController {
             App app = appManageService.getApp(appId);
             if (app != null) {
                 // 이미 실행중인 marathon app이 있는지 확인한다.
-                AppStatus appStatus = garudaService.getAppStatus(clusterId, appId);
+                AppStatus appStatus = garudaService.getAppStatus(appId);
                 boolean isSuccess = false;
                 if (appStatus == null) {
                     //신규실행.
-                    isSuccess = garudaService.deployApp(clusterId, app);
+                    isSuccess = garudaService.deployApp(app);
                 } else {
                     //업데이트 실행.
                     Character isAppFileUpdated = app.getAppFileUpdated();
@@ -107,7 +105,7 @@ public class RestController {
                         app.setAppContext(null);
                         app.setAppContext2(null);
                     }
-                    isSuccess = garudaService.updateApp(clusterId, app, true);
+                    isSuccess = garudaService.updateApp(app, true);
                 }
                 if (isSuccess) {
                     // 앱파일을 적용했으므로, 변경되지 않음으로 갱신한다.
@@ -136,7 +134,7 @@ public class RestController {
             app.setId(appId);
             app.setScale(scaleInt);
             if (app != null) {
-                if (garudaService.updateApp(clusterId, app, true)) {
+                if (garudaService.updateApp(app, true)) {
                     App dbApp = appManageService.getApp(appId);
                     dbApp.setScale(scaleInt);
                     appManageService.updateApp(dbApp);
@@ -158,7 +156,7 @@ public class RestController {
     @RequestMapping(value = "/api/apps/{appId}", method = RequestMethod.DELETE)
     public void deleteApp(@PathVariable String appId, HttpServletResponse response) throws IOException {
         ModelAndView mav = new ModelAndView();
-        if (garudaService.destoryApp(clusterId, appId)) {
+        if (garudaService.destoryApp(appId)) {
             appManageService.deleteApp(appId);
             response.setStatus(200);
             return;
