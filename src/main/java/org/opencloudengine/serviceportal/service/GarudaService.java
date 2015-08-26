@@ -1,10 +1,7 @@
 package org.opencloudengine.serviceportal.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
-import org.apache.http.client.utils.DateUtils;
-import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPart;
-import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 import org.opencloudengine.serviceportal.db.entity.App;
 import org.opencloudengine.serviceportal.db.entity.Resources;
@@ -12,7 +9,6 @@ import org.opencloudengine.serviceportal.entity.AppApplyRequest;
 import org.opencloudengine.serviceportal.entity.AppStatus;
 import org.opencloudengine.serviceportal.util.DateUtil;
 import org.opencloudengine.serviceportal.util.JsonUtil;
-import org.opencloudengine.serviceportal.util.ParseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -72,7 +68,8 @@ public class GarudaService {
 
     public String getDomainName() {
         if(domainName == null) {
-            domainName = getWebTarget("/v1/domain").request().get(String.class);
+            String uri = String.format("/v1/clusters/%s/domain", clusterId);
+            domainName = getWebTarget(uri).request().get(String.class);
         }
         return domainName;
     }
