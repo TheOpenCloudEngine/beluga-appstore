@@ -1,7 +1,9 @@
 package org.opencloudengine.serviceportal.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPart;
+import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 import org.opencloudengine.serviceportal.db.entity.App;
 import org.opencloudengine.serviceportal.db.entity.Resources;
@@ -185,10 +187,11 @@ public class GarudaService {
          * POST /v1/clusters/{clusterId}/apps/{appId}/file
          * param : file
          */
-
         String uri = String.format("/v1/clusters/%s/apps/%s/file", clusterId, appId);
         logger.debug("Upload file to garuda : {} > {}", appFile.getName(), uri);
-        WebTarget webTarget = getWebTarget(uri);
+
+        Client client = ClientBuilder.newClient().register(MultiPartFeature.class).register(JacksonFeature.class);
+        WebTarget webTarget = client.target(hostId).path(uri);
         logger.debug("Upload URI : {}", webTarget.getUri());
         MultiPart multiPart = new MultiPart();
         multiPart.setMediaType(MediaType.MULTIPART_FORM_DATA_TYPE);
