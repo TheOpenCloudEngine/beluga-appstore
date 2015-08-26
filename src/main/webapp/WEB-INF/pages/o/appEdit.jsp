@@ -176,7 +176,7 @@ $(function() {
                                     <option value="2" <c:if test="${app.scale == 2}">selected</c:if>>2</option>
                                     <option value="3" <c:if test="${app.scale == 3}">selected</c:if>>3</option>
                                     <option value="4" <c:if test="${app.scale == 4}">selected</c:if>>4</option>
-                                    <option value="5" <c:if test="${app.scale == 5}">selected</c:if>>4</option>
+                                    <option value="5" <c:if test="${app.scale == 5}">selected</c:if>>5</option>
                                 </select>
                             </div>
                         </div>
