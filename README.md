@@ -8,7 +8,7 @@ WAS구동시 아래의 설정을 넣어준다.
 ubuntu14.04 에서 tomcat7은 /etc/default/tomcat7 파일에 추가.
 
 ```
--Dgaruda.endpoint=<garuda IP>:<garuda Port>
+-Dgaruda.endpoint=<Garuda IP>:<Garuda Port>/<Cluster ID>
 ```
 
 
