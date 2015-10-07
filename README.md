@@ -3,7 +3,7 @@ Beluga를 이용한 멀티테넌트 App 서비스포털
 
 ### 설치시 설정.
 
-1. WAS구동시 아래의 설정을 넣어준다.
+1 . WAS구동시 아래의 설정을 넣어준다.
 
 ubuntu14.04 에서 tomcat7은 /etc/default/tomcat7 파일에 추가.
 
@@ -19,11 +19,24 @@ JAVA_OPTS="$JAVA_OPTS -Dbeluga.endpoint=beluga.kloudrun.com:9000/sample"
 
 
 
-2. service.db.beluga 를 hosts파일에 등록
+2 . service.db.beluga 를 hosts파일에 등록
 management노드의 IP와 매핑시킨다.
 
 $ sudo vi /etc/hosts
 ```
 xxx.xxx.xxx.xxx service.db.beluga
 ```
+
+3 . 도메인설정
+
+도메인 관리페이지(각 제공사마다 상이함) 에 들어가서 A 레코드를 설정한다.
+
+예를들어 도메인이 `mydomain.com`이라고 하면,
+
+1) `mydomain.com` : Beluga 서비스 IP 주소
+
+2) `*.mydomain.com` : Proxy node IP 주소
+
+3) `beluga.mydomain.com` : Beluga 서버 IP 주소 
+
 
