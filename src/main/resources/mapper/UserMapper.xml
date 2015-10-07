@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.opencloudengine.serviceportal.db.mapper.UserMapper">
+<mapper namespace="org.opencloudengine.garuda.belugaservice.db.mapper.UserMapper">
 
-    <select id="select" parameterType="java.util.HashMap" resultType="org.opencloudengine.serviceportal.db.entity.User">
+    <select id="select" parameterType="java.util.HashMap" resultType="org.opencloudengine.garuda.belugaservice.db.entity.User">
         select `id`, `orgId`, `type`, `joinDate` from user
         where id = #{id}
     </select>
 
-    <select id="selectWithPassword" parameterType="org.opencloudengine.serviceportal.db.entity.User" resultType="org.opencloudengine.serviceportal.db.entity.User">
+    <select id="selectWithPassword" parameterType="org.opencloudengine.garuda.belugaservice.db.entity.User" resultType="org.opencloudengine.garuda.belugaservice.db.entity.User">
         select `id`, `orgId`, `type`, `joinDate` from user
   	    where id = #{id} and `password`=#{password}
     </select>
 
-    <select id="selectInOrganization" parameterType="java.util.HashMap" resultType="org.opencloudengine.serviceportal.db.entity.User">
+    <select id="selectInOrganization" parameterType="java.util.HashMap" resultType="org.opencloudengine.garuda.belugaservice.db.entity.User">
         select `id`, `orgId`, `type`, `joinDate` from user
         where orgId = #{orgId}
     </select>
 
-    <insert id="insert" parameterType="org.opencloudengine.serviceportal.db.entity.User">
+    <insert id="insert" parameterType="org.opencloudengine.garuda.belugaservice.db.entity.User">
         INSERT INTO user(
             `id`, `password`, `orgId`, `type`
         ) VALUES(

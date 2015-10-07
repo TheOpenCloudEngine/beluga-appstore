@@ -23,7 +23,7 @@
         <property name="validationQuery" value="SELECT 1"/>
     </bean>
     <bean class="org.mybatis.spring.mapper.MapperScannerConfigurer">
-        <property name="basePackage" value="org.opencloudengine.serviceportal.db.mapper" />
+        <property name="basePackage" value="org.opencloudengine.garuda.belugaservice.db.mapper" />
         <property name="sqlSessionFactoryBeanName" value="sqlSessionFactory" />
     </bean>
 </beans>

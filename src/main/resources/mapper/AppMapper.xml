@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
-<mapper namespace="org.opencloudengine.serviceportal.db.mapper.AppMapper">
+<mapper namespace="org.opencloudengine.garuda.belugaservice.db.mapper.AppMapper">
 
-    <select id="listAll" resultType="org.opencloudengine.serviceportal.db.entity.App">
+    <select id="listAll" resultType="org.opencloudengine.garuda.belugaservice.db.entity.App">
         select A.*, O.name as orgName from apps A
         join organization O
         on A.orgId = O.id
     </select>
 
-    <select id="listByOrganization" parameterType="map" resultType="org.opencloudengine.serviceportal.db.entity.App">
+    <select id="listByOrganization" parameterType="map" resultType="org.opencloudengine.garuda.belugaservice.db.entity.App">
         select A.*, O.name as orgName from apps A
         join organization O
         on A.orgId = O.id
         where A.orgId = #{orgId}
     </select>
 
-    <select id="listOuterApp" parameterType="map" resultType="org.opencloudengine.serviceportal.db.entity.App">
+    <select id="listOuterApp" parameterType="map" resultType="org.opencloudengine.garuda.belugaservice.db.entity.App">
         select A.*, O.name as orgName from apps A
         join organization O
         on A.orgId = O.id
@@ -25,14 +25,14 @@
     </select>
 
 
-    <select id="select" parameterType="map" resultType="org.opencloudengine.serviceportal.db.entity.App">
+    <select id="select" parameterType="map" resultType="org.opencloudengine.garuda.belugaservice.db.entity.App">
         select A.*, O.name as orgName from apps A
         join organization O
         on A.orgId = O.id
         where A.id = #{id}
     </select>
 
-    <insert id="insert" parameterType="org.opencloudengine.serviceportal.db.entity.App">
+    <insert id="insert" parameterType="org.opencloudengine.garuda.belugaservice.db.entity.App">
         INSERT INTO apps(
             `id`, orgId, `name`, description, appContext, appFile, appFilePath, appFileLength, appFileDate, appFileChecksum
             , appContext2, appFile2, appFilePath2, appFileLength2, appFileDate2, appFileChecksum2, appFileUpdated
@@ -45,7 +45,7 @@
         )
     </insert>
 
-    <update id="update" parameterType="org.opencloudengine.serviceportal.db.entity.App">
+    <update id="update" parameterType="org.opencloudengine.garuda.belugaservice.db.entity.App">
         UPDATE apps
         SET `name`=#{name},
             description=#{description},

@@ -7,8 +7,8 @@
 		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-4.1.xsd
 		http://www.springframework.org/schema/context http://www.springframework.org/schema/context/spring-context-4.1.xsd">
 
-    <context:component-scan base-package="org.opencloudengine.serviceportal.controller, org.opencloudengine.serviceportal.service
-    , org.opencloudengine.serviceportal.controller.admin"/>
+    <context:component-scan base-package="org.opencloudengine.garuda.belugaservice.controller, org.opencloudengine.garuda.belugaservice.service
+    , org.opencloudengine.garuda.belugaservice.controller.admin"/>
 
     <mvc:default-servlet-handler/>
 
@@ -25,7 +25,7 @@
             <mvc:exclude-mapping path="/login"/>
             <mvc:exclude-mapping path="/logout"/>
             <mvc:exclude-mapping path="/signUp"/>
-            <bean id="authMainInterceptor" class="org.opencloudengine.serviceportal.controller.AuthMainInterceptor"/>
+            <bean id="authMainInterceptor" class="org.opencloudengine.garuda.belugaservice.controller.AuthMainInterceptor"/>
         </mvc:interceptor>
     </mvc:interceptors>
 
