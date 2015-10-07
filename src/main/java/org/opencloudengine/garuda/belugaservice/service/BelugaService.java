@@ -56,6 +56,9 @@ public class BelugaService {
             throw new IllegalArgumentException("Error : Please set system variable 'beluga.endpoint'.");
         }
         String[] els = belugaEndPoint.split("/");
+        if(els.length < 2) {
+            throw new IllegalArgumentException("Error : System variable 'beluga.endpoint' format is invalid. Format => ip:port/clusterId");
+        }
         hostId = PROTOCOL + els[0].trim();
         clusterId = els[1].trim();
     }
