@@ -33,8 +33,6 @@ import java.util.Map;
 public class OrgController {
     private static final Logger logger = LoggerFactory.getLogger(OrgController.class);
 
-    private static final String clusterId = "test-cluster";
-
     @Autowired
     private AppManageService appManageService;
 
