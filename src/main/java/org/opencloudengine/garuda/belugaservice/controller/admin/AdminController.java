@@ -1,6 +1,6 @@
 package org.opencloudengine.garuda.belugaservice.controller.admin;
 
-import org.opencloudengine.garuda.belugaservice.service.GarudaService;
+import org.opencloudengine.garuda.belugaservice.service.BelugaService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -18,7 +18,7 @@ import javax.servlet.http.HttpSession;
 public class AdminController {
 
     @Autowired
-    private GarudaService garudaService;
+    private BelugaService belugaService;
 
     @RequestMapping(value = { "", "/", "/index" }, method = RequestMethod.GET)
     public ModelAndView index() throws Exception {
@@ -38,11 +38,11 @@ public class AdminController {
     public ModelAndView doLogin(HttpSession session, @RequestParam("userId") String userId, @RequestParam("password") String password,
                                 @RequestParam(value="redirect", required=false) String redirect) {
         ModelAndView mav = new ModelAndView();
-//        if(!garudaService.isAlive()) {
+//        if(!belugaService.isAlive()) {
 //            mav.setViewName("redirect:/login?e=Cannot connect to server.");
 //        } else {
 //            User user = new User(userId, password);
-//            if(garudaService.login(user)) {
+//            if(belugaService.login(user)) {
 //                session.setAttribute(User.USER_KEY, user);
 //                mav.setViewName("redirect:/index");
 //            } else {

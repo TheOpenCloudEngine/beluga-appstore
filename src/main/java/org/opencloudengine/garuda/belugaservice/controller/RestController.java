@@ -3,7 +3,7 @@ package org.opencloudengine.garuda.belugaservice.controller;
 import org.opencloudengine.garuda.belugaservice.db.entity.*;
 import org.opencloudengine.garuda.belugaservice.entity.AppStatus;
 import org.opencloudengine.garuda.belugaservice.service.AppManageService;
-import org.opencloudengine.garuda.belugaservice.service.GarudaService;
+import org.opencloudengine.garuda.belugaservice.service.BelugaService;
 import org.opencloudengine.garuda.belugaservice.service.MemberService;
 import org.opencloudengine.garuda.belugaservice.util.DateUtil;
 import org.opencloudengine.garuda.belugaservice.util.JsonUtil;
@@ -36,7 +36,7 @@ public class RestController {
     AppManageService appManageService;
 
     @Autowired
-    private GarudaService garudaService;
+    private BelugaService belugaService;
 
     @RequestMapping(value = "/api/apps/{appId}", method = RequestMethod.HEAD)
     public void apps(@PathVariable String appId, HttpServletResponse response) throws IOException {
@@ -50,7 +50,7 @@ public class RestController {
 
     @RequestMapping(value = "/api/apps/{appId}/status", method = RequestMethod.GET)
     public void appStatus(@PathVariable String appId, HttpServletResponse response) throws IOException {
-        AppStatus appStatus = garudaService.getAppStatus(appId);
+        AppStatus appStatus = belugaService.getAppStatus(appId);
         if(appStatus == null) {
             appStatus = new AppStatus("-", "-", "-");
         }
@@ -67,7 +67,7 @@ public class RestController {
 
         if (appFile != null) {
             // garuda에 올린다.
-            String filePath = garudaService.uploadAppFile(orgId, appFile);
+            String filePath = belugaService.uploadAppFile(orgId, appFile);
             if (filePath != null) {
                 long length = appFile.length();
                 String fileName = appFile.getName();
@@ -91,11 +91,11 @@ public class RestController {
             App app = appManageService.getApp(appId);
             if (app != null) {
                 // 이미 실행중인 marathon app이 있는지 확인한다.
-                AppStatus appStatus = garudaService.getAppStatus(appId);
+                AppStatus appStatus = belugaService.getAppStatus(appId);
                 boolean isSuccess = false;
                 if (appStatus == null) {
                     //신규실행.
-                    isSuccess = garudaService.deployApp(app);
+                    isSuccess = belugaService.deployApp(app);
                 } else {
                     //업데이트 실행.
                     Character isAppFileUpdated = app.getAppFileUpdated();
@@ -104,7 +104,7 @@ public class RestController {
                         app.setAppContext(null);
                         app.setAppContext2(null);
                     }
-                    isSuccess = garudaService.updateApp(app, true);
+                    isSuccess = belugaService.updateApp(app, true);
                 }
                 if (isSuccess) {
                     // 앱파일을 적용했으므로, 변경되지 않음으로 갱신한다.
@@ -133,7 +133,7 @@ public class RestController {
             app.setId(appId);
             app.setScale(scaleInt);
             if (app != null) {
-                if (garudaService.updateApp(app, true)) {
+                if (belugaService.updateApp(app, true)) {
                     App dbApp = appManageService.getApp(appId);
                     dbApp.setScale(scaleInt);
                     appManageService.updateApp(dbApp);
@@ -155,7 +155,7 @@ public class RestController {
     @RequestMapping(value = "/api/apps/{appId}", method = RequestMethod.DELETE)
     public void deleteApp(@PathVariable String appId, HttpServletResponse response) throws IOException {
         ModelAndView mav = new ModelAndView();
-        if (garudaService.destoryApp(appId)) {
+        if (belugaService.destoryApp(appId)) {
             appManageService.deleteApp(appId);
             response.setStatus(200);
             return;
@@ -208,7 +208,7 @@ public class RestController {
         String orgId = user.getOrgId();
         if (appManageService.isGranted(orgId, appId)) {
             // 사용가능한 리소스 정보를 전달.
-            Resources allResources = garudaService.getResources();
+            Resources allResources = belugaService.getResources();
             //조직별 사용할 리소스를 산출한다.
             Resources usingResources = appManageService.getUsingResources(appId, allResources);
 

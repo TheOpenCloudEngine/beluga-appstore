@@ -4,7 +4,7 @@ import org.opencloudengine.garuda.belugaservice.db.entity.App;
 import org.opencloudengine.garuda.belugaservice.db.entity.Organization;
 import org.opencloudengine.garuda.belugaservice.db.entity.User;
 import org.opencloudengine.garuda.belugaservice.service.AppManageService;
-import org.opencloudengine.garuda.belugaservice.service.GarudaService;
+import org.opencloudengine.garuda.belugaservice.service.BelugaService;
 import org.opencloudengine.garuda.belugaservice.service.MemberService;
 import org.opencloudengine.garuda.belugaservice.util.DateUtil;
 import org.opencloudengine.garuda.belugaservice.util.ParseUtil;
@@ -42,7 +42,7 @@ public class OrgController {
     private MemberService memberService;
 
     @Autowired
-    private GarudaService garudaService;
+    private BelugaService belugaService;
 
     private User getUser(HttpSession session) {
         return (User) session.getAttribute(User.USER_KEY);
@@ -63,7 +63,7 @@ public class OrgController {
         makeUserFriendlyApp(appList);
         makeUserFriendlyApp(outerAppList);
         ModelAndView mav = new ModelAndView();
-        mav.addObject("domain", garudaService.getDomainName());
+        mav.addObject("domain", belugaService.getDomainName());
         mav.addObject("appList", appList);
         mav.addObject("outerAppList", outerAppList);
         mav.setViewName("o/apps");
@@ -98,7 +98,7 @@ public class OrgController {
         mav.addObject("totalMemory", totalMemoryString);
         mav.addObject("appList", appList);
         mav.addObject("outerAppList", outerAppList);
-        mav.addObject("domain", garudaService.getDomainName());
+        mav.addObject("domain", belugaService.getDomainName());
         mav.setViewName("o/manage");
         return mav;
     }
@@ -119,7 +119,7 @@ public class OrgController {
             throw new NotFoundException();
         }
         ModelAndView mav = new ModelAndView();
-        mav.addObject("domain", garudaService.getDomainName());
+        mav.addObject("domain", belugaService.getDomainName());
         mav.addObject("app", app);
         app.setAppFileLengthDisplay(ParseUtil.toHumanSize(app.getAppFileLength()));
         mav.setViewName("o/appEdit");
@@ -150,7 +150,7 @@ public class OrgController {
         app.setAppFileLengthDisplay2(ParseUtil.toHumanSize(app.getAppFileLength2()));
         app.setMemoryDisplay(ParseUtil.toHumanSizeOverMB(app.getMemory() * SizeUnit.MB));
         mav.addObject("app", app);
-        mav.addObject("domain", garudaService.getDomainName());
+        mav.addObject("domain", belugaService.getDomainName());
         mav.setViewName("o/appInfo");
         return mav;
     }
@@ -159,7 +159,7 @@ public class OrgController {
     public ModelAndView appNew() {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("o/appNew");
-        mav.addObject("domain", garudaService.getDomainName());
+        mav.addObject("domain", belugaService.getDomainName());
         return mav;
     }
 

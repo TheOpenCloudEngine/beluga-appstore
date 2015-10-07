@@ -33,17 +33,17 @@ import java.util.Map;
  */
 
 @Service
-public class GarudaService {
+public class BelugaService {
 
-    private static final Logger logger = LoggerFactory.getLogger(GarudaService.class);
+    private static final Logger logger = LoggerFactory.getLogger(BelugaService.class);
 
     private static final String PROTOCOL = "http://";
 
     /**
      * Format : <ip>:<port>/<cluster id>
      * */
-    @Value("#{systemProperties['garuda.endpoint']}")
-    private String garudaEndPoint;
+    @Value("#{systemProperties['beluga.endpoint']}")
+    private String belugaEndPoint;
 
     private String hostId;
     private String clusterId;
@@ -52,10 +52,10 @@ public class GarudaService {
 
     @PostConstruct
     public void init(){
-        if(garudaEndPoint == null) {
-            throw new IllegalArgumentException("Error : Please set system variable 'garuda.endpoint'.");
+        if(belugaEndPoint == null) {
+            throw new IllegalArgumentException("Error : Please set system variable 'beluga.endpoint'.");
         }
-        String[] els = garudaEndPoint.split("/");
+        String[] els = belugaEndPoint.split("/");
         hostId = PROTOCOL + els[0].trim();
         clusterId = els[1].trim();
     }
@@ -65,7 +65,7 @@ public class GarudaService {
     }
 
     public String getEndPoint() {
-        return garudaEndPoint;
+        return belugaEndPoint;
     }
 
     public String getDomainName() {
