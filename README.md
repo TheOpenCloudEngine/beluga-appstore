@@ -24,6 +24,6 @@ management노드의 IP와 매핑시킨다.
 
 $ sudo vi /etc/hosts
 ```
-54.254.191.117 service.db.beluga
+xxx.xxx.xxx.xxx service.db.beluga
 ```
 
