@@ -11,5 +11,11 @@ ubuntu14.04 에서 tomcat7은 /etc/default/tomcat7 파일에 추가.
 -Dbeluga.endpoint=<Beluga IP>:<Beluga Port>/<Cluster ID>
 ```
 
+예)
+
+```
+JAVA_OPTS="$JAVA_OPTS -Dbeluga.endpoint=beluga.kloudrun.com:9000/sample"
+```
+
 
 
