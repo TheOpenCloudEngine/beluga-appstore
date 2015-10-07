@@ -33,10 +33,15 @@ xxx.xxx.xxx.xxx service.db.beluga
 
 예를들어 도메인이 `mydomain.com`이라고 하면,
 
-1) `mydomain.com` : Beluga 서비스 IP 주소
+1) `mydomain.com` : Beluga-service 서버 IP 주소
 
-2) `*.mydomain.com` : Proxy node IP 주소
+2) `*.mydomain.com` : Proxy node 서버 IP 주소
 
-3) `beluga.mydomain.com` : Beluga 서버 IP 주소 
+3)(옵션사항) `beluga.mydomain.com` : Beluga 서버 IP 주소 
 
+1번설정을 통해 http://mydomain.com:8080 접속시 서비스페이지가 열리게 되며,
+
+2번설정을 통해 webapp을 http://<appId>.mydomain.com 으로 접근이 가능하게 된다.
+
+3번설정은 옵션사항이나, 설정해두면, http://beluga.mydomain.com 으로 클러스터 관리페이지에 바로 접속가능하다.
 
