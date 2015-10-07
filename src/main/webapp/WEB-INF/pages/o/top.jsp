@@ -6,7 +6,7 @@
 <head>
     <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
     <meta charset="utf-8">
-    <title>Garuda</title>
+    <title>Beluga</title>
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <!-- Favicon -->
@@ -23,7 +23,7 @@
 <div class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <a href="http://garuda.com/" ><img src="http://www.tsb.co.kr/Ver1/Images/logo.gif"></a>
+            <a href="#" ><img src="http://www.tsb.co.kr/Ver1/Images/logo.gif"></a>
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
