@@ -17,7 +17,10 @@ ubuntu14.04 에서 tomcat7은 /etc/default/tomcat7 파일에 추가.
 JAVA_OPTS="$JAVA_OPTS -Dbeluga.endpoint=beluga.kloudrun.com:9000/sample"
 ```
 
-
+그리고 아래라인을 찾아서 tomcat의 메모리를 최소 768m으로 수정한다.
+```
+JAVA_OPTS="-Djava.awt.headless=true -Xmx768m -XX:+UseConcMarkSweepGC"
+```
 
 2 . service.db.beluga 를 hosts파일에 등록
 management노드의 IP와 매핑시킨다.
