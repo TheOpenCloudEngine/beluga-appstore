@@ -113,6 +113,11 @@ $(function(){
                                 <p class="form-control-static pull-left">Context</p>
                                 <input type="text" id="context1" name="context1" class="form-control col-150 pull-left mleft-10" placeholder="/context" value="/">
                                 <input type="file" id="appFile1" name="appFile1" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
+                                <div class="progress" id="progressbar1" style="display:none">
+                                    <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                                        <span class="sr-only">45% Complete</span>
+                                    </div>
+                                </div>
                                 <p class="form-control-static app-file-detail1 maybe-hide"><span id="fileInfo1"></span>
                                     <br><span class="file-date" id="fileDate1"></span>
                                 </p>
@@ -122,10 +127,14 @@ $(function(){
                                 <p class="form-control-static pull-left">Context</p>
                                 <input type="text" id="context2" name="context2" class="form-control col-150 pull-left mleft-10" placeholder="/context">
                                 <input type="file" id="appFile2" name="appFile2" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
+                                <div class="progress" id="progressbar2" style="display:none">
+                                    <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                                        <span class="sr-only">45% Complete</span>
+                                    </div>
+                                </div>
                                 <p class="form-control-static app-file-detail2 maybe-hide"><span id="fileInfo2"></span>
                                     <br><span class="file-date" id="fileDate2"></span>
                                 </p>
-                                <!--// file2-->
                                 <!--hidden info-->
                                 <input type="hidden" name="fileName1"/>
                                 <input type="hidden" name="filePath1"/>
