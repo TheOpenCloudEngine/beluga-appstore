@@ -23,7 +23,7 @@
 <div class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <a href="#" ><img src="http://www.tsb.co.kr/Ver1/Images/logo.gif"></a>
+            <a href="#" ><img src="/resources/css/oce-logo.png"></a>
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
