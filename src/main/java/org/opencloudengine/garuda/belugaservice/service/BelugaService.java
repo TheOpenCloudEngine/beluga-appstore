@@ -87,7 +87,7 @@ public class BelugaService {
         return resources;
     }
 
-    private JsonNode getGarudaResponse(String uri) {
+    private JsonNode getBelugaResponse(String uri) {
         WebTarget webTarget = getWebTarget(uri);
         Response response = webTarget.request(MediaType.APPLICATION_JSON).get();
         try {
@@ -105,7 +105,7 @@ public class BelugaService {
     }
     public AppStatus getAppStatus(String appId) {
         String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
-        JsonNode root = getGarudaResponse(uri);
+        JsonNode root = getBelugaResponse(uri);
         if(root == null || !root.has("app")) {
             //존재하지 않음.
             return null;
@@ -177,7 +177,7 @@ public class BelugaService {
         }
     }
 
-    public boolean destoryApp(String appId) throws IOException {
+    public boolean destroyApp(String appId) throws IOException {
         String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
         WebTarget webTarget = getWebTarget(uri);
         Response response = webTarget.request(MediaType.APPLICATION_JSON).delete();

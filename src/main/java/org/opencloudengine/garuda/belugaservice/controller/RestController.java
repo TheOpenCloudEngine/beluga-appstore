@@ -155,7 +155,7 @@ public class RestController {
     @RequestMapping(value = "/api/apps/{appId}", method = RequestMethod.DELETE)
     public void deleteApp(@PathVariable String appId, HttpServletResponse response) throws IOException {
         ModelAndView mav = new ModelAndView();
-        if (belugaService.destoryApp(appId)) {
+        if (belugaService.destroyApp(appId)) {
             appManageService.deleteApp(appId);
             response.setStatus(200);
             return;
