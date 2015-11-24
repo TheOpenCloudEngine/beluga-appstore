@@ -1,5 +1,5 @@
-# Beluga Service
-Beluga를 이용한 멀티테넌트 App 서비스포털
+# Beluga Appstore
+벨루가 앱스토어
 
 ### 설치시 설정.
 
