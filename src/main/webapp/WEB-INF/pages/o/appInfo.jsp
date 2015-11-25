@@ -184,8 +184,8 @@
                         <label class="col-md-3 col-sm-3 control-label">Database:</label>
                         <div class="col-md-9 col-sm-9">
                             <ul class="no-padding-left">
-                                <li><p class="form-control-static">DB01 ( MySql 5.6.26 ) - Separate DB</p></li>
-                                <li><p class="form-control-static">DB02 ( Oracle 11g ) - Separate DB</p></li>
+                                <li><p class="form-control-static">DB01 MySql 5.6.26</p></li>
+                                <li><p class="form-control-static">DB02 Oracle XE 11g</p></li>
                             </ul>
                         </div>
                     </div>
@@ -193,7 +193,7 @@
                         <label class="col-md-3 col-sm-3 control-label">FTP: </label>
                         <div class="col-md-9 col-sm-9">
                             <ul class="no-padding-left">
-                                <li><p class="form-control-static">FTP01 ( Ftp 3.2 ) - Private</p></li>
+                                <li><p class="form-control-static">FTP01 Ftp 3.2</p></li>
                             </ul>
                         </div>
                     </div>

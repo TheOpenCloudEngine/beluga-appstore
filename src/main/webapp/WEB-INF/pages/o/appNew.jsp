@@ -213,75 +213,59 @@ $(function(){
                     <h4 class="bottom-line">Resource Plan</h4>
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
-                            <input type="hidden" name="db_resource_size" value="3" />
                             <label class="col-md-3 col-sm-3 control-label">Database:</label>
                             <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="db0" value="DB01"> DB01 ( MySql 5.6.26 )
-                                    </label>
-                                </div>
-                                <div class="sub-options">
-                                    <label class="radio-inline">
-                                        <input type="radio" name="db0_option" value="separateDB"> Separate DB
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="db0_option" value="SharedDB" disabled> Shared
+                                        <input type="checkbox" name="dataStore" value="MySql 5.7.9^mysql:5.7.9"> MySQL 5.7.9
                                     </label>
                                 </div>
                             </div>
                             <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="db1" value="DB02" > DB02 ( Oracle 11g )
-                                    </label>
-                                </div>
-                                <div class="sub-options">
-                                    <label class="radio-inline">
-                                        <input type="radio" name="db1_option" value="separateDB"> Separate DB
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="db1_option" value="separateSchema"> Separate Schema
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="db1_option" value="sharedSchema"> Shared
+                                        <input type="checkbox" name="dataStore" value="PostgreSQL^postgres:9.4.5" > PostgreSQL 9.4.5
                                     </label>
                                 </div>
                             </div>
                             <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="db2" value="DB03" > DB03 ( Postgres 9.4.4 )
-                                    </label>
-                                </div>
-                                <div class="sub-options">
-                                    <label class="radio-inline">
-                                        <input type="radio" name="db2_option" value="separateDB"> Separate DB
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="db2_option" value="separateSchema"> Separate Schema
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="db2_option" value="sharedSchema"> Shared
+                                        <input type="checkbox" name="dataStore" value="Oracle XE 11g^wnameless/oracle-xe-11g" > Oracle XE 11g
                                     </label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <input type="hidden" name="ftp_resource_size" value="1" />
+                            <label class="col-md-3 col-sm-3 control-label">NoSQL:</label>
+                            <div class="col-md-9 col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="dataStore" value="MongoDB 3.0^mongodb:3.0" > MongoDB 3.0
+                                    </label>
+                                </div>
+                            </div>
+                            <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="dataStore" value="Redis 3.0.5^redis:3.0.5" > Redis 3.0.5
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">FTP:</label>
                             <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="ftp0" value="FTP01"> FTP01 ( Ftp 3.2 )
+                                        <input type="checkbox" name="dataStore" value="SFTP^luzifer/sftp-share^" > SFTP
                                     </label>
                                 </div>
-                                <div class="sub-options">
-                                    <label class="radio-inline">
-                                        <input type="radio" name="ftp0_option" value="private"> Private
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="ftp0_option" value="shared"> Shared
+                            </div>
+                            <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="dataStore" value="FTP^mcreations/ftp^" > FTP
                                     </label>
                                 </div>
                             </div>
