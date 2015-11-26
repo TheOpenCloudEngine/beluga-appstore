@@ -7,30 +7,26 @@
 
 ubuntu14.04 에서 tomcat7은 /etc/default/tomcat7 파일에 추가.
 
+##### beluga.endpoint 와 db.endpoint
 ```
 -Dbeluga.endpoint=<Beluga IP>:<Beluga Port>/<Cluster ID>
+-Ddb.endpoint=<MYSQL IP>:<MYSQL Port>/<MYSQL Name>
 ```
 
 예)
 
 ```
-JAVA_OPTS="$JAVA_OPTS -Dbeluga.endpoint=beluga.kloudrun.com:9000/sample"
+JAVA_OPTS="$JAVA_OPTS -Dbeluga.endpoint=beluga.kloudrun.com:9000/sample" -Ddb.endpoint=localhost:3306/appstore
 ```
 
-그리고 아래라인을 찾아서 tomcat의 메모리를 최소 768m으로 수정한다.
+
+그리고 아래라인을 찾아서 tomcat의 메모리를 최대 768m으로 수정한다.
 ```
 JAVA_OPTS="-Djava.awt.headless=true -Xmx768m -XX:+UseConcMarkSweepGC"
 ```
 
-2 . service.db.beluga 를 hosts파일에 등록
-management노드의 IP와 매핑시킨다.
 
-$ sudo vi /etc/hosts
-```
-xxx.xxx.xxx.xxx service.db.beluga
-```
-
-3 . 도메인설정
+2 . 도메인설정
 
 도메인 관리페이지(각 제공사마다 상이함) 에 들어가서 A 레코드를 설정한다.
 
