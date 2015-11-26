@@ -23,6 +23,8 @@ JAVA_OPTS="$JAVA_OPTS -Dbeluga.endpoint=beluga.kloudrun.com:9000/sample" -Ddb.en
 
 https://github.com/TheOpenCloudEngine/beluga-appstore/blob/master/src/main/resources/belugaservice.sql
 
+** MySQL서버는 따로 준비할 필요없이 클러스터생성시 만들어진 Management Node내의 MySQL을 사용한다. 계정은 기본적으로 root / beluga123:) 이다.
+
 그리고 아래라인을 찾아서 tomcat의 메모리를 최대 768m으로 수정한다.
 ```
 JAVA_OPTS="-Djava.awt.headless=true -Xmx768m -XX:+UseConcMarkSweepGC"
