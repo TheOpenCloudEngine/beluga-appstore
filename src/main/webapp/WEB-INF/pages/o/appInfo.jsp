@@ -14,7 +14,7 @@
             type: "POST",
             success:function() {
                 alert("[${app.id}] app Deploy Success.");
-
+                location.reload(true);
             },
             error:function(xhr) {
                 alert("Deploy app fails : " + xhr.responseText);
@@ -195,9 +195,7 @@
                         <div class="col-md-9 col-sm-9">
                             <ul class="no-padding-left">
                                 <%
-                                String[] resourceList = new String[]{"mysql5", "postgresql9", "oraclexe11g"};
-                                %>
-                                <%
+                                    String[] resourceList = new String[]{"mysql5", "postgresql9", "oraclexe11g"};
                                     for(String resourceKey : resourceList) {
                                         if(appResourceList.contains(resourceKey)) {
                                             Resources.Resource resource = Resources.get(resourceKey);
@@ -216,7 +214,8 @@
                                         <p class="form-control-static"><%=resource.getName()%>
                                             <%=(ipPort != null) ? "<span class='label label-success'>ON</span>" : "<span class='label label-danger'>OFF</span>" %>
                                             <br>
-                                            <span style="font-size: 0.9em">$<%=resource.getIPPropertyKey()%>=<%=ip %>, $<%=resource.getPortPropertyKey()%>=<%=port%></span>
+                                            <span style="font-size: 0.9em">$<%=resource.getIPPropertyKey()%>=<%=ip %>
+                                                <br>$<%=resource.getPortPropertyKey()%>=<%=port%></span>
                                         </p>
                                     </li>
                                 <%
@@ -232,8 +231,6 @@
                             <ul class="no-padding-left">
                                 <%
                                     resourceList = new String[]{"mongodb3", "redis3"};
-                                %>
-                                <%
                                     for(String resourceKey : resourceList) {
                                         if(appResourceList.contains(resourceKey)) {
                                             Resources.Resource resource = Resources.get(resourceKey);
@@ -252,7 +249,8 @@
                                     <p class="form-control-static"><%=resource.getName()%>
                                         <%=(ipPort != null) ? "<span class='label label-success'>ON</span>" : "<span class='label label-danger'>OFF</span>" %>
                                         <br>
-                                        <span style="font-size: 0.9em">$<%=resource.getIPPropertyKey()%>=<%=ip %>, $<%=resource.getPortPropertyKey()%>=<%=port%></span>
+                                        <span style="font-size: 0.9em">$<%=resource.getIPPropertyKey()%>=<%=ip %>
+                                            <br>$<%=resource.getPortPropertyKey()%>=<%=port%></span>
                                     </p>
                                 </li>
                                 <%
@@ -268,8 +266,6 @@
                             <ul class="no-padding-left">
                                 <%
                                     resourceList = new String[]{"sftp", "ftp"};
-                                %>
-                                <%
                                     for(String resourceKey : resourceList) {
                                         if(appResourceList.contains(resourceKey)) {
                                             Resources.Resource resource = Resources.get(resourceKey);
@@ -288,7 +284,8 @@
                                     <p class="form-control-static"><%=resource.getName()%>
                                         <%=(ipPort != null) ? "<span class='label label-success'>ON</span>" : "<span class='label label-danger'>OFF</span>" %>
                                         <br>
-                                        <span style="font-size: 0.9em">$<%=resource.getIPPropertyKey()%>=<%=ip %>, $<%=resource.getPortPropertyKey()%>=<%=port%></span>
+                                        <span style="font-size: 0.9em">$<%=resource.getIPPropertyKey()%>=<%=ip %>
+                                            <br>$<%=resource.getPortPropertyKey()%>=<%=port%></span>
                                     </p>
                                 </li>
                                 <%

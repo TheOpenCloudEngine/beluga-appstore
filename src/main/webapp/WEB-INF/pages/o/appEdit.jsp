@@ -1,3 +1,7 @@
+<%@ page import="org.opencloudengine.garuda.belugaservice.db.entity.Resources" %>
+<%@ page import="org.opencloudengine.garuda.belugaservice.db.entity.App" %>
+<%@ page import="java.util.List" %>
+<%@ page import="java.util.Map" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
@@ -193,82 +197,131 @@ $(function() {
                     </div>
                 </div>
 
+                <%
+                    App app = (App) request.getAttribute("app");
+                    List<String> appResourceList = app.getResourceList();
+
+                    Map<String, String[]> resourceInfoMap = (Map<String, String[]>) request.getAttribute("resourceInfoMap");
+                %>
                 <div class="row col-md-12">
                     <h4 class="bottom-line">Resource Plan</h4>
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
-                            <input type="hidden" name="db_resource_size" value="3" />
                             <label class="col-md-3 col-sm-3 control-label">Database:</label>
-                            <div class="col-md-9 col-sm-9">
+                            <%
+                                String[] resourceList = new String[]{"mysql5", "postgresql9", "oraclexe11g"};
+                                String isChecked = "";
+                                for (int i = 0; i < resourceList.length; i++) {
+                                    String resourceKey = resourceList[i];
+                                    String ip = "";
+                                    String port = "";
+                                    String name = "resource_";
+                                    Resources.Resource resource = Resources.get(resourceKey);
+                                    if(appResourceList.contains(resourceKey)) {
+                                        isChecked = "checked";
+                                        name += resourceKey;
+                                        String[] ipPort = null;
+                                        if (resourceInfoMap != null) {
+                                            ipPort = resourceInfoMap.get(resourceKey);
+                                            if (ipPort != null) {
+                                                ip = ipPort[0];
+                                                port = ipPort[1];
+                                            }
+                                        }
+                                    }
+                            %>
+                            <div class="<%=(i > 0) ? "col-md-offset-3 col-sm-offset-3" : "" %> col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="db1" value="DB01"> DB01 ( MySql 5.6.26 )
+                                        <input type="checkbox" name="resource_<%=name %>" value="true" <%=isChecked %> > <%=resource.getName() %>
                                     </label>
                                 </div>
                                 <div class="sub-options">
-                                    <label class="radio-inline">
-                                        <input type="radio" name="db1_option" value="separateDB"> Separate DB
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="db1_option" value="SharedDB" disabled> Shared
-                                    </label>
+                                    $<%=resource.getIPPropertyKey()%>=<%=ip %>
+                                    <br>$<%=resource.getPortPropertyKey()%>=<%=port%>
                                 </div>
                             </div>
-                            <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="db2" value="DB02" > DB02 ( Oracle 11g )
-                                    </label>
-                                </div>
-                                <div class="sub-options">
-                                    <label class="radio-inline">
-                                        <input type="radio" name="db2_option" value="separateDB"> Separate DB
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="db2_option" value="separateSchema"> Separate Schema
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="db2_option" value="sharedSchema"> Shared
-                                    </label>
-                                </div>
-                            </div>
-                            <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="db3" value="DB03" > DB03 ( Postgres 9.4.4 )
-                                    </label>
-                                </div>
-                                <div class="sub-options">
-                                    <label class="radio-inline">
-                                        <input type="radio" name="db3_option" value="separateDB"> Separate DB
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="db3_option" value="separateSchema"> Separate Schema
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="db3_option" value="sharedSchema"> Shared
-                                    </label>
-                                </div>
-                            </div>
+                            <%
+                                }
+                            %>
                         </div>
                         <div class="form-group">
-                            <input type="hidden" name="ftp_resource_size" value="1" />
-                            <label class="col-md-3 col-sm-3 control-label">FTP:</label>
-                            <div class="col-md-9 col-sm-9">
+                            <label class="col-md-3 col-sm-3 control-label">NoSQL:</label>
+                            <%
+                                resourceList = new String[]{"mongodb3", "redis3"};
+                                isChecked = "";
+                                for (int i = 0; i < resourceList.length; i++) {
+                                    String resourceKey = resourceList[i];
+                                    String ip = "";
+                                    String port = "";
+                                    String name = "resource_";
+                                    Resources.Resource resource = Resources.get(resourceKey);
+                                    if(appResourceList.contains(resourceKey)) {
+                                        isChecked = "checked";
+                                        name += resourceKey;
+                                        String[] ipPort = null;
+                                        if (resourceInfoMap != null) {
+                                            ipPort = resourceInfoMap.get(resourceKey);
+                                            if (ipPort != null) {
+                                                ip = ipPort[0];
+                                                port = ipPort[1];
+                                            }
+                                        }
+                                    }
+                            %>
+                            <div class="<%=(i > 0) ? "col-md-offset-3 col-sm-offset-3" : "" %> col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="ftp1" value="FTP01"> FTP01 ( Ftp 3.2 )
+                                        <input type="checkbox" name="resource_<%=name %>" value="true" <%=isChecked %> > <%=resource.getName() %>
                                     </label>
                                 </div>
                                 <div class="sub-options">
-                                    <label class="radio-inline">
-                                        <input type="radio" name="ftp1_option" value="private"> Private
-                                    </label>
-                                    <label class="radio-inline">
-                                        <input type="radio" name="ftp1_option" value="shared"> Shared
-                                    </label>
+                                    $<%=resource.getIPPropertyKey()%>=<%=ip %>
+                                    <br>$<%=resource.getPortPropertyKey()%>=<%=port%>
                                 </div>
                             </div>
+                            <%
+                                }
+                            %>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-sm-3 control-label">FTP:</label>
+                            <%
+                                resourceList = new String[]{"sftp", "ftp"};
+                                isChecked = "";
+                                for (int i = 0; i < resourceList.length; i++) {
+                                    String resourceKey = resourceList[i];
+                                    String ip = "";
+                                    String port = "";
+                                    String name = "resource_";
+                                    Resources.Resource resource = Resources.get(resourceKey);
+                                    if(appResourceList.contains(resourceKey)) {
+                                        isChecked = "checked";
+                                        name += resourceKey;
+                                        String[] ipPort = null;
+                                        if (resourceInfoMap != null) {
+                                            ipPort = resourceInfoMap.get(resourceKey);
+                                            if (ipPort != null) {
+                                                ip = ipPort[0];
+                                                port = ipPort[1];
+                                            }
+                                        }
+                                    }
+                            %>
+                            <div class="<%=(i > 0) ? "col-md-offset-3 col-sm-offset-3" : "" %> col-md-9 col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="resource_<%=name %>" value="true" <%=isChecked %> > <%=resource.getName() %>
+                                    </label>
+                                </div>
+                                <div class="sub-options">
+                                    $<%=resource.getIPPropertyKey()%>=<%=ip %>
+                                    <br>$<%=resource.getPortPropertyKey()%>=<%=port%>
+                                </div>
+                            </div>
+                            <%
+                                }
+                            %>
                         </div>
                     </div>
                 </div>

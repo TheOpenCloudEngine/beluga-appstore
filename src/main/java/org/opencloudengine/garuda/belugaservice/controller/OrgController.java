@@ -121,6 +121,14 @@ public class OrgController {
         mav.addObject("domain", belugaService.getDomainName());
         mav.addObject("app", app);
         app.setAppFileLengthDisplay(ParseUtil.toHumanSize(app.getAppFileLength()));
+
+        Map<String, String[]> resourceInfoMap = new HashMap<>();
+        for(String resourceKey : app.getResourceList()) {
+            String[] hostPort = belugaService.getAppHostPort(appId, resourceKey);
+            resourceInfoMap.put(resourceKey, hostPort);
+        }
+        mav.addObject("resourceInfoMap", resourceInfoMap);
+
         mav.setViewName("o/appEdit");
         return mav;
     }
@@ -153,8 +161,7 @@ public class OrgController {
 
         Map<String, String[]> resourceInfoMap = new HashMap<>();
         for(String resourceKey : app.getResourceList()) {
-            String resourceAppId = appId + "-" + resourceKey;
-            String[] hostPort = belugaService.getAppHostPort(resourceAppId);
+            String[] hostPort = belugaService.getAppHostPort(appId, resourceKey);
             resourceInfoMap.put(resourceKey, hostPort);
         }
         mav.addObject("resourceInfoMap", resourceInfoMap);
