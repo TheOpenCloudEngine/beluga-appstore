@@ -1,3 +1,7 @@
+<%@ page import="org.opencloudengine.garuda.belugaservice.db.entity.Resources" %>
+<%@ page import="java.util.Map" %>
+<%@ page import="org.opencloudengine.garuda.belugaservice.db.entity.App" %>
+<%@ page import="java.util.List" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
@@ -177,6 +181,12 @@
                 </div>
             </div>
 
+            <%
+                App app = (App) request.getAttribute("app");
+                List<String> appResourceList = app.getResourceList();
+
+                Map<String, String[]> resourceInfoMap = (Map<String, String[]>) request.getAttribute("resourceInfoMap");
+            %>
             <div class="row col-md-12">
                 <h4 class="bottom-line">Resource Plan</h4>
                 <div class="col-md-12 form-horizontal">
@@ -184,8 +194,71 @@
                         <label class="col-md-3 col-sm-3 control-label">Database:</label>
                         <div class="col-md-9 col-sm-9">
                             <ul class="no-padding-left">
-                                <li><p class="form-control-static">DB01 MySql 5.6.26</p></li>
-                                <li><p class="form-control-static">DB02 Oracle XE 11g</p></li>
+                                <%
+                                String[] resourceList = new String[]{"mysql5", "postgresql9", "oraclexe11g"};
+                                %>
+                                <%
+                                    for(String resourceKey : resourceList) {
+                                        if(appResourceList.contains(resourceKey)) {
+                                            Resources.Resource resource = Resources.get(resourceKey);
+                                            String ip = "";
+                                            String port = "";
+                                            String[] ipPort = null;
+                                            if(resourceInfoMap != null) {
+                                                ipPort = resourceInfoMap.get(resourceKey);
+                                                if(ipPort != null) {
+                                                    ip = ipPort[0];
+                                                    port = ipPort[1];
+                                                }
+                                            }
+                                %>
+                                    <li>
+                                        <p class="form-control-static"><%=resource.getName()%>
+                                            <%=(ipPort != null) ? "<span class='label label-success'>ON</span>" : "<span class='label label-danger'>OFF</span>" %>
+                                            <br>
+                                            <span style="font-size: 0.9em">$<%=resource.getIPPropertyKey()%>=<%=ip %>, $<%=resource.getPortPropertyKey()%>=<%=port%></span>
+                                        </p>
+                                    </li>
+                                <%
+                                        }
+                                    }
+                                %>
+                            </ul>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-sm-3 control-label">NoSQL: </label>
+                        <div class="col-md-9 col-sm-9">
+                            <ul class="no-padding-left">
+                                <%
+                                    resourceList = new String[]{"mongodb3", "redis3"};
+                                %>
+                                <%
+                                    for(String resourceKey : resourceList) {
+                                        if(appResourceList.contains(resourceKey)) {
+                                            Resources.Resource resource = Resources.get(resourceKey);
+                                            String ip = "";
+                                            String port = "";
+                                            String[] ipPort = null;
+                                            if(resourceInfoMap != null) {
+                                                ipPort = resourceInfoMap.get(resourceKey);
+                                                if(ipPort != null) {
+                                                    ip = ipPort[0];
+                                                    port = ipPort[1];
+                                                }
+                                            }
+                                %>
+                                <li>
+                                    <p class="form-control-static"><%=resource.getName()%>
+                                        <%=(ipPort != null) ? "<span class='label label-success'>ON</span>" : "<span class='label label-danger'>OFF</span>" %>
+                                        <br>
+                                        <span style="font-size: 0.9em">$<%=resource.getIPPropertyKey()%>=<%=ip %>, $<%=resource.getPortPropertyKey()%>=<%=port%></span>
+                                    </p>
+                                </li>
+                                <%
+                                        }
+                                    }
+                                %>
                             </ul>
                         </div>
                     </div>
@@ -193,7 +266,35 @@
                         <label class="col-md-3 col-sm-3 control-label">FTP: </label>
                         <div class="col-md-9 col-sm-9">
                             <ul class="no-padding-left">
-                                <li><p class="form-control-static">FTP01 Ftp 3.2</p></li>
+                                <%
+                                    resourceList = new String[]{"sftp", "ftp"};
+                                %>
+                                <%
+                                    for(String resourceKey : resourceList) {
+                                        if(appResourceList.contains(resourceKey)) {
+                                            Resources.Resource resource = Resources.get(resourceKey);
+                                            String ip = "";
+                                            String port = "";
+                                            String[] ipPort = null;
+                                            if(resourceInfoMap != null) {
+                                                ipPort = resourceInfoMap.get(resourceKey);
+                                                if(ipPort != null) {
+                                                    ip = ipPort[0];
+                                                    port = ipPort[1];
+                                                }
+                                            }
+                                %>
+                                <li>
+                                    <p class="form-control-static"><%=resource.getName()%>
+                                        <%=(ipPort != null) ? "<span class='label label-success'>ON</span>" : "<span class='label label-danger'>OFF</span>" %>
+                                        <br>
+                                        <span style="font-size: 0.9em">$<%=resource.getIPPropertyKey()%>=<%=ip %>, $<%=resource.getPortPropertyKey()%>=<%=port%></span>
+                                    </p>
+                                </li>
+                                <%
+                                        }
+                                    }
+                                %>
                             </ul>
                         </div>
                     </div>

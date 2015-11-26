@@ -21,6 +21,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.NotFoundException;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -149,6 +150,15 @@ public class OrgController {
         app.setMemoryDisplay(ParseUtil.toHumanSizeOverMB(app.getMemory() * SizeUnit.MB));
         mav.addObject("app", app);
         mav.addObject("domain", belugaService.getDomainName());
+
+        Map<String, String[]> resourceInfoMap = new HashMap<>();
+        for(String resourceKey : app.getResourceList()) {
+            String resourceAppId = appId + "_" + resourceKey;
+            String[] hostPort = belugaService.getAppHostPort(resourceAppId);
+            resourceInfoMap.put(resourceKey, hostPort);
+        }
+        mav.addObject("resourceInfoMap", resourceInfoMap);
+
         mav.setViewName("o/appInfo");
         return mav;
     }

@@ -181,6 +181,7 @@ dd {  word-break: break-all; }
 
 .sub-options {
     margin-left: 20px;
+    font-size: 0.9em;
 }
 
 .no-padding-left {padding-left: 0;}

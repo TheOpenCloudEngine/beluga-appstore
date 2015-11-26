@@ -190,34 +190,34 @@ public class RestController {
     *
     * TODO 로그인하면 결과로 사용가능 리소스정보를 넘겨준다.
     * */
-    @RequestMapping(value = "/api/users", method = RequestMethod.POST)
-    public void loginAPI(@RequestBody String json, HttpServletResponse response) throws IOException {
-
-        String appId = null;
-        String id = null;
-        String password = null;
-
-        User user = new User();
-        user.setId(id);
-        user.setPassword(password);
-        if (!memberService.isUserExistsWithPassword(user)) {
-            response.sendError(401, "Incorrect user information : " + id);
-            return;
-        }
-        user = memberService.getUser(id);
-        String orgId = user.getOrgId();
-        if (appManageService.isGranted(orgId, appId)) {
-            // 사용가능한 리소스 정보를 전달.
-            Resources allResources = belugaService.getResources();
-            //조직별 사용할 리소스를 산출한다.
-            Resources usingResources = appManageService.getUsingResources(appId, allResources);
-
-            response.getWriter().print(JsonUtil.object2String(usingResources));
-        } else {
-            response.sendError(403, "App " + appId + " is not allowed to organization " + orgId);
-        }
-
-    }
+//    @RequestMapping(value = "/api/users", method = RequestMethod.POST)
+//    public void loginAPI(@RequestBody String json, HttpServletResponse response) throws IOException {
+//
+//        String appId = null;
+//        String id = null;
+//        String password = null;
+//
+//        User user = new User();
+//        user.setId(id);
+//        user.setPassword(password);
+//        if (!memberService.isUserExistsWithPassword(user)) {
+//            response.sendError(401, "Incorrect user information : " + id);
+//            return;
+//        }
+//        user = memberService.getUser(id);
+//        String orgId = user.getOrgId();
+//        if (appManageService.isGranted(orgId, appId)) {
+//            // 사용가능한 리소스 정보를 전달.
+//            Resources allResources = belugaService.getResources();
+//            //조직별 사용할 리소스를 산출한다.
+//            Resources usingResources = appManageService.getUsingResources(appId, allResources);
+//
+//            response.getWriter().print(JsonUtil.object2String(usingResources));
+//        } else {
+//            response.sendError(403, "App " + appId + " is not allowed to organization " + orgId);
+//        }
+//
+//    }
 
     @RequestMapping(value = "/api/oauth2/token", method = RequestMethod.POST)
     public void oauth2Token(@RequestBody String json, HttpServletResponse response) throws IOException {

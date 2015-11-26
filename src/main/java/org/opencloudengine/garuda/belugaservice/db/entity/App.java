@@ -54,7 +54,7 @@ public class App {
 
     /* Resource Plan */
     private String resources;
-    private ResourcesPlan resourcesPlan;
+    private List<String> resourceList;
 
     /* Auto Scaling Plan */
     private Character autoScaleOutUse;
@@ -299,20 +299,20 @@ public class App {
     public void setResources(String resources) {
         this.resources = resources;
         try{
-            this.resourcesPlan = JsonUtil.json2Object(resources, ResourcesPlan.class);
+            this.resourceList = JsonUtil.json2Object(resources, List.class);
         } catch (IOException e) {
             logger.error("", e);
         }
     }
 
-    public ResourcesPlan getResourcesPlan() {
-        return resourcesPlan;
+    public List<String> getResourceList() {
+        return resourceList;
     }
 
-    public void setResourcesPlan(ResourcesPlan resourcesPlan) {
-        this.resourcesPlan = resourcesPlan;
+    public void setResourcesPlan(List<String> resourceList) {
+        this.resourceList = resourceList;
         try{
-            this.resources = JsonUtil.object2String(resourcesPlan);
+            this.resources = JsonUtil.object2String(resourceList);
         } catch (IOException e) {
             logger.error("", e);
         }
@@ -385,26 +385,26 @@ public class App {
         return autoScaleInConfig;
     }
 
-    public static class ResourcesPlan {
-
-        private List<ResourcePlan> planList;
-
-        public List<ResourcePlan> getPlanList() {
-            return planList;
-        }
-
-        public void setPlanList(List<ResourcePlan> planList) {
-            this.planList = planList;
-        }
-
-        public void addPlan(ResourcePlan resourcePlan) {
-            if(planList == null) {
-                planList = new ArrayList<>();
-            }
-            planList.add(resourcePlan);
-        }
-
-    }
+//    public static class ResourcesPlan {
+//
+//        private List<ResourcePlan> planList;
+//
+//        public List<ResourcePlan> getPlanList() {
+//            return planList;
+//        }
+//
+//        public void setPlanList(List<ResourcePlan> planList) {
+//            this.planList = planList;
+//        }
+//
+//        public void addPlan(ResourcePlan resourcePlan) {
+//            if(planList == null) {
+//                planList = new ArrayList<>();
+//            }
+//            planList.add(resourcePlan);
+//        }
+//
+//    }
 
     public static class AutoScaleOutConfig {
         private Integer cpuHigher;

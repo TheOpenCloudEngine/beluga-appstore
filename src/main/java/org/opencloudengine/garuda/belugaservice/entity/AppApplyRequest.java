@@ -2,10 +2,13 @@ package org.opencloudengine.garuda.belugaservice.entity;
 
 import org.opencloudengine.garuda.belugaservice.db.entity.App;
 
+import java.util.List;
+
 /**
  * Created by swsong on 2015. 8. 19..
  */
 public class AppApplyRequest {
+
     private String id;
     private String cmd;
     private Integer revision;
@@ -17,6 +20,13 @@ public class AppApplyRequest {
     private Float cpus;
     private Integer memory;
     private Integer scale;
+
+    private List<String> resourceList;
+
+    private Character autoScaleInUse;
+    private App.AutoScaleInConfig autoScaleInConfig;
+    private Character autoScaleOutUse;
+    private App.AutoScaleOutConfig autoScaleOutConfig;
 
     public AppApplyRequest() {}
 
@@ -31,6 +41,11 @@ public class AppApplyRequest {
         this.cpus = app.getCpus();
         this.memory = app.getMemory();
         this.scale = app.getScale();
+        this.resourceList = app.getResourceList();
+        autoScaleInUse = app.getAutoScaleInUse();
+        autoScaleInConfig = app.getAutoScaleInConfig();
+        autoScaleOutUse = app.getAutoScaleOutUse();
+        autoScaleOutConfig = app.getAutoScaleOutConfig();
     }
 
     public String getId() {
@@ -119,5 +134,45 @@ public class AppApplyRequest {
 
     public void setScale(Integer scale) {
         this.scale = scale;
+    }
+
+    public List<String> getResourceList() {
+        return resourceList;
+    }
+
+    public void setResourceList(List<String> resourceList) {
+        this.resourceList = resourceList;
+    }
+
+    public Character getAutoScaleInUse() {
+        return autoScaleInUse;
+    }
+
+    public void setAutoScaleInUse(Character autoScaleInUse) {
+        this.autoScaleInUse = autoScaleInUse;
+    }
+
+    public App.AutoScaleInConfig getAutoScaleInConfig() {
+        return autoScaleInConfig;
+    }
+
+    public void setAutoScaleInConfig(App.AutoScaleInConfig autoScaleInConfig) {
+        this.autoScaleInConfig = autoScaleInConfig;
+    }
+
+    public Character getAutoScaleOutUse() {
+        return autoScaleOutUse;
+    }
+
+    public void setAutoScaleOutUse(Character autoScaleOutUse) {
+        this.autoScaleOutUse = autoScaleOutUse;
+    }
+
+    public App.AutoScaleOutConfig getAutoScaleOutConfig() {
+        return autoScaleOutConfig;
+    }
+
+    public void setAutoScaleOutConfig(App.AutoScaleOutConfig autoScaleOutConfig) {
+        this.autoScaleOutConfig = autoScaleOutConfig;
     }
 }

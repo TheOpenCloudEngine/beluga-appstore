@@ -1,7 +1,6 @@
 package org.opencloudengine.garuda.belugaservice.service;
 
 import org.opencloudengine.garuda.belugaservice.db.entity.App;
-import org.opencloudengine.garuda.belugaservice.db.entity.ResourcePlan;
 import org.opencloudengine.garuda.belugaservice.db.entity.Resources;
 import org.opencloudengine.garuda.belugaservice.db.mapper.AppMapper;
 import org.opencloudengine.garuda.belugaservice.util.ParseUtil;
@@ -13,7 +12,7 @@ import org.springframework.web.multipart.MultipartFile;
 
 import java.io.*;
 import java.net.URLDecoder;
-import java.util.Iterator;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
@@ -116,9 +115,6 @@ public class AppManageService {
         String memory = (String) data.get("memory");
         String scale = (String) data.get("scale");
 
-        Integer dbResourceSize = ParseUtil.parseInt(data.get("db_resource_size"));
-        Integer ftpResourceSize = ParseUtil.parseInt(data.get("ftp_resource_size"));
-
         String autoScaleOutUse = (String) data.get("autoScaleOutUse");
         Integer cpuHigher = ParseUtil.parseInt(data.get("cpuHigher"));
         Integer cpuHigherDuring = ParseUtil.parseInt(data.get("cpuHigherDuring"));
@@ -155,31 +151,39 @@ public class AppManageService {
         app.setScale(ParseUtil.parseInt(scale));
 
         /* resources plan */
-        App.ResourcesPlan resourcesPlan = new App.ResourcesPlan();
-        String dbPrefix = "db";
-        String ftpPrefix = "ftp";
-        String optionSuffix = "_option";
-        for (int i = 0; i < dbResourceSize; i++){
-            String key = dbPrefix + i;
-            String dbId = (String) data.get(key);
-            if(dbId != null) {
-                String optionKey = key + optionSuffix;
-                String option = (String) data.get(optionKey);
-                ResourcePlan p = new ResourcePlan(dbId, option);
-                resourcesPlan.addPlan(p);
+        List<String> resourceList = new ArrayList<>();
+        String resourcePrefix = "resource_";
+        for(String resourceKey : Resources.keys()) {
+            String paramKey = resourcePrefix + resourceKey;
+            if(data.get(paramKey) != null) {
+                resourceList.add(resourceKey);
+//                ResourcePlan p = new ResourcePlan(dbId, option);
+//                resourcesPlan.addPlan(p);
             }
+
         }
-        for (int i = 0; i < ftpResourceSize; i++){
-            String key = ftpPrefix + i;
-            String ftpId = (String) data.get(key);
-            if(ftpId != null) {
-                String optionKey = key + optionSuffix;
-                String option = (String) data.get(optionKey);
-                ResourcePlan p = new ResourcePlan(ftpId, option);
-                resourcesPlan.addPlan(p);
-            }
-        }
-        app.setResourcesPlan(resourcesPlan);
+//        for (int i = 0; i < dbResourceSize; i++){
+//            String key = dbPrefix + i;
+//            String dbId = (String) data.get(key);
+//            if(dbId != null) {
+//                String optionKey = key + optionSuffix;
+//                String option = (String) data.get(optionKey);
+//                ResourcePlan p = new ResourcePlan(dbId, option);
+//                resourcesPlan.addPlan(p);
+//            }
+//        }
+//        for (int i = 0; i < ftpResourceSize; i++){
+//            String key = ftpPrefix + i;
+//            String ftpId = (String) data.get(key);
+//            if(ftpId != null) {
+//                String optionKey = key + optionSuffix;
+//                String option = (String) data.get(optionKey);
+//                ResourcePlan p = new ResourcePlan(ftpId, option);
+//                resourcesPlan.addPlan(p);
+//            }
+//        }
+
+        app.setResourcesPlan(resourceList);
 
         /* auto scale */
         App.AutoScaleOutConfig autoScaleOutConfig = new App.AutoScaleOutConfig();
@@ -219,42 +223,42 @@ public class AppManageService {
         appMapper.delete(appId);
     }
 
-    public Resources getUsingResources(String appId, Resources allResources) {
-        Resources usingResources = allResources;
-        App app = getApp(appId);
+//    public Resources getUsingResources(String appId, Resources allResources) {
+//        Resources usingResources = allResources;
+//        App app = getApp(appId);
+//
+//        App.ResourcesPlan resourcesPlan = app.getResourcesPlan();
+//
+//        /* DB Plan Check */
+//        Iterator<Resources.DBResource> dbIter = allResources.getDbResourceList().iterator();
+//        while(dbIter.hasNext()) {
+//            String resourceId = dbIter.next().getId();
+//            if(!isPlanContainsResource(resourcesPlan, resourceId)) {
+//                //plan에 속하지 않는 resource는 삭제한다.
+//                dbIter.remove();
+//            }
+//        }
+//
+//        /* DB Plan Check */
+//        Iterator<Resources.FTPResource> ftpIter = allResources.getFtpResourceList().iterator();
+//        while(ftpIter.hasNext()) {
+//            String resourceId = ftpIter.next().getId();
+//            if(!isPlanContainsResource(resourcesPlan, resourceId)) {
+//                //plan에 속하지 않는 resource는 삭제한다.
+//                ftpIter.remove();
+//            }
+//        }
+//
+//        return usingResources;
+//    }
 
-        App.ResourcesPlan resourcesPlan = app.getResourcesPlan();
-
-        /* DB Plan Check */
-        Iterator<Resources.DBResource> dbIter = allResources.getDbResourceList().iterator();
-        while(dbIter.hasNext()) {
-            String resourceId = dbIter.next().getId();
-            if(!isPlanContainsResource(resourcesPlan, resourceId)) {
-                //plan에 속하지 않는 resource는 삭제한다.
-                dbIter.remove();
-            }
-        }
-
-        /* DB Plan Check */
-        Iterator<Resources.FTPResource> ftpIter = allResources.getFtpResourceList().iterator();
-        while(ftpIter.hasNext()) {
-            String resourceId = ftpIter.next().getId();
-            if(!isPlanContainsResource(resourcesPlan, resourceId)) {
-                //plan에 속하지 않는 resource는 삭제한다.
-                ftpIter.remove();
-            }
-        }
-
-        return usingResources;
-    }
-
-    private boolean isPlanContainsResource(App.ResourcesPlan resourcesPlan, String resourceId) {
-        for(ResourcePlan plan : resourcesPlan.getPlanList()) {
-            plan.getId().equalsIgnoreCase(resourceId);
-            return true;
-        }
-        return false;
-    }
+//    private boolean isPlanContainsResource(App.ResourcesPlan resourcesPlan, String resourceId) {
+//        for(ResourcePlan plan : resourcesPlan.getPlanList()) {
+//            plan.getId().equalsIgnoreCase(resourceId);
+//            return true;
+//        }
+//        return false;
+//    }
 
     public File saveMultipartFile(MultipartFile file, String orgId) throws IOException {
 

@@ -1,3 +1,4 @@
+<%@ page import="org.opencloudengine.garuda.belugaservice.db.entity.Resources" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
@@ -217,22 +218,31 @@ $(function(){
                             <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="dataStore" value="MySql 5.7.9^mysql:5.7.9"> MySQL 5.7.9
+                                        <input type="checkbox" name="resource_mysql5" value="true"> <%=Resources.get("mysql5").getName() %>
                                     </label>
+                                </div>
+                                <div class="sub-options">
+                                    $<%=Resources.get("mysql5").getIPPropertyKey()%> $<%=Resources.get("mysql5").getPortPropertyKey()%>
                                 </div>
                             </div>
                             <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="dataStore" value="PostgreSQL^postgres:9.4.5" > PostgreSQL 9.4.5
+                                        <input type="checkbox" name="resource_postgresql9" value="true"> <%=Resources.get("postgresql9").getName() %>
                                     </label>
+                                </div>
+                                <div class="sub-options">
+                                    $<%=Resources.get("postgresql9").getIPPropertyKey()%> $<%=Resources.get("postgresql9").getPortPropertyKey()%>
                                 </div>
                             </div>
                             <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="dataStore" value="Oracle XE 11g^wnameless/oracle-xe-11g" > Oracle XE 11g
+                                        <input type="checkbox" name="resource_oraclexe11g" value="true"> <%=Resources.get("oraclexe11g").getName() %>
                                     </label>
+                                </div>
+                                <div class="sub-options">
+                                    $<%=Resources.get("oraclexe11g").getIPPropertyKey()%> $<%=Resources.get("oraclexe11g").getPortPropertyKey()%>
                                 </div>
                             </div>
                         </div>
@@ -241,15 +251,21 @@ $(function(){
                             <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="dataStore" value="MongoDB 3.0^mongodb:3.0" > MongoDB 3.0
+                                        <input type="checkbox" name="resource_mongodb3" value="true"> <%=Resources.get("mongodb3").getName() %>
                                     </label>
+                                </div>
+                                <div class="sub-options">
+                                    $<%=Resources.get("mongodb3").getIPPropertyKey()%> $<%=Resources.get("mongodb3").getPortPropertyKey()%>
                                 </div>
                             </div>
                             <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="dataStore" value="Redis 3.0.5^redis:3.0.5" > Redis 3.0.5
+                                        <input type="checkbox" name="resource_redis3" value="true"> <%=Resources.get("redis3").getName() %>
                                     </label>
+                                </div>
+                                <div class="sub-options">
+                                    $<%=Resources.get("redis3").getIPPropertyKey()%> $<%=Resources.get("redis3").getPortPropertyKey()%>
                                 </div>
                             </div>
                         </div>
@@ -258,15 +274,21 @@ $(function(){
                             <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="dataStore" value="SFTP^luzifer/sftp-share^" > SFTP
+                                        <input type="checkbox" name="resource_sftp" value="true"> <%=Resources.get("sftp").getName() %>
                                     </label>
+                                </div>
+                                <div class="sub-options">
+                                    $<%=Resources.get("sftp").getIPPropertyKey()%> $<%=Resources.get("sftp").getPortPropertyKey()%>
                                 </div>
                             </div>
                             <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="dataStore" value="FTP^mcreations/ftp^" > FTP
+                                        <input type="checkbox" name="resource_ftp" value="true"> <%=Resources.get("ftp").getName() %>
                                     </label>
+                                </div>
+                                <div class="sub-options">
+                                    $<%=Resources.get("ftp").getIPPropertyKey()%> $<%=Resources.get("ftp").getPortPropertyKey()%>
                                 </div>
                             </div>
                         </div>

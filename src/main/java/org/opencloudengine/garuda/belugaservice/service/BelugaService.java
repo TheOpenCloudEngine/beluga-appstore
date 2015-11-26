@@ -1,6 +1,7 @@
 package org.opencloudengine.garuda.belugaservice.service;
 
 import com.fasterxml.jackson.databind.JsonNode;
+import com.fasterxml.jackson.databind.node.ArrayNode;
 import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPart;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
@@ -103,6 +104,32 @@ public class BelugaService {
             return null;
         }
     }
+    public String[] getAppHostPort(String appId) {
+        String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
+        JsonNode root = getBelugaResponse(uri);
+        if(root == null || !root.has("app")) {
+            //존재하지 않음.
+            return null;
+        }
+        JsonNode app = root.get("app");
+        ArrayNode tasks = (ArrayNode) app.get("tasks");
+        if(tasks != null) {
+            String host = "";
+            String port = "";
+            JsonNode task = tasks.get(0);
+            if(task != null) {
+                host = task.get("host").asText();
+                ArrayNode ports = (ArrayNode) task.get("ports");
+                if (ports.size() > 0) {
+                    port = String.valueOf(ports.get(0).asInt());
+                }
+            }
+            return new String[]{host, port};
+        }
+
+        return null;
+    }
+
     public AppStatus getAppStatus(String appId) {
         String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
         JsonNode root = getBelugaResponse(uri);
