@@ -210,19 +210,16 @@ $(function() {
                             <label class="col-md-3 col-sm-3 control-label">Database:</label>
                             <%
                                 String[] resourceList = new String[]{"mysql5", "postgresql9", "oraclexe11g"};
-                                String isChecked = "";
                                 for (int i = 0; i < resourceList.length; i++) {
+                                    String isChecked = "";
                                     String resourceKey = resourceList[i];
                                     String ip = "";
                                     String port = "";
-                                    String name = "resource_";
                                     Resources.Resource resource = Resources.get(resourceKey);
                                     if(appResourceList.contains(resourceKey)) {
                                         isChecked = "checked";
-                                        name += resourceKey;
-                                        String[] ipPort = null;
                                         if (resourceInfoMap != null) {
-                                            ipPort = resourceInfoMap.get(resourceKey);
+                                            String[] ipPort = resourceInfoMap.get(resourceKey);
                                             if (ipPort != null) {
                                                 ip = ipPort[0];
                                                 port = ipPort[1];
@@ -233,7 +230,7 @@ $(function() {
                             <div class="<%=(i > 0) ? "col-md-offset-3 col-sm-offset-3" : "" %> col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="resource_<%=name %>" value="true" <%=isChecked %> > <%=resource.getName() %>
+                                        <input type="checkbox" name="resource_<%=resourceKey %>" value="true" <%=isChecked %> > <%=resource.getName() %>
                                     </label>
                                 </div>
                                 <div class="sub-options">
@@ -249,19 +246,16 @@ $(function() {
                             <label class="col-md-3 col-sm-3 control-label">NoSQL:</label>
                             <%
                                 resourceList = new String[]{"mongodb3", "redis3"};
-                                isChecked = "";
                                 for (int i = 0; i < resourceList.length; i++) {
+                                    String isChecked = "";
                                     String resourceKey = resourceList[i];
                                     String ip = "";
                                     String port = "";
-                                    String name = "resource_";
                                     Resources.Resource resource = Resources.get(resourceKey);
                                     if(appResourceList.contains(resourceKey)) {
                                         isChecked = "checked";
-                                        name += resourceKey;
-                                        String[] ipPort = null;
                                         if (resourceInfoMap != null) {
-                                            ipPort = resourceInfoMap.get(resourceKey);
+                                            String[] ipPort = resourceInfoMap.get(resourceKey);
                                             if (ipPort != null) {
                                                 ip = ipPort[0];
                                                 port = ipPort[1];
@@ -272,7 +266,7 @@ $(function() {
                             <div class="<%=(i > 0) ? "col-md-offset-3 col-sm-offset-3" : "" %> col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="resource_<%=name %>" value="true" <%=isChecked %> > <%=resource.getName() %>
+                                        <input type="checkbox" name="resource_<%=resourceKey %>" value="true" <%=isChecked %> > <%=resource.getName() %>
                                     </label>
                                 </div>
                                 <div class="sub-options">
@@ -288,19 +282,16 @@ $(function() {
                             <label class="col-md-3 col-sm-3 control-label">FTP:</label>
                             <%
                                 resourceList = new String[]{"sftp", "ftp"};
-                                isChecked = "";
                                 for (int i = 0; i < resourceList.length; i++) {
+                                    String isChecked = "";
                                     String resourceKey = resourceList[i];
                                     String ip = "";
                                     String port = "";
-                                    String name = "resource_";
                                     Resources.Resource resource = Resources.get(resourceKey);
                                     if(appResourceList.contains(resourceKey)) {
                                         isChecked = "checked";
-                                        name += resourceKey;
-                                        String[] ipPort = null;
                                         if (resourceInfoMap != null) {
-                                            ipPort = resourceInfoMap.get(resourceKey);
+                                            String[] ipPort = resourceInfoMap.get(resourceKey);
                                             if (ipPort != null) {
                                                 ip = ipPort[0];
                                                 port = ipPort[1];
@@ -311,7 +302,7 @@ $(function() {
                             <div class="<%=(i > 0) ? "col-md-offset-3 col-sm-offset-3" : "" %> col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="resource_<%=name %>" value="true" <%=isChecked %> > <%=resource.getName() %>
+                                        <input type="checkbox" name="resource_<%=resourceKey %>" value="true" <%=isChecked %> > <%=resource.getName() %>
                                     </label>
                                 </div>
                                 <div class="sub-options">

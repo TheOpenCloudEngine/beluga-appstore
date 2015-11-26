@@ -157,31 +157,8 @@ public class AppManageService {
             String paramKey = resourcePrefix + resourceKey;
             if(data.get(paramKey) != null) {
                 resourceList.add(resourceKey);
-//                ResourcePlan p = new ResourcePlan(dbId, option);
-//                resourcesPlan.addPlan(p);
             }
-
         }
-//        for (int i = 0; i < dbResourceSize; i++){
-//            String key = dbPrefix + i;
-//            String dbId = (String) data.get(key);
-//            if(dbId != null) {
-//                String optionKey = key + optionSuffix;
-//                String option = (String) data.get(optionKey);
-//                ResourcePlan p = new ResourcePlan(dbId, option);
-//                resourcesPlan.addPlan(p);
-//            }
-//        }
-//        for (int i = 0; i < ftpResourceSize; i++){
-//            String key = ftpPrefix + i;
-//            String ftpId = (String) data.get(key);
-//            if(ftpId != null) {
-//                String optionKey = key + optionSuffix;
-//                String option = (String) data.get(optionKey);
-//                ResourcePlan p = new ResourcePlan(ftpId, option);
-//                resourcesPlan.addPlan(p);
-//            }
-//        }
 
         app.setResourcesPlan(resourceList);
 
@@ -222,43 +199,6 @@ public class AppManageService {
     public void deleteApp(String appId) {
         appMapper.delete(appId);
     }
-
-//    public Resources getUsingResources(String appId, Resources allResources) {
-//        Resources usingResources = allResources;
-//        App app = getApp(appId);
-//
-//        App.ResourcesPlan resourcesPlan = app.getResourcesPlan();
-//
-//        /* DB Plan Check */
-//        Iterator<Resources.DBResource> dbIter = allResources.getDbResourceList().iterator();
-//        while(dbIter.hasNext()) {
-//            String resourceId = dbIter.next().getId();
-//            if(!isPlanContainsResource(resourcesPlan, resourceId)) {
-//                //plan에 속하지 않는 resource는 삭제한다.
-//                dbIter.remove();
-//            }
-//        }
-//
-//        /* DB Plan Check */
-//        Iterator<Resources.FTPResource> ftpIter = allResources.getFtpResourceList().iterator();
-//        while(ftpIter.hasNext()) {
-//            String resourceId = ftpIter.next().getId();
-//            if(!isPlanContainsResource(resourcesPlan, resourceId)) {
-//                //plan에 속하지 않는 resource는 삭제한다.
-//                ftpIter.remove();
-//            }
-//        }
-//
-//        return usingResources;
-//    }
-
-//    private boolean isPlanContainsResource(App.ResourcesPlan resourcesPlan, String resourceId) {
-//        for(ResourcePlan plan : resourcesPlan.getPlanList()) {
-//            plan.getId().equalsIgnoreCase(resourceId);
-//            return true;
-//        }
-//        return false;
-//    }
 
     public File saveMultipartFile(MultipartFile file, String orgId) throws IOException {
 

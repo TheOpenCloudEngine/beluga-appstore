@@ -60,10 +60,19 @@
             dataType: "json",
             success: function(data) {
                 $("#appStatus").text(data.status);
+                if(data.status == "OK") {
+                    $("#appStatus").removeClass("text-danger");
+                    $("#appStatus").addClass("text-success");
+                } else {
+                    $("#appStatus").addClass("text-danger");
+                    $("#appStatus").removeClass("text-success");
+                }
                 $("#appElapsed").text(data.elapsed);
                 $("#appScale").text(data.scale);
             },
             error: function(xhr) {
+                $("#appStatus").addClass("text-danger");
+                $("#appStatus").removeClass("text-success");
                 alert("App status update error : " + xhr.responseText);
             }
         });
@@ -96,7 +105,7 @@
                     <div class="row">
                         <div class="col-md-3 col-sm-3 col-xs-3">
                             <div class="stat-box">
-                                <p class="text-success" id="appStatus"></p>
+                                <p class="text-danger" id="appStatus"></p>
                                 <h4>Status</h4>
                             </div>
                         </div>
