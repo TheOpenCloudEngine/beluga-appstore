@@ -153,7 +153,7 @@ public class OrgController {
 
         Map<String, String[]> resourceInfoMap = new HashMap<>();
         for(String resourceKey : app.getResourceList()) {
-            String resourceAppId = appId + "_" + resourceKey;
+            String resourceAppId = appId + "-" + resourceKey;
             String[] hostPort = belugaService.getAppHostPort(resourceAppId);
             resourceInfoMap.put(resourceKey, hostPort);
         }
