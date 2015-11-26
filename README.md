@@ -19,6 +19,9 @@ ubuntu14.04 에서 tomcat7은 /etc/default/tomcat7 파일에 추가.
 JAVA_OPTS="$JAVA_OPTS -Dbeluga.endpoint=beluga.kloudrun.com:9000/sample" -Ddb.endpoint=localhost:3306/appstore
 ```
 
+** MySQL 스키마는 다음SQL로 생성한다. 
+
+https://github.com/TheOpenCloudEngine/beluga-appstore/blob/master/src/main/resources/belugaservice.sql
 
 그리고 아래라인을 찾아서 tomcat의 메모리를 최대 768m으로 수정한다.
 ```
