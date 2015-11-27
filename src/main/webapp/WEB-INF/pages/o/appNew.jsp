@@ -309,9 +309,13 @@ $(function(){
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">CPU Usage higher than:</label>
+                            <label class="col-md-3 col-sm-3 control-label">Load Average higher than:</label>
                             <div class="col-md-9 col-sm-9">
                                 <select class="form-control display-inline col-100" name="cpuHigher">
+                                    <option value="50">10%</option>
+                                    <option value="50">20%</option>
+                                    <option value="50">30%</option>
+                                    <option value="50">40%</option>
                                     <option value="50">50%</option>
                                     <option value="60">60%</option>
                                     <option value="70">70%</option>
@@ -354,7 +358,7 @@ $(function(){
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">CPU Usage lower than:</label>
+                            <label class="col-md-3 col-sm-3 control-label">Load Average lower than:</label>
                             <div class="col-md-9 col-sm-9">
                                 <select class="form-control display-inline col-100" name="cpuLower">
                                     <option value="10">10%</option>
@@ -362,6 +366,10 @@ $(function(){
                                     <option value="30">30%</option>
                                     <option value="40">40%</option>
                                     <option value="50">50%</option>
+                                    <option value="60">60%</option>
+                                    <option value="70">70%</option>
+                                    <option value="80">80%</option>
+                                    <option value="90">90%</option>
                                 </select>
                             </div>
                         </div>
