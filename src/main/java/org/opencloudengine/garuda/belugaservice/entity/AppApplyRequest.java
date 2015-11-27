@@ -24,9 +24,9 @@ public class AppApplyRequest {
     private List<String> resourceList;
 
     private Character autoScaleInUse;
-    private App.AutoScaleInConfig autoScaleInConfig;
+    private App.AutoScaleConfig autoScaleInConfig;
     private Character autoScaleOutUse;
-    private App.AutoScaleOutConfig autoScaleOutConfig;
+    private App.AutoScaleConfig autoScaleOutConfig;
 
     public AppApplyRequest() {}
 
@@ -152,11 +152,11 @@ public class AppApplyRequest {
         this.autoScaleInUse = autoScaleInUse;
     }
 
-    public App.AutoScaleInConfig getAutoScaleInConfig() {
+    public App.AutoScaleConfig getAutoScaleInConfig() {
         return autoScaleInConfig;
     }
 
-    public void setAutoScaleInConfig(App.AutoScaleInConfig autoScaleInConfig) {
+    public void setAutoScaleInConfig(App.AutoScaleConfig autoScaleInConfig) {
         this.autoScaleInConfig = autoScaleInConfig;
     }
 
@@ -168,11 +168,11 @@ public class AppApplyRequest {
         this.autoScaleOutUse = autoScaleOutUse;
     }
 
-    public App.AutoScaleOutConfig getAutoScaleOutConfig() {
+    public App.AutoScaleConfig getAutoScaleOutConfig() {
         return autoScaleOutConfig;
     }
 
-    public void setAutoScaleOutConfig(App.AutoScaleOutConfig autoScaleOutConfig) {
+    public void setAutoScaleOutConfig(App.AutoScaleConfig autoScaleOutConfig) {
         this.autoScaleOutConfig = autoScaleOutConfig;
     }
 }

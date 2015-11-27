@@ -6,7 +6,6 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.text.DateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -61,8 +60,8 @@ public class App {
     private Character autoScaleInUse;
     private String autoScaleOutConf;
     private String autoScaleInConf;
-    private AutoScaleOutConfig autoScaleOutConfig;
-    private AutoScaleInConfig autoScaleInConfig;
+    private AutoScaleConfig autoScaleOutConfig;
+    private AutoScaleConfig autoScaleInConfig;
 
     public String getId() {
         return id;
@@ -337,7 +336,7 @@ public class App {
     public void setAutoScaleOutConf(String autoScaleOutConf) {
         this.autoScaleOutConf = autoScaleOutConf;
         try{
-           this.autoScaleOutConfig = JsonUtil.json2Object(autoScaleOutConf, AutoScaleOutConfig.class);
+           this.autoScaleOutConfig = JsonUtil.json2Object(autoScaleOutConf, AutoScaleConfig.class);
         } catch (IOException e) {
             logger.error("", e);
         }
@@ -346,7 +345,7 @@ public class App {
         return autoScaleOutConf;
     }
 
-    public void setAutoScaleOutConfig(AutoScaleOutConfig autoScaleOutConfig) {
+    public void setAutoScaleOutConfig(AutoScaleConfig autoScaleOutConfig) {
         this.autoScaleOutConfig  = autoScaleOutConfig;
         try{
             this.autoScaleOutConf = JsonUtil.object2String(autoScaleOutConfig);
@@ -355,14 +354,14 @@ public class App {
         }
     }
 
-    public AutoScaleOutConfig getAutoScaleOutConfig() {
+    public AutoScaleConfig getAutoScaleOutConfig() {
         return autoScaleOutConfig;
     }
 
     public void setAutoScaleInConf(String autoScaleInConf) {
         this.autoScaleInConf = autoScaleInConf;
         try {
-            this.autoScaleInConfig = JsonUtil.json2Object(autoScaleInConf, AutoScaleInConfig.class);
+            this.autoScaleInConfig = JsonUtil.json2Object(autoScaleInConf, AutoScaleConfig.class);
         } catch (IOException e) {
             logger.error("", e);
         }
@@ -372,7 +371,7 @@ public class App {
         return autoScaleInConf;
     }
 
-    public void setAutoScaleInConfig(AutoScaleInConfig autoScaleInConfig) {
+    public void setAutoScaleInConfig(AutoScaleConfig autoScaleInConfig) {
         this.autoScaleInConfig = autoScaleInConfig;
         try{
             this.autoScaleInConf = JsonUtil.object2String(autoScaleInConfig);
@@ -381,82 +380,37 @@ public class App {
         }
     }
 
-    public AutoScaleInConfig getAutoScaleInConfig() {
+    public AutoScaleConfig getAutoScaleInConfig() {
         return autoScaleInConfig;
     }
 
-//    public static class ResourcesPlan {
-//
-//        private List<ResourcePlan> planList;
-//
-//        public List<ResourcePlan> getPlanList() {
-//            return planList;
-//        }
-//
-//        public void setPlanList(List<ResourcePlan> planList) {
-//            this.planList = planList;
-//        }
-//
-//        public void addPlan(ResourcePlan resourcePlan) {
-//            if(planList == null) {
-//                planList = new ArrayList<>();
-//            }
-//            planList.add(resourcePlan);
-//        }
-//
-//    }
+    public static class AutoScaleConfig {
+        private Integer loadAverage;
+        private Integer duringInMin;
+        private Integer scale;
 
-    public static class AutoScaleOutConfig {
-        private Integer cpuHigher;
-        private Integer cpuHigherDuring;
-        private Integer addScale;
-
-        public Integer getCpuHigher() {
-            return cpuHigher;
+        public Integer getLoadAverage() {
+            return loadAverage;
         }
 
-        public void setCpuHigher(Integer cpuHigher) {
-            this.cpuHigher = cpuHigher;
+        public void setLoadAverage(Integer loadAverage) {
+            this.loadAverage = loadAverage;
         }
 
-        public Integer getCpuHigherDuring() {
-            return cpuHigherDuring;
+        public Integer getDuringInMin() {
+            return duringInMin;
         }
 
-        public void setCpuHigherDuring(Integer cpuHigherDuring) {
-            this.cpuHigherDuring = cpuHigherDuring;
+        public void setDuringInMin(Integer duringInMin) {
+            this.duringInMin = duringInMin;
         }
 
-        public Integer getAddScale() {
-            return addScale;
+        public Integer getScale() {
+            return scale;
         }
 
-        public void setAddScale(Integer addScale) {
-            this.addScale = addScale;
+        public void setScale(Integer scale) {
+            this.scale = scale;
         }
-
-    }
-
-    public static class AutoScaleInConfig {
-
-        private Integer cpuLower;
-        private Integer cpuLowerDuring;
-
-        public Integer getCpuLower() {
-            return cpuLower;
-        }
-
-        public void setCpuLower(Integer cpuLower) {
-            this.cpuLower = cpuLower;
-        }
-
-        public Integer getCpuLowerDuring() {
-            return cpuLowerDuring;
-        }
-
-        public void setCpuLowerDuring(Integer cpuLowerDuring) {
-            this.cpuLowerDuring = cpuLowerDuring;
-        }
-
     }
 }

@@ -116,12 +116,12 @@ public class AppManageService {
         String scale = (String) data.get("scale");
 
         String autoScaleOutUse = (String) data.get("autoScaleOutUse");
-        Integer cpuHigher = ParseUtil.parseInt(data.get("cpuHigher"));
-        Integer cpuHigherDuring = ParseUtil.parseInt(data.get("cpuHigherDuring"));
+        Integer loadHigher = ParseUtil.parseInt(data.get("loadHigher"));
+        Integer higherDuring = ParseUtil.parseInt(data.get("higherDuring"));
         Integer autoScaleOutSize = ParseUtil.parseInt(data.get("autoScaleOutSize"));
         String autoScaleInUse = (String) data.get("autoScaleInUse");
-        Integer cpuLower = ParseUtil.parseInt(data.get("cpuLower"));
-        Integer cpuLowerDuring = ParseUtil.parseInt(data.get("cpuLowerDuring"));
+        Integer loadLower = ParseUtil.parseInt(data.get("loadLower"));
+        Integer lowerDuring = ParseUtil.parseInt(data.get("lowerDuring"));
 
         App app = new App();
         app.setId(id);
@@ -163,14 +163,14 @@ public class AppManageService {
         app.setResourcesPlan(resourceList);
 
         /* auto scale */
-        App.AutoScaleOutConfig autoScaleOutConfig = new App.AutoScaleOutConfig();
-        autoScaleOutConfig.setCpuHigher(cpuHigher);
-        autoScaleOutConfig.setCpuHigherDuring(cpuHigherDuring);
-        autoScaleOutConfig.setAddScale(autoScaleOutSize);
+        App.AutoScaleConfig autoScaleOutConfig = new App.AutoScaleConfig();
+        autoScaleOutConfig.setLoadAverage(loadHigher);
+        autoScaleOutConfig.setDuringInMin(higherDuring);
+        autoScaleOutConfig.setScale(autoScaleOutSize);
 
-        App.AutoScaleInConfig autoScaleInConfig = new App.AutoScaleInConfig();
-        autoScaleInConfig.setCpuLower(cpuLower);
-        autoScaleInConfig.setCpuLowerDuring(cpuLowerDuring);
+        App.AutoScaleConfig autoScaleInConfig = new App.AutoScaleConfig();
+        autoScaleInConfig.setLoadAverage(loadLower);
+        autoScaleInConfig.setDuringInMin(lowerDuring);
 
         app.setAutoScaleOutUse(ParseUtil.parseChar(autoScaleOutUse));
         app.setAutoScaleInUse(ParseUtil.parseChar(autoScaleInUse));
