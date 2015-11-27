@@ -1,6 +1,6 @@
-CREATE DATABASE `belugaAppstore1` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
+CREATE DATABASE `belugaAppstore` /*!40100 DEFAULT CHARACTER SET utf8 COLLATE utf8_unicode_ci */;
 
-USE `belugaAppstore1`;
+USE `belugaAppstore`;
 
 CREATE TABLE `organization` (
   `id` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
