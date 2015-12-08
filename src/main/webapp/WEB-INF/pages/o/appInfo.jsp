@@ -1,7 +1,7 @@
-<%@ page import="org.opencloudengine.garuda.belugaservice.db.entity.Resources" %>
 <%@ page import="java.util.Map" %>
 <%@ page import="org.opencloudengine.garuda.belugaservice.db.entity.App" %>
 <%@ page import="java.util.List" %>
+<%@ page import="org.opencloudengine.garuda.belugaservice.db.entity.Resource" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
@@ -135,7 +135,7 @@
                 <div><h4 class="bottom-line">General Information</h4></div>
                 <div class="col-md-12 form-horizontal compact">
                     <div class="form-group">
-                        <label class="col-md-3 col-sm-3 control-label">Domain:</label>
+                        <label class="col-md-3 col-sm-3 control-label">Host:</label>
                         <div class="col-md-9 col-sm-9"><p class="form-control-static">${app.id}.${domain}</p></div>
                     </div>
                     <div class="form-group">
@@ -191,119 +191,31 @@
             </div>
 
             <%
-                App app = (App) request.getAttribute("app");
-                List<String> appResourceList = app.getResourceList();
-
-                Map<String, String[]> resourceInfoMap = (Map<String, String[]>) request.getAttribute("resourceInfoMap");
+                List<Resource> resources = (List<Resource>) request.getAttribute("resources");
             %>
             <div class="row col-md-12">
                 <h4 class="bottom-line">Resource Plan</h4>
                 <div class="col-md-12 form-horizontal">
+                <%
+                    for(Resource resource : resources) {
+                        String host = "";
+                        String port = "";
+                        String[] ipPort = null;
+                %>
                     <div class="form-group">
-                        <label class="col-md-3 col-sm-3 control-label">Database:</label>
+                        <label class="col-md-3 col-sm-3 control-label">
+                            <%=resource.getName()%>:
+                        </label>
                         <div class="col-md-9 col-sm-9">
-                            <ul class="no-padding-left">
-                                <%
-                                    String[] resourceList = new String[]{"mysql5", "postgresql9", "oraclexe11g"};
-                                    for(String resourceKey : resourceList) {
-                                        if(appResourceList.contains(resourceKey)) {
-                                            Resources.Resource resource = Resources.get(resourceKey);
-                                            String ip = "";
-                                            String port = "";
-                                            String[] ipPort = null;
-                                            if(resourceInfoMap != null) {
-                                                ipPort = resourceInfoMap.get(resourceKey);
-                                                if(ipPort != null) {
-                                                    ip = ipPort[0];
-                                                    port = ipPort[1];
-                                                }
-                                            }
-                                %>
-                                    <li>
-                                        <p class="form-control-static"><%=resource.getName()%>
-                                            <%=(ipPort != null) ? "<span class='label label-success'>ON</span>" : "<span class='label label-danger'>OFF</span>" %>
-                                            <br>
-                                            <span style="font-size: 0.9em">$<%=resource.getIPPropertyKey()%>=<%=ip %>
-                                                <br>$<%=resource.getPortPropertyKey()%>=<%=port%></span>
-                                        </p>
-                                    </li>
-                                <%
-                                        }
-                                    }
-                                %>
-                            </ul>
+                            <p class="form-control-static">
+                                <%=resource.getHost()%>:<%=resource.getPort()%>
+                                <%=(ipPort != null) ? "<span class='label label-success'>ON</span>" : "<span class='label label-danger'>OFF</span>" %>
+                            </p>
                         </div>
                     </div>
-                    <div class="form-group">
-                        <label class="col-md-3 col-sm-3 control-label">NoSQL: </label>
-                        <div class="col-md-9 col-sm-9">
-                            <ul class="no-padding-left">
-                                <%
-                                    resourceList = new String[]{"mongodb3", "redis3"};
-                                    for(String resourceKey : resourceList) {
-                                        if(appResourceList.contains(resourceKey)) {
-                                            Resources.Resource resource = Resources.get(resourceKey);
-                                            String ip = "";
-                                            String port = "";
-                                            String[] ipPort = null;
-                                            if(resourceInfoMap != null) {
-                                                ipPort = resourceInfoMap.get(resourceKey);
-                                                if(ipPort != null) {
-                                                    ip = ipPort[0];
-                                                    port = ipPort[1];
-                                                }
-                                            }
-                                %>
-                                <li>
-                                    <p class="form-control-static"><%=resource.getName()%>
-                                        <%=(ipPort != null) ? "<span class='label label-success'>ON</span>" : "<span class='label label-danger'>OFF</span>" %>
-                                        <br>
-                                        <span style="font-size: 0.9em">$<%=resource.getIPPropertyKey()%>=<%=ip %>
-                                            <br>$<%=resource.getPortPropertyKey()%>=<%=port%></span>
-                                    </p>
-                                </li>
-                                <%
-                                        }
-                                    }
-                                %>
-                            </ul>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 col-sm-3 control-label">FTP: </label>
-                        <div class="col-md-9 col-sm-9">
-                            <ul class="no-padding-left">
-                                <%
-                                    resourceList = new String[]{"sftp", "ftp"};
-                                    for(String resourceKey : resourceList) {
-                                        if(appResourceList.contains(resourceKey)) {
-                                            Resources.Resource resource = Resources.get(resourceKey);
-                                            String ip = "";
-                                            String port = "";
-                                            String[] ipPort = null;
-                                            if(resourceInfoMap != null) {
-                                                ipPort = resourceInfoMap.get(resourceKey);
-                                                if(ipPort != null) {
-                                                    ip = ipPort[0];
-                                                    port = ipPort[1];
-                                                }
-                                            }
-                                %>
-                                <li>
-                                    <p class="form-control-static"><%=resource.getName()%>
-                                        <%=(ipPort != null) ? "<span class='label label-success'>ON</span>" : "<span class='label label-danger'>OFF</span>" %>
-                                        <br>
-                                        <span style="font-size: 0.9em">$<%=resource.getIPPropertyKey()%>=<%=ip %>
-                                            <br>$<%=resource.getPortPropertyKey()%>=<%=port%></span>
-                                    </p>
-                                </li>
-                                <%
-                                        }
-                                    }
-                                %>
-                            </ul>
-                        </div>
-                    </div>
+                <%
+                    }
+                %>
                 </div>
             </div>
 
@@ -311,15 +223,15 @@
                 <div><h4 class="bottom-line">Auto Scaling Plan</h4></div>
                 <div class="col-md-12 form-horizontal compact">
                     <div class="form-group">
-                        <label class="col-md-3 col-sm-3 control-label">Enable Auto Scale-out:</label>
+                        <label class="col-md-3 col-sm-3 control-label">Enable Auto Scale:</label>
                         <div class="col-md-9 col-sm-9">
                             <p class="form-control-static">Yes</p>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3 col-sm-3 control-label">CPU Usage higher than:</label>
+                        <label class="col-md-3 col-sm-3 control-label">Server Load:</label>
                         <div class="col-md-9 col-sm-9">
-                            <p class="form-control-static">70%</p>
+                            <p class="form-control-static">&ge; 70%</p>
                         </div>
                     </div>
                     <div class="form-group">
@@ -329,22 +241,9 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3 col-sm-3 control-label">Add Scale:</label>
+                        <label class="col-md-3 col-sm-3 control-label">>Server Load:</label>
                         <div class="col-md-9 col-sm-9">
-                            <p class="form-control-static">2</p>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <label class="col-md-3 col-sm-3 control-label">Enable Auto Scale-in:</label>
-                        <div class="col-md-9 col-sm-9">
-                            <p class="form-control-static">Yes</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 col-sm-3 control-label">CPU Usage lower than:</label>
-                        <div class="col-md-9 col-sm-9">
-                            <p class="form-control-static">30%</p>
+                            <p class="form-control-static">&lt; 30%</p>
                         </div>
                     </div>
                     <div class="form-group">

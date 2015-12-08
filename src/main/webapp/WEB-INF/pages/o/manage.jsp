@@ -44,7 +44,7 @@
             <div class="pull-right">
                 <a href="apps/new" class="btn btn-primary outline">New App</a></td>
             </div>
-            <h2>Providing Apps</h2>
+            <h2>Apps</h2>
             <c:if test="${not empty appList}">
                 <table class="table table-hover table-bordered">
                     <thead>
@@ -85,8 +85,8 @@
             <div class="pull-right">
                 <a href="resources/new" class="btn btn-primary outline">New Resources</a></td>
             </div>
-            <h2>Providing Resources</h2>
-            <c:if test="${not empty resourceList}">
+            <h2>Resources</h2>
+            <c:if test="${not empty resources}">
                 <table class="table table-hover table-bordered">
                     <thead>
                     <tr>
@@ -101,7 +101,7 @@
                     </tr>
                     </thead>
                     <tbody>
-                    <c:forEach var="app" items="${resourceList}">
+                    <c:forEach var="resource" items="${resources}">
                         <tr>
                             <td><a href="resources/${resource.id}">${resource.name}</a></td>
                             <td><a href="resources/${resource.id}">${resource.id}</a></td>
@@ -116,7 +116,7 @@
                     </tbody>
                 </table>
             </c:if>
-            <c:if test="${empty resourceList}">
+            <c:if test="${empty resources}">
                 <div class="well col-md-12 empty-apps">
                     <h3>No resources</h3>
                 </div>

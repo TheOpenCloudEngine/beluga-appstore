@@ -5,7 +5,6 @@
 <% String menuId = "manage"; %>
 <%@include file="top.jsp" %>
 
-<script src="/resources/js/appEdit.js"></script>
 <script>
 $(function(){
     $("#app-new-form").validate({
@@ -74,10 +73,10 @@ $(function(){
         <div class="col-md-12">
 
             <div class="page-header">
-                <h1 id="tables">Create New App</h1>
+                <h1 id="tables">Create New Resource</h1>
             </div>
 
-            <form id="app-new-form" action="/o/apps" method="POST">
+            <form id="app-new-form" action="/o/resources" method="POST">
                 <div class="row col-md-12">
                     <a href="/o/manage" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
                     &nbsp;<button type="submit" class="btn btn-primary outline">Save all changes</button>
@@ -86,7 +85,7 @@ $(function(){
                     <h4 class="bottom-line">General Information</h4>
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Host:</label>
+                            <label class="col-md-3 col-sm-3 control-label">Domain:</label>
                             <div class="col-md-9 col-sm-9"><input type="text" name="id" id="appId" class="form-control col-150 pull-left required" minlength="3"/>
                                 <p class="form-control-static">&nbsp;.${domain}</p>
                             </div>
@@ -210,90 +209,90 @@ $(function(){
                     </div>
                 </div>
 
-                <%--<div class="row col-md-12">--%>
-                    <%--<h4 class="bottom-line">Resource Plan</h4>--%>
-                    <%--<div class="col-md-12 form-horizontal">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<label class="col-md-3 col-sm-3 control-label">Database:</label>--%>
-                            <%--<div class="col-md-9 col-sm-9">--%>
-                                <%--<div class="checkbox">--%>
-                                    <%--<label>--%>
-                                        <%--<input type="checkbox" name="resource_mysql5" value="true"> <%=Resources.get("mysql5").getName() %>--%>
-                                    <%--</label>--%>
-                                <%--</div>--%>
-                                <%--<div class="sub-options">--%>
-                                    <%--$<%=Resources.get("mysql5").getIPPropertyKey()%> $<%=Resources.get("mysql5").getPortPropertyKey()%>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">--%>
-                                <%--<div class="checkbox">--%>
-                                    <%--<label>--%>
-                                        <%--<input type="checkbox" name="resource_postgresql9" value="true"> <%=Resources.get("postgresql9").getName() %>--%>
-                                    <%--</label>--%>
-                                <%--</div>--%>
-                                <%--<div class="sub-options">--%>
-                                    <%--$<%=Resources.get("postgresql9").getIPPropertyKey()%> $<%=Resources.get("postgresql9").getPortPropertyKey()%>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">--%>
-                                <%--<div class="checkbox">--%>
-                                    <%--<label>--%>
-                                        <%--<input type="checkbox" name="resource_oraclexe11g" value="true"> <%=Resources.get("oraclexe11g").getName() %>--%>
-                                    <%--</label>--%>
-                                <%--</div>--%>
-                                <%--<div class="sub-options">--%>
-                                    <%--$<%=Resources.get("oraclexe11g").getIPPropertyKey()%> $<%=Resources.get("oraclexe11g").getPortPropertyKey()%>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                        <%--<div class="form-group">--%>
-                            <%--<label class="col-md-3 col-sm-3 control-label">NoSQL:</label>--%>
-                            <%--<div class="col-md-9 col-sm-9">--%>
-                                <%--<div class="checkbox">--%>
-                                    <%--<label>--%>
-                                        <%--<input type="checkbox" name="resource_mongodb3" value="true"> <%=Resources.get("mongodb3").getName() %>--%>
-                                    <%--</label>--%>
-                                <%--</div>--%>
-                                <%--<div class="sub-options">--%>
-                                    <%--$<%=Resources.get("mongodb3").getIPPropertyKey()%> $<%=Resources.get("mongodb3").getPortPropertyKey()%>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">--%>
-                                <%--<div class="checkbox">--%>
-                                    <%--<label>--%>
-                                        <%--<input type="checkbox" name="resource_redis3" value="true"> <%=Resources.get("redis3").getName() %>--%>
-                                    <%--</label>--%>
-                                <%--</div>--%>
-                                <%--<div class="sub-options">--%>
-                                    <%--$<%=Resources.get("redis3").getIPPropertyKey()%> $<%=Resources.get("redis3").getPortPropertyKey()%>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                        <%--<div class="form-group">--%>
-                            <%--<label class="col-md-3 col-sm-3 control-label">FTP:</label>--%>
-                            <%--<div class="col-md-9 col-sm-9">--%>
-                                <%--<div class="checkbox">--%>
-                                    <%--<label>--%>
-                                        <%--<input type="checkbox" name="resource_sftp" value="true"> <%=Resources.get("sftp").getName() %>--%>
-                                    <%--</label>--%>
-                                <%--</div>--%>
-                                <%--<div class="sub-options">--%>
-                                    <%--$<%=Resources.get("sftp").getIPPropertyKey()%> $<%=Resources.get("sftp").getPortPropertyKey()%>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">--%>
-                                <%--<div class="checkbox">--%>
-                                    <%--<label>--%>
-                                        <%--<input type="checkbox" name="resource_ftp" value="true"> <%=Resources.get("ftp").getName() %>--%>
-                                    <%--</label>--%>
-                                <%--</div>--%>
-                                <%--<div class="sub-options">--%>
-                                    <%--$<%=Resources.get("ftp").getIPPropertyKey()%> $<%=Resources.get("ftp").getPortPropertyKey()%>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
+                <div class="row col-md-12">
+                    <h4 class="bottom-line">Resource Plan</h4>
+                    <div class="col-md-12 form-horizontal">
+                        <div class="form-group">
+                            <label class="col-md-3 col-sm-3 control-label">Database:</label>
+                            <div class="col-md-9 col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="resource_mysql5" value="true"> <%=Resources.get("mysql5").getName() %>
+                                    </label>
+                                </div>
+                                <div class="sub-options">
+                                    $<%=Resources.get("mysql5").getIPPropertyKey()%> $<%=Resources.get("mysql5").getPortPropertyKey()%>
+                                </div>
+                            </div>
+                            <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="resource_postgresql9" value="true"> <%=Resources.get("postgresql9").getName() %>
+                                    </label>
+                                </div>
+                                <div class="sub-options">
+                                    $<%=Resources.get("postgresql9").getIPPropertyKey()%> $<%=Resources.get("postgresql9").getPortPropertyKey()%>
+                                </div>
+                            </div>
+                            <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="resource_oraclexe11g" value="true"> <%=Resources.get("oraclexe11g").getName() %>
+                                    </label>
+                                </div>
+                                <div class="sub-options">
+                                    $<%=Resources.get("oraclexe11g").getIPPropertyKey()%> $<%=Resources.get("oraclexe11g").getPortPropertyKey()%>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-sm-3 control-label">NoSQL:</label>
+                            <div class="col-md-9 col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="resource_mongodb3" value="true"> <%=Resources.get("mongodb3").getName() %>
+                                    </label>
+                                </div>
+                                <div class="sub-options">
+                                    $<%=Resources.get("mongodb3").getIPPropertyKey()%> $<%=Resources.get("mongodb3").getPortPropertyKey()%>
+                                </div>
+                            </div>
+                            <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="resource_redis3" value="true"> <%=Resources.get("redis3").getName() %>
+                                    </label>
+                                </div>
+                                <div class="sub-options">
+                                    $<%=Resources.get("redis3").getIPPropertyKey()%> $<%=Resources.get("redis3").getPortPropertyKey()%>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-sm-3 control-label">FTP:</label>
+                            <div class="col-md-9 col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="resource_sftp" value="true"> <%=Resources.get("sftp").getName() %>
+                                    </label>
+                                </div>
+                                <div class="sub-options">
+                                    $<%=Resources.get("sftp").getIPPropertyKey()%> $<%=Resources.get("sftp").getPortPropertyKey()%>
+                                </div>
+                            </div>
+                            <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="resource_ftp" value="true"> <%=Resources.get("ftp").getName() %>
+                                    </label>
+                                </div>
+                                <div class="sub-options">
+                                    $<%=Resources.get("ftp").getIPPropertyKey()%> $<%=Resources.get("ftp").getPortPropertyKey()%>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
 
                 <div class="row col-md-12">
                     <h4 class="bottom-line">Auto Scaling Plan</h4>

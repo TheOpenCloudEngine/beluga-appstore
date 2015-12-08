@@ -5,6 +5,7 @@ import org.opencloudengine.garuda.belugaservice.entity.AppStatus;
 import org.opencloudengine.garuda.belugaservice.service.AppManageService;
 import org.opencloudengine.garuda.belugaservice.service.BelugaService;
 import org.opencloudengine.garuda.belugaservice.service.MemberService;
+import org.opencloudengine.garuda.belugaservice.service.ResourceManageService;
 import org.opencloudengine.garuda.belugaservice.util.DateUtil;
 import org.opencloudengine.garuda.belugaservice.util.JsonUtil;
 import org.opencloudengine.garuda.belugaservice.util.MessageDigestUtils;
@@ -36,6 +37,9 @@ public class RestController {
     AppManageService appManageService;
 
     @Autowired
+    ResourceManageService resourceManageService;
+
+    @Autowired
     private BelugaService belugaService;
 
     @RequestMapping(value = "/api/apps/{appId}", method = RequestMethod.HEAD)
@@ -48,9 +52,30 @@ public class RestController {
         }
     }
 
+    @RequestMapping(value = "/api/resources/{resourceId}", method = RequestMethod.HEAD)
+    public void resources(@PathVariable String resourceId, HttpServletResponse response) throws IOException {
+        Resource resource = resourceManageService.getResource(resourceId);
+        if (resource != null) {
+            response.setStatus(200);
+        } else {
+            response.setStatus(404, "no such resource : " + resource);
+        }
+    }
+
     @RequestMapping(value = "/api/apps/{appId}/status", method = RequestMethod.GET)
     public void appStatus(@PathVariable String appId, HttpServletResponse response) throws IOException {
         AppStatus appStatus = belugaService.getAppStatus(appId);
+        if(appStatus == null) {
+            appStatus = new AppStatus("-", "-", "-");
+        }
+        response.setStatus(200);
+        response.setCharacterEncoding("utf-8");
+        response.getWriter().print(JsonUtil.object2String(appStatus));
+    }
+
+    @RequestMapping(value = "/api/resources/{resourceId}/status", method = RequestMethod.GET)
+    public void resourcesStatus(@PathVariable String resourceId, HttpServletResponse response) throws IOException {
+        AppStatus appStatus = belugaService.getAppStatus(resourceId);
         if(appStatus == null) {
             appStatus = new AppStatus("-", "-", "-");
         }
@@ -116,6 +141,38 @@ public class RestController {
                 }
             } else {
                 response.sendError(404, "no such app : " + appId);
+            }
+        } catch (Exception e) {
+            response.setStatus(500);
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().print(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/api/resources/{resourceId}/deploy", method = RequestMethod.POST)
+    public void resourceDeploy(@PathVariable String resourceId, HttpServletResponse response) throws Exception {
+
+        try {
+            Resource resource = resourceManageService.getResource(resourceId);
+            if (resource != null) {
+                // 이미 실행중인 marathon app이 있는지 확인한다.
+                AppStatus appStatus = belugaService.getAppStatus(resourceId);
+                boolean isSuccess = false;
+                if (appStatus == null) {
+                    //신규실행.
+                    isSuccess = belugaService.deployResource(resource);
+                } else {
+                    //업데이트 실행.
+                    //현재 업데이트는 지원하지 않는다.
+                }
+                if (isSuccess) {
+                    response.setStatus(200);
+                    return;
+                } else {
+                    response.sendError(500, "error : " + resourceId);
+                }
+            } else {
+                response.sendError(404, "no such resource : " + resourceId);
             }
         } catch (Exception e) {
             response.setStatus(500);

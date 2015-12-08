@@ -79,7 +79,7 @@ $(function() {
                     <h4 class="bottom-line">General Information</h4>
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Domain:</label>
+                            <label class="col-md-3 col-sm-3 control-label">Host:</label>
                             <div class="col-md-9 col-sm-9"><p class="form-control-static">${app.id}.${domain}</p></div>
                         </div>
                         <div class="form-group">

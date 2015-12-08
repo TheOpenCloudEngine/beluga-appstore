@@ -2,10 +2,12 @@ package org.opencloudengine.garuda.belugaservice.controller;
 
 import org.opencloudengine.garuda.belugaservice.db.entity.App;
 import org.opencloudengine.garuda.belugaservice.db.entity.Organization;
+import org.opencloudengine.garuda.belugaservice.db.entity.Resource;
 import org.opencloudengine.garuda.belugaservice.db.entity.User;
 import org.opencloudengine.garuda.belugaservice.service.AppManageService;
 import org.opencloudengine.garuda.belugaservice.service.BelugaService;
 import org.opencloudengine.garuda.belugaservice.service.MemberService;
+import org.opencloudengine.garuda.belugaservice.service.ResourceManageService;
 import org.opencloudengine.garuda.belugaservice.util.DateUtil;
 import org.opencloudengine.garuda.belugaservice.util.ParseUtil;
 import org.opencloudengine.garuda.belugaservice.util.SizeUnit;
@@ -36,6 +38,9 @@ public class OrgController {
 
     @Autowired
     private AppManageService appManageService;
+
+    @Autowired
+    private ResourceManageService resourceManageService;
 
     @Autowired
     private MemberService memberService;
@@ -77,6 +82,8 @@ public class OrgController {
         List<App> outerAppList = appManageService.getOuterApps(orgId);
         makeUserFriendlyApp(appList);
         makeUserFriendlyApp(outerAppList);
+        List<Resource> resources = resourceManageService.getOrgResources(orgId);
+
         ModelAndView mav = new ModelAndView();
         int appSize = appList != null ? appList.size() : 0;
         int outerAppSize = outerAppList != null ? outerAppList.size() : 0;
@@ -98,6 +105,7 @@ public class OrgController {
         mav.addObject("appList", appList);
         mav.addObject("outerAppList", outerAppList);
         mav.addObject("domain", belugaService.getDomainName());
+        mav.addObject("resources", resources);
         mav.setViewName("o/manage");
         return mav;
     }
@@ -122,12 +130,9 @@ public class OrgController {
         mav.addObject("app", app);
         app.setAppFileLengthDisplay(ParseUtil.toHumanSize(app.getAppFileLength()));
 
-        Map<String, String[]> resourceInfoMap = new HashMap<>();
-        for(String resourceKey : app.getResourceList()) {
-            String[] hostPort = belugaService.getAppHostPort(appId, resourceKey);
-            resourceInfoMap.put(resourceKey, hostPort);
-        }
-        mav.addObject("resourceInfoMap", resourceInfoMap);
+        String orgId = app.getOrgId();
+        List<Resource> resources = resourceManageService.getOrgResources(orgId);
+        mav.addObject("resources", resources);
 
         mav.setViewName("o/appEdit");
         return mav;
@@ -159,14 +164,26 @@ public class OrgController {
         mav.addObject("app", app);
         mav.addObject("domain", belugaService.getDomainName());
 
-        Map<String, String[]> resourceInfoMap = new HashMap<>();
-        for(String resourceKey : app.getResourceList()) {
-            String[] hostPort = belugaService.getAppHostPort(appId, resourceKey);
-            resourceInfoMap.put(resourceKey, hostPort);
-        }
-        mav.addObject("resourceInfoMap", resourceInfoMap);
+        String orgId = app.getOrgId();
+        List<Resource> resources = resourceManageService.getOrgResources(orgId);
+        mav.addObject("resources", resources);
 
         mav.setViewName("o/appInfo");
+        return mav;
+    }
+
+    @RequestMapping(value = "/resources/{resourceId}", method = RequestMethod.GET)
+    public ModelAndView resourceInfo(@PathVariable String resourceId) {
+        Resource resource = resourceManageService.getResource(resourceId);
+        if(resource == null) {
+            throw new NotFoundException();
+        }
+        resource.setMemoryDisplay(ParseUtil.toHumanSizeOverMB(resource.getMemory() * SizeUnit.MB));
+//        String elapsed = DateUtil.getElapsedTimeDisplay(app.getApplyDate());
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("resource", resource);
+        mav.addObject("domain", belugaService.getDomainName());
+        mav.setViewName("o/resourceInfo");
         return mav;
     }
 
@@ -178,6 +195,13 @@ public class OrgController {
         return mav;
     }
 
+    @RequestMapping(value = "/resources/new", method = RequestMethod.GET)
+    public ModelAndView resourceNew() {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("o/resourceNew");
+        mav.addObject("domain", belugaService.getDomainName());
+        return mav;
+    }
 
     @RequestMapping(value = "/apps", method = RequestMethod.POST)
     public ModelAndView appNewCreate(@RequestParam Map<String, Object> data, HttpSession session) {
@@ -190,6 +214,20 @@ public class OrgController {
 
         ModelAndView mav = new ModelAndView();
         mav.setViewName("redirect:/o/apps/" + id);
+        return mav;
+    }
+
+    @RequestMapping(value = "/resources", method = RequestMethod.POST)
+    public ModelAndView resourceNewCreate(@RequestParam Map<String, Object> data, HttpSession session) {
+        User user = getUser(session);
+        String orgId = user.getOrgId();
+        data.put("orgId", orgId);
+        logger.debug("resourceNew data : {}", data);
+
+        String id = resourceManageService.createResource(data);
+
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("redirect:/o/resources/" + id);
         return mav;
     }
 

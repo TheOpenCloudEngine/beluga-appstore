@@ -1,7 +1,6 @@
 package org.opencloudengine.garuda.belugaservice.service;
 
 import org.opencloudengine.garuda.belugaservice.db.entity.App;
-import org.opencloudengine.garuda.belugaservice.db.entity.Resources;
 import org.opencloudengine.garuda.belugaservice.db.mapper.AppMapper;
 import org.opencloudengine.garuda.belugaservice.util.ParseUtil;
 import org.slf4j.Logger;
@@ -152,13 +151,20 @@ public class AppManageService {
 
         /* resources plan */
         List<String> resourceList = new ArrayList<>();
-        String resourcePrefix = "resource_";
-        for(String resourceKey : Resources.keys()) {
-            String paramKey = resourcePrefix + resourceKey;
-            if(data.get(paramKey) != null) {
-                resourceList.add(resourceKey);
-            }
-        }
+
+
+
+        //TODO
+
+
+
+//        String resourcePrefix = "resource_";
+//        for(String resourceKey : Resources.keys()) {
+//            String paramKey = resourcePrefix + resourceKey;
+//            if(data.get(paramKey) != null) {
+//                resourceList.add(resourceKey);
+//            }
+//        }
 
         app.setResourcesPlan(resourceList);
 

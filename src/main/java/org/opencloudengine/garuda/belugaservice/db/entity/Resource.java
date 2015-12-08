@@ -14,17 +14,19 @@ public class Resource {
 
     private String id;
     private String orgId;
-    private String appId;
     private String name;
     private String image;
-    private float cpus;
-    private float memory;
+    private Float cpus;
+    private Integer memory;
     private String host;
     private String port;
     private Date createDate;
     private String createDateDisplay;
+    private String memoryDisplay;
 
-    public Resource(String id, String orgId, String name, String image, float cpus, float mem) {
+    public Resource() {}
+
+    public Resource(String id, String orgId, String name, String image, Float cpus, Integer mem) {
         this.id = id;
         this.orgId = orgId;
         this.name = name;
@@ -49,14 +51,6 @@ public class Resource {
         this.orgId = orgId;
     }
 
-    public String getAppId() {
-        return appId;
-    }
-
-    public void setAppId(String appId) {
-        this.appId = appId;
-    }
-
     public String getName() {
         return name;
     }
@@ -73,20 +67,28 @@ public class Resource {
         this.image = image;
     }
 
-    public float getCpus() {
+    public Float getCpus() {
         return cpus;
     }
 
-    public void setCpus(float cpus) {
+    public void setCpus(Float cpus) {
         this.cpus = cpus;
     }
 
-    public float getMemory() {
+    public Integer getMemory() {
         return memory;
     }
 
-    public void setMemory(float memory) {
+    public void setMemory(Integer memory) {
         this.memory = memory;
+    }
+
+    public void setMemoryDisplay(String memoryDisplay) {
+        this.memoryDisplay = memoryDisplay;
+    }
+
+    public String getMemoryDisplay() {
+        return memoryDisplay;
     }
 
     public String getHost() {

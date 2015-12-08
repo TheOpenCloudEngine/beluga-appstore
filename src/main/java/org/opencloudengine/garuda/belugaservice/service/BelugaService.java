@@ -7,7 +7,7 @@ import org.glassfish.jersey.media.multipart.MultiPart;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
 import org.opencloudengine.garuda.belugaservice.db.entity.App;
-import org.opencloudengine.garuda.belugaservice.db.entity.Resources;
+import org.opencloudengine.garuda.belugaservice.db.entity.Resource;
 import org.opencloudengine.garuda.belugaservice.entity.AppApplyRequest;
 import org.opencloudengine.garuda.belugaservice.entity.AppStatus;
 import org.opencloudengine.garuda.belugaservice.util.DateUtil;
@@ -78,14 +78,6 @@ public class BelugaService {
             domainName = getWebTarget(uri).request().get(String.class);
         }
         return domainName;
-    }
-
-    public Resources getResources() {
-
-        //TODO
-
-        Resources resources = null;
-        return resources;
     }
 
     private JsonNode getBelugaResponse(String uri) {
@@ -202,6 +194,22 @@ public class BelugaService {
 
         AppApplyRequest request = new AppApplyRequest(app);
         Response response = webTarget.request(MediaType.APPLICATION_JSON).post(Entity.json(request));
+        if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
+//            String str = response.readEntity(String.class);
+//            Map<String, Object> entity = JsonUtil.json2Object(str);
+//            logger.debug("Apply response : {}", entity);
+            return true;
+        } else {
+            String entity = response.readEntity(String.class);
+            throw new Exception(entity);
+        }
+    }
+
+    public boolean deployResource(Resource resource) throws Exception {
+        // garuda master 에 전송. marathon으로 실행.
+        String uri = String.format("/v1/clusters/%s/resources", clusterId);
+        WebTarget webTarget = getWebTarget(uri);
+        Response response = webTarget.request(MediaType.APPLICATION_JSON).post(Entity.json(resource));
         if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
 //            String str = response.readEntity(String.class);
 //            Map<String, Object> entity = JsonUtil.json2Object(str);

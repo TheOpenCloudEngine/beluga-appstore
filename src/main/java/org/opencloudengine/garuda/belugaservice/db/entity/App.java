@@ -6,6 +6,7 @@ import org.slf4j.LoggerFactory;
 
 import java.io.IOException;
 import java.text.DateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
@@ -297,10 +298,10 @@ public class App {
 
     public void setResources(String resources) {
         this.resources = resources;
-        try{
-            this.resourceList = JsonUtil.json2Object(resources, List.class);
-        } catch (IOException e) {
-            logger.error("", e);
+        String[] list = resources.split(",");
+        this.resourceList = new ArrayList<>();
+        for(String resourceId : list) {
+            this.resourceList.add(resourceId.trim());
         }
     }
 
