@@ -1,4 +1,5 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
 <% String menuId = "manage"; %>
@@ -122,7 +123,7 @@
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                             <div class="stat-box">
-                                <p class="text-primary">${resource.memory}</p>
+                                <p class="text-primary">${resource.memoryDisplay}</p>
                                 <h4>Memory</h4>
                             </div>
                         </div>
@@ -148,6 +149,20 @@
                     <div class="form-group">
                         <label class="col-md-3 col-sm-3 control-label">Created:</label>
                         <div class="col-md-9 col-sm-9"><p class="form-control-static">${resource.createDateDisplay}</p></div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row col-md-12">
+                <div><h4 class="bottom-line">Environment Variables</h4></div>
+                <div class="col-md-12 form-horizontal compact">
+                    <div class="form-group">
+                        <label class="col-md-3 col-sm-3 control-label">Host:</label>
+                        <div class="col-md-9 col-sm-9"><p class="form-control-static">$${fn:toUpperCase(resource.id)}_HOST</p></div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-md-3 col-sm-3 control-label">Port:</label>
+                        <div class="col-md-9 col-sm-9"><p class="form-control-static">$${fn:toUpperCase(resource.id)}_PORT</p></div>
                     </div>
                 </div>
             </div>

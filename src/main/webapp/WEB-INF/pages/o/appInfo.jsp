@@ -201,11 +201,11 @@
                 %>
                     <div class="form-group">
                         <label class="col-md-3 col-sm-3 control-label">
-                            <a href="/o/resources/<%=resource.getId()%>"><%=resource.getId()%></a>:
+                            <%=resource.getResourceName()%>:
                         </label>
                         <div class="col-md-9 col-sm-9">
                             <p class="form-control-static">
-                                <%=resource.getResourceName()%>
+                                <a href="/o/resources/<%=resource.getId()%>"><%=resource.getId()%></a>
                             </p>
                         </div>
                     </div>
