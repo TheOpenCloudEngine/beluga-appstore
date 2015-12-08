@@ -19,28 +19,7 @@ $(function(){
                 idExists: true,
                 lowercase : true,
                 onkeyup: false
-            },
-
-            appFile1: {
-                required: true
-            },
-            context1: {
-                required: true
-            },
-            appFile2 : {
-                required: function(element){
-                    return $("#context2").val().length > 0;
-                }
-            },
-            context2 : {
-                required: function(element){
-                    return $("#appFile2").val().length > 0;
-                }
             }
-        },
-        messages: {
-            appFile1: "Upload file is required.",
-            appFile2: "Upload file is required."
         }
     });
 
@@ -85,20 +64,14 @@ $(function(){
                     <h4 class="bottom-line">General Information</h4>
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Domain:</label>
-                            <div class="col-md-9 col-sm-9"><input type="text" name="id" id="appId" class="form-control col-150 pull-left required" minlength="3"/>
-                                <p class="form-control-static">&nbsp;.${domain}</p>
+                            <label class="col-md-3 col-sm-3 control-label">ID:</label>
+                            <div class="col-md-9 col-sm-9">
+                                <input type="text" name="id" id="appId" class="form-control col-150 pull-left required" minlength="3"/>
                             </div>
                         </div>
-
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Name:</label>
                             <div class="col-md-9 col-sm-9"><input type="text" name="name" id="appName" class="form-control required" minlength="3"/></div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Description :</label>
-                            <div class="col-md-9 col-sm-9"><textarea name="description" class="form-control" rows="3"></textarea></div>
                         </div>
                     </div>
                 </div>
@@ -107,55 +80,13 @@ $(function(){
                     <h4 class="bottom-line">Operating Plan</h4>
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">App file:</label>
+                            <label class="col-md-3 col-sm-3 control-label">Resource Type:</label>
                             <div class="col-md-9 col-sm-9">
-                                <!--file1-->
-                                <p class="form-control-static pull-left">Context</p>
-                                <input type="text" id="context1" name="context1" class="form-control col-150 pull-left mleft-10" placeholder="/context" value="/">
-                                <input type="file" id="appFile1" name="appFile1" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
-                                <div class="progress" id="progressbar1" style="display:none">
-                                    <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                        <span class="sr-only">45% Complete</span>
-                                    </div>
-                                </div>
-                                <p class="form-control-static app-file-detail1 maybe-hide"><span id="fileInfo1"></span>
-                                    <br><span class="file-date" id="fileDate1"></span>
-                                </p>
-                                <!--// file1-->
-                                <p/>
-                                <!--file2-->
-                                <p class="form-control-static pull-left">Context</p>
-                                <input type="text" id="context2" name="context2" class="form-control col-150 pull-left mleft-10" placeholder="/context">
-                                <input type="file" id="appFile2" name="appFile2" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
-                                <div class="progress" id="progressbar2" style="display:none">
-                                    <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                        <span class="sr-only">45% Complete</span>
-                                    </div>
-                                </div>
-                                <p class="form-control-static app-file-detail2 maybe-hide"><span id="fileInfo2"></span>
-                                    <br><span class="file-date" id="fileDate2"></span>
-                                </p>
-                                <!--hidden info-->
-                                <input type="hidden" name="fileName1"/>
-                                <input type="hidden" name="filePath1"/>
-                                <input type="hidden" name="fileLength1"/>
-                                <input type="hidden" name="fileDate1"/>
-                                <input type="hidden" name="fileChecksum1"/>
-                                <input type="hidden" name="fileName2"/>
-                                <input type="hidden" name="filePath2"/>
-                                <input type="hidden" name="fileLength2"/>
-                                <input type="hidden" name="fileDate2"/>
-                                <input type="hidden" name="fileChecksum2"/>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Environment:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <select name="environment" class="form-control required">
+                                <select name="type" class="form-control required">
                                     <option value="">:: Select ::</option>
-                                    <option value="java7_tomcat7">java7_tomcat7</option>
-                                    <option value="java7_wildfly8.2">java7_wildfly8.2</option>
-                                    <option value="php5_apache2">php5_apache2</option>
+                                    <c:forEach var="resource" items="${allResources}">
+                                        <option value="${resource.id}">${resource.name}</option>
+                                    </c:forEach>
                                 </select>
                             </div>
                         </div>
@@ -194,205 +125,8 @@ $(function(){
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Scale:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <select name="scale"class="form-control col-100 required">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                    <option value="4">4</option>
-                                    <option value="5">5</option>
-                                </select>
-                            </div>
-                        </div>
                     </div>
                 </div>
-
-                <div class="row col-md-12">
-                    <h4 class="bottom-line">Resource Plan</h4>
-                    <div class="col-md-12 form-horizontal">
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Database:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="resource_mysql5" value="true"> <%=Resources.get("mysql5").getName() %>
-                                    </label>
-                                </div>
-                                <div class="sub-options">
-                                    $<%=Resources.get("mysql5").getIPPropertyKey()%> $<%=Resources.get("mysql5").getPortPropertyKey()%>
-                                </div>
-                            </div>
-                            <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="resource_postgresql9" value="true"> <%=Resources.get("postgresql9").getName() %>
-                                    </label>
-                                </div>
-                                <div class="sub-options">
-                                    $<%=Resources.get("postgresql9").getIPPropertyKey()%> $<%=Resources.get("postgresql9").getPortPropertyKey()%>
-                                </div>
-                            </div>
-                            <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="resource_oraclexe11g" value="true"> <%=Resources.get("oraclexe11g").getName() %>
-                                    </label>
-                                </div>
-                                <div class="sub-options">
-                                    $<%=Resources.get("oraclexe11g").getIPPropertyKey()%> $<%=Resources.get("oraclexe11g").getPortPropertyKey()%>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">NoSQL:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="resource_mongodb3" value="true"> <%=Resources.get("mongodb3").getName() %>
-                                    </label>
-                                </div>
-                                <div class="sub-options">
-                                    $<%=Resources.get("mongodb3").getIPPropertyKey()%> $<%=Resources.get("mongodb3").getPortPropertyKey()%>
-                                </div>
-                            </div>
-                            <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="resource_redis3" value="true"> <%=Resources.get("redis3").getName() %>
-                                    </label>
-                                </div>
-                                <div class="sub-options">
-                                    $<%=Resources.get("redis3").getIPPropertyKey()%> $<%=Resources.get("redis3").getPortPropertyKey()%>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">FTP:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="resource_sftp" value="true"> <%=Resources.get("sftp").getName() %>
-                                    </label>
-                                </div>
-                                <div class="sub-options">
-                                    $<%=Resources.get("sftp").getIPPropertyKey()%> $<%=Resources.get("sftp").getPortPropertyKey()%>
-                                </div>
-                            </div>
-                            <div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="resource_ftp" value="true"> <%=Resources.get("ftp").getName() %>
-                                    </label>
-                                </div>
-                                <div class="sub-options">
-                                    $<%=Resources.get("ftp").getIPPropertyKey()%> $<%=Resources.get("ftp").getPortPropertyKey()%>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <div class="row col-md-12">
-                    <h4 class="bottom-line">Auto Scaling Plan</h4>
-                    <div class="col-md-12 form-horizontal">
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Enable Auto Scale-out:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="autoScaleOutUse" disabled> Yes
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Load Average higher than:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <select class="form-control display-inline col-100" name="cpuHigher">
-                                    <option value="50">10%</option>
-                                    <option value="50">20%</option>
-                                    <option value="50">30%</option>
-                                    <option value="50">40%</option>
-                                    <option value="50">50%</option>
-                                    <option value="60">60%</option>
-                                    <option value="70">70%</option>
-                                    <option value="80">80%</option>
-                                    <option value="90">90%</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">During:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <select class="form-control display-inline col-100" name="cpuHigherDuring">
-                                    <option value="1">1 Min</option>
-                                    <option value="2">2 Min</option>
-                                    <option value="3">3 Min</option>
-                                    <option value="4">4 Min</option>
-                                    <option value="5">5 Min</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Add Scale:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <select class="form-control display-inline col-100" name="autoScaleOutSize">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                </select>
-                            </div>
-                        </div>
-
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Enable Auto Scale-in:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="autoScaleInUse" disabled> Yes
-                                    </label>
-                                </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Load Average lower than:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <select class="form-control display-inline col-100" name="cpuLower">
-                                    <option value="10">10%</option>
-                                    <option value="20">20%</option>
-                                    <option value="30">30%</option>
-                                    <option value="40">40%</option>
-                                    <option value="50">50%</option>
-                                    <option value="60">60%</option>
-                                    <option value="70">70%</option>
-                                    <option value="80">80%</option>
-                                    <option value="90">90%</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">During:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <select class="form-control display-inline col-100" name="cpuLowerDuring">
-                                    <option value="1">1 Min</option>
-                                    <option value="2">2 Min</option>
-                                    <option value="3">3 Min</option>
-                                    <option value="4">4 Min</option>
-                                    <option value="5">5 Min</option>
-                                    <option value="6">6 Min</option>
-                                    <option value="7">7 Min</option>
-                                    <option value="8">8 Min</option>
-                                    <option value="9">9 Min</option>
-                                    <option value="10">10 Min</option>
-                                </select>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-
                 <div class="row col-md-12">
                     <hr>
                     <div>

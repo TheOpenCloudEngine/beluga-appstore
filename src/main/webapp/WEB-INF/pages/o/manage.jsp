@@ -90,12 +90,10 @@
                 <table class="table table-hover table-bordered">
                     <thead>
                     <tr>
-                        <th>Name</th>
                         <th>ID</th>
+                        <th>Name</th>
                         <th>CPUs</th>
                         <th>Memory</th>
-                        <th>Host</th>
-                        <th>Port</th>
                         <th>Apply Date</th>
                         <th>Status</th>
                     </tr>
@@ -103,12 +101,10 @@
                     <tbody>
                     <c:forEach var="resource" items="${resources}">
                         <tr>
-                            <td><a href="resources/${resource.id}">${resource.name}</a></td>
                             <td><a href="resources/${resource.id}">${resource.id}</a></td>
+                            <td><a href="resources/${resource.id}">${resource.resourceName}</a></td>
                             <td>${resource.cpus}</td>
                             <td>${resource.memory}MB</td>
-                            <td>${resource.host}</td>
-                            <td>${resource.port}</td>
                             <td>${resource.createDateDisplay}</td>
                             <td><span class="glyphicon glyphicon-ok-sign running-status"></span></td>
                         </tr>

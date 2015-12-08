@@ -67,11 +67,11 @@ CREATE TABLE `resources` (
   `id` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `orgId` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `resourceName` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `image` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `port` int(11) NOT NULL,
   `cpus` float(2,1) NOT NULL,
   `memory` int(11) NOT NULL,
-  `host` varchar(45) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `port` varchar(4) COLLATE utf8_unicode_ci DEFAULT NULL,
   `createDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

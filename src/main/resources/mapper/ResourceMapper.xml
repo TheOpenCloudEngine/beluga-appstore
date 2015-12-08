@@ -18,18 +18,11 @@
 
     <insert id="insert" parameterType="org.opencloudengine.garuda.belugaservice.db.entity.Resource">
         INSERT INTO resources(
-            `id`, orgId, `name`, image, cpus, memory, host, port
+            `id`, orgId, `name`, resourceName, image, port, cpus, memory
         ) VALUES(
-            #{id}, #{orgId}, #{name}, #{image}, #{cpus}, #{memory}, #{host}, #{port}
+            #{id}, #{orgId}, #{name}, #{resourceName}, #{image}, #{port}, #{cpus}, #{memory}
         )
     </insert>
-    <update id="update" parameterType="org.opencloudengine.garuda.belugaservice.db.entity.Resource">
-        UPDATE apps
-        SET `name`=#{name},
-        host=#{host},
-        port=#{port},
-        WHERE id = #{id}
-    </update>
     <delete id="delete">
         DELETE FROM resources
         WHERE id = #{id}

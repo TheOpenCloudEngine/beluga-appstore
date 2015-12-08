@@ -19,8 +19,6 @@ public interface ResourceMapper {
 
     public void insert(Resource resource);
 
-    public void update(Resource resource);
-
     public void delete(@Param("id") String id);
 
     public void truncate();

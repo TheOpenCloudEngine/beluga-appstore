@@ -211,13 +211,23 @@ public class RestController {
 
     @RequestMapping(value = "/api/apps/{appId}", method = RequestMethod.DELETE)
     public void deleteApp(@PathVariable String appId, HttpServletResponse response) throws IOException {
-        ModelAndView mav = new ModelAndView();
         if (belugaService.destroyApp(appId)) {
             appManageService.deleteApp(appId);
             response.setStatus(200);
             return;
         } else {
             response.sendError(500, "no such app : " + appId);
+        }
+    }
+
+    @RequestMapping(value = "/api/resources/{appId}", method = RequestMethod.DELETE)
+    public void deleteResource(@PathVariable String appId, HttpServletResponse response) throws IOException {
+        if (belugaService.destroyApp(appId)) {
+            resourceManageService.deleteResource(appId);
+            response.setStatus(200);
+            return;
+        } else {
+            response.sendError(500, "no such resource : " + appId);
         }
     }
 
@@ -243,48 +253,15 @@ public class RestController {
         }
     }
 
-    /*
-    *
-    * TODO 로그인하면 결과로 사용가능 리소스정보를 넘겨준다.
-    * */
-//    @RequestMapping(value = "/api/users", method = RequestMethod.POST)
-//    public void loginAPI(@RequestBody String json, HttpServletResponse response) throws IOException {
-//
-//        String appId = null;
-//        String id = null;
-//        String password = null;
-//
-//        User user = new User();
-//        user.setId(id);
-//        user.setPassword(password);
-//        if (!memberService.isUserExistsWithPassword(user)) {
-//            response.sendError(401, "Incorrect user information : " + id);
-//            return;
-//        }
-//        user = memberService.getUser(id);
-//        String orgId = user.getOrgId();
-//        if (appManageService.isGranted(orgId, appId)) {
-//            // 사용가능한 리소스 정보를 전달.
-//            Resources allResources = belugaService.getResources();
-//            //조직별 사용할 리소스를 산출한다.
-//            Resources usingResources = appManageService.getUsingResources(appId, allResources);
-//
-//            response.getWriter().print(JsonUtil.object2String(usingResources));
-//        } else {
-//            response.sendError(403, "App " + appId + " is not allowed to organization " + orgId);
-//        }
-//
+//    @RequestMapping(value = "/api/oauth2/token", method = RequestMethod.POST)
+//    public void oauth2Token(@RequestBody String json, HttpServletResponse response) throws IOException {
+//        //TODO
 //    }
-
-    @RequestMapping(value = "/api/oauth2/token", method = RequestMethod.POST)
-    public void oauth2Token(@RequestBody String json, HttpServletResponse response) throws IOException {
-        //TODO
-    }
-
-    @RequestMapping(value = "/api/oauth2/authorization", method = RequestMethod.POST)
-    public void oauth2Authrozation(@RequestBody String json, HttpServletResponse response) throws IOException {
-        //TODO
-    }
+//
+//    @RequestMapping(value = "/api/oauth2/authorization", method = RequestMethod.POST)
+//    public void oauth2Authrozation(@RequestBody String json, HttpServletResponse response) throws IOException {
+//        //TODO
+//    }
 
     @RequestMapping(value = "/api/subscribe/{appId}", method = RequestMethod.POST)
     @ResponseBody

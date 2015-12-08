@@ -3,6 +3,7 @@ package org.opencloudengine.garuda.belugaservice.service;
 import org.opencloudengine.garuda.belugaservice.db.entity.Resource;
 import org.opencloudengine.garuda.belugaservice.db.entity.Resource;
 import org.opencloudengine.garuda.belugaservice.db.mapper.ResourceMapper;
+import org.opencloudengine.garuda.belugaservice.entity.ResourceProvided;
 import org.opencloudengine.garuda.belugaservice.util.ParseUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -40,26 +41,24 @@ public class ResourceManageService {
         return resourceMapper.select(resourceId);
     }
 
-    public void updateResource(Resource Resource) {
-        resourceMapper.update(Resource);
-    }
-
-    public String updateResource(Map<String, Object> data) {
-        Resource resource = parseResource(data);
-        String id = (String) data.get("id");
-        Resource oldResource = resourceMapper.select(id);
-        oldResource.setName(resource.getName());
-        oldResource.setHost(resource.getHost());
-        oldResource.setPort(resource.getPort());
-        resourceMapper.update(oldResource);
-        return id;
-    }
-
     public Resource parseResource(Map<String, Object> data) {
         String id = (String) data.get("id");
         String orgId = (String) data.get("orgId");
         String name = (String) data.get("name");
-        String image = (String) data.get("image");
+        String type = (String) data.get("type");
+        int port = 0;
+        String resourceName = null;
+        String image = null;
+        Map<String, String> env = null;
+        for(ResourceProvided r : ResourceProvided.resourceProvidedList) {
+            if(r.getId().equalsIgnoreCase(type)) {
+                port = r.getPort();
+                resourceName = r.getName();
+                image = r.getImage();
+                env = r.getEnv();
+                break;
+            }
+        }
         String cpusStr = (String) data.get("cpus");
         float cpus = 0;
         if(cpusStr != null) {
@@ -78,27 +77,18 @@ public class ResourceManageService {
                 //ignore
             }
         }
-        String host = (String) data.get("host");
-        String port = (String) data.get("port");
-        Resource resource = new Resource(id, orgId, name, image, cpus, memory);
-        resource.setHost(host);
-        resource.setPort(port);
+
+        Resource resource = new Resource(id, orgId, name, resourceName, image, port, env, cpus, memory);
         return resource;
     }
 
     public String createResource(Map<String, Object> data) {
         Resource resource = parseResource(data);
-        String resourceUUID = UUID.randomUUID().toString();
-        resource.setId(resourceUUID);
         resourceMapper.insert(resource);
-        return resourceUUID;
+        return resource.getId();
     }
 
-    public void createResource(Resource resource) {
-        resourceMapper.insert(resource);
-    }
-
-    public void deleteApp(String resourceId) {
+    public void deleteResource(String resourceId) {
         resourceMapper.delete(resourceId);
     }
 }

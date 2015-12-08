@@ -1,36 +1,47 @@
 package org.opencloudengine.garuda.belugaservice.db.entity;
 
+import org.codehaus.jettison.json.JSONException;
+import org.codehaus.jettison.json.JSONObject;
+import org.codehaus.jettison.json.JSONStringer;
+import org.codehaus.jettison.json.JSONWriter;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
 import java.text.DateFormat;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.Map;
 
 /**
  * Created by swsong on 2015. 12. 8..
  */
 public class Resource {
     private static final Logger logger = LoggerFactory.getLogger(Resource.class);
-
     private String id;
     private String orgId;
     private String name;
+    private String resourceName;
     private String image;
+    private Integer port;
+    private Map<String, String> envMap;
+    private String env;
     private Float cpus;
     private Integer memory;
-    private String host;
-    private String port;
     private Date createDate;
     private String createDateDisplay;
     private String memoryDisplay;
 
     public Resource() {}
 
-    public Resource(String id, String orgId, String name, String image, Float cpus, Integer mem) {
+    public Resource(String id, String orgId, String name, String resourceName, String image, Integer port, Map<String, String> envMap, Float cpus, Integer mem) {
         this.id = id;
         this.orgId = orgId;
         this.name = name;
+        this.resourceName = resourceName;
         this.image = image;
+        this.port = port;
+        this.envMap = envMap;
         this.cpus = cpus;
         this.memory = mem;
     }
@@ -57,6 +68,14 @@ public class Resource {
 
     public void setName(String name) {
         this.name = name;
+    }
+
+    public String getResourceName() {
+        return resourceName;
+    }
+
+    public void setResourceName(String resourceName) {
+        this.resourceName = resourceName;
     }
 
     public String getImage() {
@@ -91,20 +110,59 @@ public class Resource {
         return memoryDisplay;
     }
 
-    public String getHost() {
-        return host;
-    }
-
-    public void setHost(String host) {
-        this.host = host;
-    }
-
-    public String getPort() {
+    public Integer getPort() {
         return port;
     }
 
-    public void setPort(String port) {
+    public void setPort(Integer port) {
         this.port = port;
+    }
+
+    public Map<String, String> getEnvMap() {
+        return envMap;
+    }
+
+    public void setEnvMap(Map<String, String> envMap) {
+        this.envMap = envMap;
+    }
+
+    public String getEnv() {
+
+        if(env != null) {
+            return env;
+        }
+        JSONStringer json = new JSONStringer();
+        if(envMap != null) {
+            try {
+                JSONWriter w = json.object();
+                for(Map.Entry<String, String> e : envMap.entrySet()) {
+                    w.key(e.getKey()).value(e.getValue());
+                }
+                w.endObject();
+                this.env = w.toString();
+            } catch (JSONException e) {
+                logger.error("", e);
+            }
+        }
+        return env;
+    }
+
+    public void setEnv(String env) {
+        this.env = env;
+        if(env != null) {
+            this.envMap = new HashMap<>();
+            try {
+                JSONObject obj = new JSONObject(env);
+                Iterator<String> iter = obj.keys();
+                while(iter.hasNext()) {
+                    String key = iter.next();
+                    this.envMap.put(key, obj.getString(key));
+                }
+            } catch (JSONException e) {
+                logger.error("", e);
+            }
+        }
+
     }
 
     public Date getCreateDate() {

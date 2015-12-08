@@ -198,18 +198,14 @@
                 <div class="col-md-12 form-horizontal">
                 <%
                     for(Resource resource : resources) {
-                        String host = "";
-                        String port = "";
-                        String[] ipPort = null;
                 %>
                     <div class="form-group">
                         <label class="col-md-3 col-sm-3 control-label">
-                            <%=resource.getName()%>:
+                            <a href="/o/resources/<%=resource.getId()%>"><%=resource.getId()%></a>:
                         </label>
                         <div class="col-md-9 col-sm-9">
                             <p class="form-control-static">
-                                <%=resource.getHost()%>:<%=resource.getPort()%>
-                                <%=(ipPort != null) ? "<span class='label label-success'>ON</span>" : "<span class='label label-danger'>OFF</span>" %>
+                                <%=resource.getResourceName()%>
                             </p>
                         </div>
                     </div>

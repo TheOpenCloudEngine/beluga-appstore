@@ -1,6 +1,3 @@
-<%@ page import="java.util.Map" %>
-<%@ page import="org.opencloudengine.garuda.belugaservice.db.entity.App" %>
-<%@ page import="java.util.List" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
@@ -12,7 +9,7 @@
             url:"/api/resources/${resource.id}/deploy",
             type: "POST",
             success:function() {
-                alert("[${app.id}] Starting resource succeed.");
+                alert("[${resource.id}] Starting resource succeed.");
                 location.reload(true);
             },
             error:function(xhr) {
@@ -23,10 +20,28 @@
         });
     }
 
+    function deleteResource() {
+        $.ajax({
+            url: "/api/resources/${resource.id}",
+            type: "DELETE",
+            success: function() {
+                location.href = "/o/manage";
+            },
+            error: function(xhr, status, e) {
+                alert("cannot delete resource : " + e);
+                updateResourceStatus();
+            }
+        })
+    }
+
     $(function(){
         $("#deployButton").on("click", function(){
             $(this).button('loading');
             deployResource();
+        });
+        $("#deleteButton").on("click", function(){
+            $(this).button('loading');
+            deleteResource();
         });
         updateResourceStatus();
 
@@ -34,17 +49,24 @@
 
     function updateResourceStatus() {
         $.ajax({
-            url: "/api/resources/${app.id}/status",
+            url: "/api/apps/${resource.id}/status",
             type: "GET",
             dataType: "json",
             success: function(data) {
                 $("#appStatus").text(data.status);
-                if(data.status == "OK") {
-                    $("#appStatus").removeClass("text-danger");
-                    $("#appStatus").addClass("text-success");
+                if(data.status == "-") {
+                    //시작하지 않음.start가능.
+                    $("#deployButton").show();
                 } else {
-                    $("#appStatus").addClass("text-danger");
-                    $("#appStatus").removeClass("text-success");
+                    if (data.status == "OK") {
+                        $("#appStatus").removeClass("text-danger");
+                        $("#appStatus").addClass("text-success");
+                    } else {
+                        $("#appStatus").addClass("text-danger");
+                        $("#appStatus").removeClass("text-success");
+                    }
+                    //delete 가능.
+                    $("#deployButton").hide();
                 }
                 $("#appElapsed").text(data.elapsed);
                 $("#appScale").text(data.scale);
@@ -52,6 +74,7 @@
             error: function(xhr) {
                 $("#appStatus").addClass("text-danger");
                 $("#appStatus").removeClass("text-success");
+                $("#deployButton").show();
                 alert("Resource status update error : " + xhr.responseText);
             }
         });
@@ -67,7 +90,6 @@
 
             <div class="row col-md-12">
                 <a href="/o/manage" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
-                &nbsp;<a href="${resource.id}/edit" class="btn btn-default">Edit</a>
             </div>
 
             <div class="row col-md-12">
@@ -121,9 +143,12 @@
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 col-sm-3 control-label">Resource Name:</label>
-                        <div class="col-md-9 col-sm-9"><p class="form-control-static">${resource.image}</p></div>
+                        <div class="col-md-9 col-sm-9"><p class="form-control-static">${resource.resourceName}</p></div>
                     </div>
-
+                    <div class="form-group">
+                        <label class="col-md-3 col-sm-3 control-label">Created:</label>
+                        <div class="col-md-9 col-sm-9"><p class="form-control-static">${resource.createDateDisplay}</p></div>
+                    </div>
                 </div>
             </div>
 
@@ -144,8 +169,39 @@
                     </div>
                 </div>
             </div>
+
+            <div class="row col-md-12">
+                <br>
+                <br>
+                <div class="box" >
+                    <div class="pull-right">
+                        <button type="button" class="btn btn-lg btn-danger outline" data-toggle="modal" data-target="#deleteModal"><i class="glyphicon glyphicon-trash"></i> Delete Resource</button>
+                    </div>
+                    <h2>Delete Resource</h2>
+                    <p>This will terminate running resource and permanently delete all resource information.</p>
+                </div>
+            </div>
         </div>
     </div>
 </div>
+
+<div class="modal fade" id="deleteModal" tabindex="-1" role="dialog" >
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                <h4 class="modal-title">Are you sure?</h4>
+            </div>
+            <div class="modal-body">
+                <p>This will terminate running resource and permanently delete all resource information.</p>
+                <p><strong class="text-danger">Delete resource "${resource.id}".</strong></p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
+                <button type="button" class="btn btn-danger" id="deleteButton">Yes</button>
+            </div>
+        </div><!-- /.modal-content -->
+    </div><!-- /.modal-dialog -->
+</div><!-- /.modal -->
 
 <%@include file="bottom.jsp" %>

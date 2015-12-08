@@ -4,6 +4,7 @@ import org.opencloudengine.garuda.belugaservice.db.entity.App;
 import org.opencloudengine.garuda.belugaservice.db.entity.Organization;
 import org.opencloudengine.garuda.belugaservice.db.entity.Resource;
 import org.opencloudengine.garuda.belugaservice.db.entity.User;
+import org.opencloudengine.garuda.belugaservice.entity.ResourceProvided;
 import org.opencloudengine.garuda.belugaservice.service.AppManageService;
 import org.opencloudengine.garuda.belugaservice.service.BelugaService;
 import org.opencloudengine.garuda.belugaservice.service.MemberService;
@@ -83,7 +84,9 @@ public class OrgController {
         makeUserFriendlyApp(appList);
         makeUserFriendlyApp(outerAppList);
         List<Resource> resources = resourceManageService.getOrgResources(orgId);
-
+        for(Resource r : resources) {
+            r.fillCreateDateDisplay(DateUtil.getDateFormat2());
+        }
         ModelAndView mav = new ModelAndView();
         int appSize = appList != null ? appList.size() : 0;
         int outerAppSize = outerAppList != null ? outerAppList.size() : 0;
@@ -179,7 +182,7 @@ public class OrgController {
             throw new NotFoundException();
         }
         resource.setMemoryDisplay(ParseUtil.toHumanSizeOverMB(resource.getMemory() * SizeUnit.MB));
-//        String elapsed = DateUtil.getElapsedTimeDisplay(app.getApplyDate());
+        resource.fillCreateDateDisplay(DateUtil.getDateFormat2());
         ModelAndView mav = new ModelAndView();
         mav.addObject("resource", resource);
         mav.addObject("domain", belugaService.getDomainName());
@@ -196,10 +199,14 @@ public class OrgController {
     }
 
     @RequestMapping(value = "/resources/new", method = RequestMethod.GET)
-    public ModelAndView resourceNew() {
+    public ModelAndView resourceNew(HttpSession session) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("o/resourceNew");
-        mav.addObject("domain", belugaService.getDomainName());
+        User user = getUser(session);
+        String orgId = user.getOrgId();
+        List<Resource> usingResources = resourceManageService.getOrgResources(orgId);
+        mav.addObject("usingResources", usingResources);
+        mav.addObject("allResources", ResourceProvided.resourceProvidedList);
         return mav;
     }
 
