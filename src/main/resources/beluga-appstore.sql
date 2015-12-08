@@ -70,6 +70,7 @@ CREATE TABLE `resources` (
   `resourceName` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `image` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `port` int(11) NOT NULL,
+  `env` varchar(65535) COLLATE utf8_unicode_ci DEFAULT NULL,
   `cpus` float(2,1) NOT NULL,
   `memory` int(11) NOT NULL,
   `createDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,

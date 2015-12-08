@@ -18,9 +18,9 @@
 
     <insert id="insert" parameterType="org.opencloudengine.garuda.belugaservice.db.entity.Resource">
         INSERT INTO resources(
-            `id`, orgId, `name`, resourceName, image, port, cpus, memory
+            `id`, orgId, `name`, resourceName, image, port, env, cpus, memory
         ) VALUES(
-            #{id}, #{orgId}, #{name}, #{resourceName}, #{image}, #{port}, #{cpus}, #{memory}
+            #{id}, #{orgId}, #{name}, #{resourceName}, #{image}, #{port}, #{env}, #{cpus}, #{memory}
         )
     </insert>
     <delete id="delete">
