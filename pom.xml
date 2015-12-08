@@ -212,7 +212,7 @@
                 <version>2.5</version>
                 <configuration>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
-                    <tagBase>https://github.com/TheOpenCloudEngine/beluga-service/tags</tagBase>
+                    <tagBase>https://github.com/TheOpenCloudEngine/beluga-appstore/tags</tagBase>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <goals>deploy</goals>
                 </configuration>
@@ -230,7 +230,7 @@
                 <version>2.5</version>
                 <configuration>
                     <tagNameFormat>v@{project.version}</tagNameFormat>
-                    <tagBase>https://github.com/TheOpenCloudEngine/beluga-service/tags</tagBase>
+                    <tagBase>https://github.com/TheOpenCloudEngine/beluga-appstore/tags</tagBase>
                     <autoVersionSubmodules>true</autoVersionSubmodules>
                     <goals>deploy</goals>
                 </configuration>
@@ -239,9 +239,9 @@
     </build>
 
     <scm>
-        <connection>scm:git:https://github.com/TheOpenCloudEngine/beluga-service</connection>
-        <developerConnection>scm:git:https://github.com/TheOpenCloudEngine/beluga-service</developerConnection>
-        <url>scm:git:https://github.com/TheOpenCloudEngine/beluga-service</url>
+        <connection>scm:git:https://github.com/TheOpenCloudEngine/beluga-appstore</connection>
+        <developerConnection>scm:git:https://github.com/TheOpenCloudEngine/beluga-appstore</developerConnection>
+        <url>scm:git:https://github.com/TheOpenCloudEngine/beluga-appstore</url>
         <tag>HEAD</tag>
     </scm>
 
