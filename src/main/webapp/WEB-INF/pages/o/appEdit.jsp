@@ -104,7 +104,7 @@ $(function() {
                                 <input type="text" id="context1" name="context1" class="form-control col-150 pull-left mleft-10" placeholder="/context" value="${app.appContext}">
                                 <input type="file" id="appFile1" name="appFile1" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
                                 <div class="progress" id="progressbar1" style="display:none">
-                                    <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                                    <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                                         <span class="sr-only">45% Complete</span>
                                     </div>
                                 </div>
@@ -118,7 +118,7 @@ $(function() {
                                 <input type="text" id="context2" name="context2" class="form-control col-150 pull-left mleft-10" placeholder="/context" value="${app.appContext2}">
                                 <input type="file" id="appFile2" name="appFile2" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
                                 <div class="progress" id="progressbar2" style="display:none">
-                                    <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="45" aria-valuemin="0" aria-valuemax="100" style="width: 45%">
+                                    <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
                                         <span class="sr-only">45% Complete</span>
                                     </div>
                                 </div>
@@ -321,31 +321,36 @@ $(function() {
                     <h4 class="bottom-line">Auto Scaling Plan</h4>
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Enable Auto Scale-out:</label>
+                            <label class="col-md-3 col-sm-3 control-label">Enable Auto Scale:</label>
                             <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="autoScaleOutUse" disabled> Yes
+                                        <input type="checkbox" name="autoScaleOutUse"> Yes
                                     </label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">CPU Usage higher than:</label>
+                            <label class="col-md-3 col-sm-3 control-label">Scale-Out When:</label>
                             <div class="col-md-9 col-sm-9">
-                                <select class="form-control display-inline col-100" name="cpuHigher">
-                                    <option value="50">50%</option>
-                                    <option value="60">60%</option>
-                                    <option value="70">70%</option>
-                                    <option value="80">80%</option>
-                                    <option value="90">90%</option>
+                            </div>
+                        </div>
+                        <div class="form-group">
+                            <label class="col-md-3 col-sm-3 control-label">Server Load:</label>
+                            <div class="col-md-9 col-sm-9">
+                                <select class="form-control display-inline col-100" name="loadHigher">
+                                    <option value="50">&ge; 50%</option>
+                                    <option value="60">&ge; 60%</option>
+                                    <option value="70">&ge; 70%</option>
+                                    <option value="80">&ge; 80%</option>
+                                    <option value="90">&ge; 90%</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">During:</label>
                             <div class="col-md-9 col-sm-9">
-                                <select class="form-control display-inline col-100" name="cpuHigherDuring">
+                                <select class="form-control display-inline col-100" name="higherDuring">
                                     <option>1 Min</option>
                                     <option>2 Min</option>
                                     <option>3 Min</option>
@@ -354,43 +359,28 @@ $(function() {
                                 </select>
                             </div>
                         </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Add Scale:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <select class="form-control display-inline col-100" name="autoScaleOutSize">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                </select>
-                            </div>
-                        </div>
 
                         <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Enable Auto Scale-in:</label>
+                            <label class="col-md-3 col-sm-3 control-label">Scale-In When:</label>
                             <div class="col-md-9 col-sm-9">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="autoScaleInUse" disabled> Yes
-                                    </label>
-                                </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">CPU Usage lower than:</label>
+                            <label class="col-md-3 col-sm-3 control-label">Server Load: </label>
                             <div class="col-md-9 col-sm-9">
-                                <select class="form-control display-inline col-100" name="cpuLower">
-                                    <option value="10">10%</option>
-                                    <option value="20">20%</option>
-                                    <option value="30">30%</option>
-                                    <option value="40">40%</option>
-                                    <option value="50">50%</option>
+                                <select class="form-control display-inline col-100" name="loadLower">
+                                    <option value="10">&lt; 10%</option>
+                                    <option value="20">&lt; 20%</option>
+                                    <option value="30">&lt; 30%</option>
+                                    <option value="40">&lt; 40%</option>
+                                    <option value="50">&lt; 50%</option>
                                 </select>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">During:</label>
                             <div class="col-md-9 col-sm-9">
-                                <select class="form-control display-inline col-100" name="cpuLowerDuring">
+                                <select class="form-control display-inline col-100" name="lowerDuring">
                                     <option value="1">1 Min</option>
                                     <option value="2">2 Min</option>
                                     <option value="3">3 Min</option>

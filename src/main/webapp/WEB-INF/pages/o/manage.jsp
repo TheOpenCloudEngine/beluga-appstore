@@ -82,6 +82,47 @@
             </c:if>
             <br>
 
+            <div class="pull-right">
+                <a href="resources/new" class="btn btn-primary outline">New Resources</a></td>
+            </div>
+            <h2>Providing Resources</h2>
+            <c:if test="${not empty resourceList}">
+                <table class="table table-hover table-bordered">
+                    <thead>
+                    <tr>
+                        <th>Name</th>
+                        <th>ID</th>
+                        <th>CPUs</th>
+                        <th>Memory</th>
+                        <th>Host</th>
+                        <th>Port</th>
+                        <th>Apply Date</th>
+                        <th>Status</th>
+                    </tr>
+                    </thead>
+                    <tbody>
+                    <c:forEach var="app" items="${resourceList}">
+                        <tr>
+                            <td><a href="resources/${resource.id}">${resource.name}</a></td>
+                            <td><a href="resources/${resource.id}">${resource.id}</a></td>
+                            <td>${resource.cpus}</td>
+                            <td>${resource.memory}MB</td>
+                            <td>${resource.host}</td>
+                            <td>${resource.port}</td>
+                            <td>${resource.createDateDisplay}</td>
+                            <td><span class="glyphicon glyphicon-ok-sign running-status"></span></td>
+                        </tr>
+                    </c:forEach>
+                    </tbody>
+                </table>
+            </c:if>
+            <c:if test="${empty resourceList}">
+                <div class="well col-md-12 empty-apps">
+                    <h3>No resources</h3>
+                </div>
+            </c:if>
+            <br>
+
             <h2>Outer Apps</h2>
             <c:if test="${not empty outerAppList}">
                 <table class="table table-hover table-bordered">

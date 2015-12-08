@@ -63,3 +63,13 @@ CREATE TABLE `user` (
   CONSTRAINT `fk_org_id` FOREIGN KEY (`orgId`) REFERENCES `organization` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
+CREATE TABLE `resources` (
+  `id` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `orgId` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `description` varchar(10000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `cpus` float(2,1) NOT NULL,
+  `memory` int(11) NOT NULL,
+  `updateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
