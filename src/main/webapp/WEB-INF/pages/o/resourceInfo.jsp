@@ -57,7 +57,7 @@
                 $("#appStatus").text(data.status);
                 if(data.status == "-") {
                     //시작하지 않음.start가능.
-                    $("#deployButton").show();
+                    $("#deployButton").removeAttr('disabled');
                 } else {
                     if (data.status == "OK") {
                         $("#appStatus").removeClass("text-danger");
@@ -67,7 +67,7 @@
                         $("#appStatus").removeClass("text-success");
                     }
                     //delete 가능.
-                    $("#deployButton").hide();
+                    $("#deployButton").attr('disabled', true);
                 }
                 $("#appElapsed").text(data.elapsed);
                 $("#appScale").text(data.scale);
@@ -75,7 +75,7 @@
             error: function(xhr) {
                 $("#appStatus").addClass("text-danger");
                 $("#appStatus").removeClass("text-success");
-                $("#deployButton").show();
+                $("#deployButton").removeAttr('disabled');
                 alert("Resource status update error : " + xhr.responseText);
             }
         });
