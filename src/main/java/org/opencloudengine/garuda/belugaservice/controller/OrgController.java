@@ -59,6 +59,9 @@ public class OrgController {
         return mav;
     }
 
+    /*
+    * 모든 앱 정보 받기
+    * */
     @RequestMapping(value = "/apps", method = RequestMethod.GET)
     public ModelAndView apps(HttpSession session) {
         User user = getUser(session);
@@ -122,6 +125,9 @@ public class OrgController {
         }
     }
 
+    /*
+    * 앱 수정시 정보 받기
+    * */
     @RequestMapping(value = "/apps/{appId}/edit", method = RequestMethod.GET)
     public ModelAndView appEdit(@PathVariable String appId) {
         App app = appManageService.getApp(appId);
@@ -141,6 +147,9 @@ public class OrgController {
         return mav;
     }
 
+    /*
+    * 앱 수정후 저장.
+    * */
     @RequestMapping(value = "/apps/{appId}/edit", method = RequestMethod.POST)
     public ModelAndView appEditUpdate(@PathVariable String appId, @RequestParam Map<String, Object> data, HttpSession session) {
         User user = getUser(session);
@@ -153,6 +162,9 @@ public class OrgController {
         return mav;
     }
 
+    /*
+    * 특정 앱 정보 받기
+    * */
     @RequestMapping(value = "/apps/{appId}", method = RequestMethod.GET)
     public ModelAndView appInfo(@PathVariable String appId) {
         App app = appManageService.getApp(appId);
@@ -175,6 +187,9 @@ public class OrgController {
         return mav;
     }
 
+    /*
+    * 특정 리소스 정보 받기
+    * */
     @RequestMapping(value = "/resources/{resourceId}", method = RequestMethod.GET)
     public ModelAndView resourceInfo(@PathVariable String resourceId) {
         Resource resource = resourceManageService.getResource(resourceId);
@@ -190,6 +205,9 @@ public class OrgController {
         return mav;
     }
 
+    /*
+    * 앱 신규생성 화면
+    * */
     @RequestMapping(value = "/apps/new", method = RequestMethod.GET)
     public ModelAndView appNew() {
         ModelAndView mav = new ModelAndView();
@@ -198,6 +216,9 @@ public class OrgController {
         return mav;
     }
 
+    /*
+    * 리소스 신규생성 화면
+    * */
     @RequestMapping(value = "/resources/new", method = RequestMethod.GET)
     public ModelAndView resourceNew(HttpSession session) {
         ModelAndView mav = new ModelAndView();
@@ -210,6 +231,9 @@ public class OrgController {
         return mav;
     }
 
+    /*
+    * 앱 신규생성 저장.
+    * */
     @RequestMapping(value = "/apps", method = RequestMethod.POST)
     public ModelAndView appNewCreate(@RequestParam Map<String, Object> data, HttpSession session) {
         User user = getUser(session);
@@ -224,6 +248,9 @@ public class OrgController {
         return mav;
     }
 
+    /*
+    * 리소스 신규생성 저장.
+    * */
     @RequestMapping(value = "/resources", method = RequestMethod.POST)
     public ModelAndView resourceNewCreate(@RequestParam Map<String, Object> data, HttpSession session) {
         User user = getUser(session);
@@ -238,6 +265,9 @@ public class OrgController {
         return mav;
     }
 
+    /*
+    * 사용자 프로필 받기.
+    * */
     @RequestMapping(value = "/profile", method = RequestMethod.GET)
     public ModelAndView profile(HttpSession session) {
 
@@ -258,6 +288,9 @@ public class OrgController {
         return mav;
     }
 
+    /*
+    * 조직 정보 받기
+    * */
     @RequestMapping(value = "/organization", method = RequestMethod.GET)
     public ModelAndView settings(HttpSession session) {
         User user = (User) session.getAttribute(User.USER_KEY);
