@@ -189,9 +189,14 @@ public class RestController {
             App app = new App();
             app.setId(appId);
             app.setScale(scaleInt);
+            App dbApp = appManageService.getApp(appId);
             if (app != null) {
+                /*
+                 * 변경되었거나 꼭 필요한 항목만 넣어준다.
+                 */
+                //리소스를 넣어주어야 손실이 방지된다.
+                app.setResources(dbApp.getResources());
                 if (belugaService.updateApp(app, true)) {
-                    App dbApp = appManageService.getApp(appId);
                     dbApp.setScale(scaleInt);
                     appManageService.updateApp(dbApp);
                     response.setStatus(200);
