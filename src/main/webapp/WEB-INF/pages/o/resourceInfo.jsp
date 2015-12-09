@@ -1,3 +1,5 @@
+<%@ page import="org.opencloudengine.garuda.belugaservice.db.entity.Resource" %>
+<%@ page import="org.opencloudengine.garuda.belugaservice.entity.ResourceProvided" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
@@ -153,8 +155,11 @@
                 </div>
             </div>
 
+            <%
+
+            %>
             <div class="row col-md-12">
-                <div><h4 class="bottom-line">Environment Variables</h4></div>
+                <div><h4 class="bottom-line">Connection Information</h4></div>
                 <div class="col-md-12 form-horizontal compact">
                     <div class="form-group">
                         <label class="col-md-3 col-sm-3 control-label">Host:</label>
@@ -164,6 +169,18 @@
                         <label class="col-md-3 col-sm-3 control-label">Port:</label>
                         <div class="col-md-9 col-sm-9"><p class="form-control-static">$${fn:toUpperCase(resource.id)}_PORT</p></div>
                     </div>
+                </div>
+            </div>
+
+            <div class="row col-md-12">
+                <div><h4 class="bottom-line">Environment Variables</h4></div>
+                <div class="col-md-12 form-horizontal compact">
+                    <c:forEach var="item" items="${resource.envMap}">
+                        <div class="form-group">
+                            <label class="col-md-3 col-sm-3 control-label">${item.key}:</label>
+                            <div class="col-md-9 col-sm-9"><p class="form-control-static">${item.value}</p></div>
+                        </div>
+                    </c:forEach>
                 </div>
             </div>
 

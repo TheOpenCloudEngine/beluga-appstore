@@ -111,9 +111,9 @@ $(function(){
                             <label class="col-md-3 col-sm-3 control-label">Memory:</label>
                             <div class="col-md-9 col-sm-9">
                                 <select name="memory" class="form-control col-100 required">
-                                    <%--<option value="50">50MB</option>--%>
-                                    <%--<option value="100">100MB</option>--%>
-                                    <%--<option value="200">200MB</option>--%>
+                                    <option value="50">50MB</option>
+                                    <option value="100">100MB</option>
+                                    <option value="200">200MB</option>
                                     <option value="300">300MB</option>
                                     <option value="400">400MB</option>
                                     <option value="500">500MB</option>

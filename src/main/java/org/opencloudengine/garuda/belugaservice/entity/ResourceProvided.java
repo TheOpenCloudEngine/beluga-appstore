@@ -26,10 +26,7 @@ public class ResourceProvided {
         resourceProvidedList.add(new ResourceProvided("oraclexe11g", "Oracle XE 11g", "wnameless/oracle-xe-11g", 1521, null));
         resourceProvidedList.add(new ResourceProvided("mongodb3", "MongoDB 3.0", "mongo:3.0", 27017, null));
         resourceProvidedList.add(new ResourceProvided("redis3", "Redis 3.0.5", "redis:3.0.5", 6379, null));
-        Map<String, String> sftpEnv = new HashMap<>();
-        sftpEnv.put("USER", "beluga");
-        sftpEnv.put("PASS", "1234");
-        resourceProvidedList.add(new ResourceProvided("sftp", "SFTP", "luzifer/sftp-share", 22, sftpEnv));
+        resourceProvidedList.add(new ResourceProvided("memcached", "Memcached 1.4.25", "memcached:1.4.25", 11211, null));
         Map<String, String> ftpEnv = new HashMap<>();
         ftpEnv.put("FTP_USER", "beluga");
         ftpEnv.put("FTP_PASS", "1234");
