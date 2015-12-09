@@ -116,7 +116,7 @@ $(function(){
                                 <input type="file" id="appFile1" name="appFile1" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
                                 <div class="progress" id="progressbar1" style="display:none">
                                     <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                        <span class="sr-only">45% Complete</span>
+                                        <span class="sr-only">100% Complete</span>
                                     </div>
                                 </div>
                                 <p class="form-control-static app-file-detail1 maybe-hide"><span id="fileInfo1"></span>
@@ -130,7 +130,7 @@ $(function(){
                                 <input type="file" id="appFile2" name="appFile2" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
                                 <div class="progress" id="progressbar2" style="display:none">
                                     <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
-                                        <span class="sr-only">45% Complete</span>
+                                        <span class="sr-only">100% Complete</span>
                                     </div>
                                 </div>
                                 <p class="form-control-static app-file-detail2 maybe-hide"><span id="fileInfo2"></span>
@@ -181,9 +181,9 @@ $(function(){
                             <label class="col-md-3 col-sm-3 control-label">Memory:</label>
                             <div class="col-md-9 col-sm-9">
                                 <select name="memory" class="form-control col-100 required">
-                                    <%--<option value="50">50MB</option>--%>
-                                    <%--<option value="100">100MB</option>--%>
-                                    <%--<option value="200">200MB</option>--%>
+                                    <option value="50">50MB</option>
+                                    <option value="100">100MB</option>
+                                    <option value="200">200MB</option>
                                     <option value="300">300MB</option>
                                     <option value="400">400MB</option>
                                     <option value="500">500MB</option>
@@ -210,90 +210,21 @@ $(function(){
                     </div>
                 </div>
 
-                <%--<div class="row col-md-12">--%>
-                    <%--<h4 class="bottom-line">Resource Plan</h4>--%>
-                    <%--<div class="col-md-12 form-horizontal">--%>
-                        <%--<div class="form-group">--%>
-                            <%--<label class="col-md-3 col-sm-3 control-label">Database:</label>--%>
-                            <%--<div class="col-md-9 col-sm-9">--%>
-                                <%--<div class="checkbox">--%>
-                                    <%--<label>--%>
-                                        <%--<input type="checkbox" name="resource_mysql5" value="true"> <%=Resources.get("mysql5").getName() %>--%>
-                                    <%--</label>--%>
-                                <%--</div>--%>
-                                <%--<div class="sub-options">--%>
-                                    <%--$<%=Resources.get("mysql5").getIPPropertyKey()%> $<%=Resources.get("mysql5").getPortPropertyKey()%>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">--%>
-                                <%--<div class="checkbox">--%>
-                                    <%--<label>--%>
-                                        <%--<input type="checkbox" name="resource_postgresql9" value="true"> <%=Resources.get("postgresql9").getName() %>--%>
-                                    <%--</label>--%>
-                                <%--</div>--%>
-                                <%--<div class="sub-options">--%>
-                                    <%--$<%=Resources.get("postgresql9").getIPPropertyKey()%> $<%=Resources.get("postgresql9").getPortPropertyKey()%>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">--%>
-                                <%--<div class="checkbox">--%>
-                                    <%--<label>--%>
-                                        <%--<input type="checkbox" name="resource_oraclexe11g" value="true"> <%=Resources.get("oraclexe11g").getName() %>--%>
-                                    <%--</label>--%>
-                                <%--</div>--%>
-                                <%--<div class="sub-options">--%>
-                                    <%--$<%=Resources.get("oraclexe11g").getIPPropertyKey()%> $<%=Resources.get("oraclexe11g").getPortPropertyKey()%>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                        <%--<div class="form-group">--%>
-                            <%--<label class="col-md-3 col-sm-3 control-label">NoSQL:</label>--%>
-                            <%--<div class="col-md-9 col-sm-9">--%>
-                                <%--<div class="checkbox">--%>
-                                    <%--<label>--%>
-                                        <%--<input type="checkbox" name="resource_mongodb3" value="true"> <%=Resources.get("mongodb3").getName() %>--%>
-                                    <%--</label>--%>
-                                <%--</div>--%>
-                                <%--<div class="sub-options">--%>
-                                    <%--$<%=Resources.get("mongodb3").getIPPropertyKey()%> $<%=Resources.get("mongodb3").getPortPropertyKey()%>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">--%>
-                                <%--<div class="checkbox">--%>
-                                    <%--<label>--%>
-                                        <%--<input type="checkbox" name="resource_redis3" value="true"> <%=Resources.get("redis3").getName() %>--%>
-                                    <%--</label>--%>
-                                <%--</div>--%>
-                                <%--<div class="sub-options">--%>
-                                    <%--$<%=Resources.get("redis3").getIPPropertyKey()%> $<%=Resources.get("redis3").getPortPropertyKey()%>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                        <%--<div class="form-group">--%>
-                            <%--<label class="col-md-3 col-sm-3 control-label">FTP:</label>--%>
-                            <%--<div class="col-md-9 col-sm-9">--%>
-                                <%--<div class="checkbox">--%>
-                                    <%--<label>--%>
-                                        <%--<input type="checkbox" name="resource_sftp" value="true"> <%=Resources.get("sftp").getName() %>--%>
-                                    <%--</label>--%>
-                                <%--</div>--%>
-                                <%--<div class="sub-options">--%>
-                                    <%--$<%=Resources.get("sftp").getIPPropertyKey()%> $<%=Resources.get("sftp").getPortPropertyKey()%>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                            <%--<div class="col-md-offset-3 col-sm-offset-3 col-md-9 col-sm-9">--%>
-                                <%--<div class="checkbox">--%>
-                                    <%--<label>--%>
-                                        <%--<input type="checkbox" name="resource_ftp" value="true"> <%=Resources.get("ftp").getName() %>--%>
-                                    <%--</label>--%>
-                                <%--</div>--%>
-                                <%--<div class="sub-options">--%>
-                                    <%--$<%=Resources.get("ftp").getIPPropertyKey()%> $<%=Resources.get("ftp").getPortPropertyKey()%>--%>
-                                <%--</div>--%>
-                            <%--</div>--%>
-                        <%--</div>--%>
-                    <%--</div>--%>
-                <%--</div>--%>
+                <div class="row col-md-12">
+                    <h4 class="bottom-line">Resource Plan</h4>
+                    <div class="col-md-12 form-horizontal compact">
+                        <c:forEach var="resource" items="${resources}" varStatus="status">
+                            <label class="col-md-3 col-sm-3 control-label">${resource.resourceName}:</label>
+                            <div class="col-md-9 col-sm-9">
+                                <div class="checkbox">
+                                    <label>
+                                        <input type="checkbox" name="res_${status.index}" value="${resource.id}"> ${resource.name} ( ${resource.id} )
+                                    </label>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
 
                 <div class="row col-md-12">
                     <h4 class="bottom-line">Auto Scaling Plan</h4>
@@ -303,7 +234,7 @@ $(function(){
                             <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="autoScaleOutUse" disabled> Yes
+                                        <input type="checkbox" name="autoScaleOutUse"> Yes
                                     </label>
                                 </div>
                             </div>

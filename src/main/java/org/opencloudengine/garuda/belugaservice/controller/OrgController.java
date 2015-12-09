@@ -24,6 +24,7 @@ import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
 import javax.ws.rs.NotFoundException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -126,7 +127,7 @@ public class OrgController {
     }
 
     /*
-    * 앱 수정시 정보 받기
+    * 앱 수정 화면.
     * */
     @RequestMapping(value = "/apps/{appId}/edit", method = RequestMethod.GET)
     public ModelAndView appEdit(@PathVariable String appId) {
@@ -141,8 +142,14 @@ public class OrgController {
 
         String orgId = app.getOrgId();
         List<Resource> resources = resourceManageService.getOrgResources(orgId);
+        //사용중 체크.
+        List<String> inUseResources = app.getResourceList();
+        for(Resource resource : resources) {
+            if(inUseResources.contains(resource.getId())) {
+                resource.setInUse(true);
+            }
+        }
         mav.addObject("resources", resources);
-
         mav.setViewName("o/appEdit");
         return mav;
     }
@@ -178,11 +185,15 @@ public class OrgController {
         app.setMemoryDisplay(ParseUtil.toHumanSizeOverMB(app.getMemory() * SizeUnit.MB));
         mav.addObject("app", app);
         mav.addObject("domain", belugaService.getDomainName());
-
-        String orgId = app.getOrgId();
-        List<Resource> resources = resourceManageService.getOrgResources(orgId);
+        List<String> resourceList = app.getResourceList();
+        List<Resource> resources = new ArrayList<>();
+        if(resourceList != null) {
+            for(String rid : resourceList) {
+                Resource resource = resourceManageService.getResource(rid);
+                resources.add(resource);
+            }
+        }
         mav.addObject("resources", resources);
-
         mav.setViewName("o/appInfo");
         return mav;
     }
@@ -209,10 +220,14 @@ public class OrgController {
     * 앱 신규생성 화면
     * */
     @RequestMapping(value = "/apps/new", method = RequestMethod.GET)
-    public ModelAndView appNew() {
+    public ModelAndView appNew(HttpSession session) {
+        User user = getUser(session);
+        String orgId = user.getOrgId();
+
         ModelAndView mav = new ModelAndView();
         mav.setViewName("o/appNew");
         mav.addObject("domain", belugaService.getDomainName());
+        mav.addObject("resources", resourceManageService.getOrgResources(orgId));
         return mav;
     }
 

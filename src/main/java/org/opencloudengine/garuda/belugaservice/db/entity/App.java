@@ -1,5 +1,6 @@
 package org.opencloudengine.garuda.belugaservice.db.entity;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.opencloudengine.garuda.belugaservice.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -298,10 +299,12 @@ public class App {
 
     public void setResources(String resources) {
         this.resources = resources;
-        String[] list = resources.split(",");
-        this.resourceList = new ArrayList<>();
-        for(String resourceId : list) {
-            this.resourceList.add(resourceId.trim());
+        if(resources != null) {
+            try {
+                resourceList = JsonUtil.json2Object(resources, List.class);
+            } catch (IOException e) {
+                logger.error("", e);
+            }
         }
     }
 

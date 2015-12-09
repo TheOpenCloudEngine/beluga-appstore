@@ -32,6 +32,8 @@ public class Resource {
     private String createDateDisplay;
     private String memoryDisplay;
 
+    private boolean inUse; //리소스가 사용중인지 여부 플래그. 저장하지 않고 화면에 뿌릴때 임시사용.
+
     public Resource() {}
 
     public Resource(String id, String orgId, String name, String resourceName, String image, Integer port, Map<String, String> envMap, Float cpus, Integer mem) {
@@ -183,5 +185,13 @@ public class Resource {
 
     public void fillCreateDateDisplay(DateFormat dateFormat) {
         this.createDateDisplay = dateFormat.format(createDate);
+    }
+
+    public boolean isInUse() {
+        return inUse;
+    }
+
+    public void setInUse(boolean inUse) {
+        this.inUse = inUse;
     }
 }

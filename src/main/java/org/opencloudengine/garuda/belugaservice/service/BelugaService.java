@@ -195,9 +195,6 @@ public class BelugaService {
         AppApplyRequest request = new AppApplyRequest(app);
         Response response = webTarget.request(MediaType.APPLICATION_JSON).post(Entity.json(request));
         if (response.getStatusInfo().getFamily() == Response.Status.Family.SUCCESSFUL) {
-//            String str = response.readEntity(String.class);
-//            Map<String, Object> entity = JsonUtil.json2Object(str);
-//            logger.debug("Apply response : {}", entity);
             return true;
         } else {
             String entity = response.readEntity(String.class);

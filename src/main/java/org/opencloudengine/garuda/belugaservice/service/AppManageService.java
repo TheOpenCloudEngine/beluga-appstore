@@ -151,21 +151,12 @@ public class AppManageService {
 
         /* resources plan */
         List<String> resourceList = new ArrayList<>();
-
-
-
-        //TODO
-
-
-
-//        String resourcePrefix = "resource_";
-//        for(String resourceKey : Resources.keys()) {
-//            String paramKey = resourcePrefix + resourceKey;
-//            if(data.get(paramKey) != null) {
-//                resourceList.add(resourceKey);
-//            }
-//        }
-
+        for(String key : data.keySet()) {
+            if(key.startsWith("res_")) {
+                String resourceId = (String) data.get(key);
+                resourceList.add(resourceId);
+            }
+        }
         app.setResourcesPlan(resourceList);
 
         /* auto scale */

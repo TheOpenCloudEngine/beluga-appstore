@@ -1,7 +1,3 @@
-<%@ page import="org.opencloudengine.garuda.belugaservice.db.entity.Resources" %>
-<%@ page import="org.opencloudengine.garuda.belugaservice.db.entity.App" %>
-<%@ page import="java.util.List" %>
-<%@ page import="java.util.Map" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
@@ -171,6 +167,9 @@ $(function() {
                             <label class="col-md-3 col-sm-3 control-label">Memory:</label>
                             <div class="col-md-9 col-sm-9">
                                 <select name="memory" class="form-control col-100 required">
+                                    <option value="50" <c:if test="${app.memory == 50}">selected</c:if>>50MB</option>
+                                    <option value="100" <c:if test="${app.memory == 100}">selected</c:if>>100MB</option>
+                                    <option value="200" <c:if test="${app.memory == 200}">selected</c:if>>200MB</option>
                                     <option value="300" <c:if test="${app.memory == 300}">selected</c:if>>300MB</option>
                                     <option value="400" <c:if test="${app.memory == 400}">selected</c:if>>400MB</option>
                                     <option value="500" <c:if test="${app.memory == 500}">selected</c:if>>500MB</option>
@@ -197,123 +196,19 @@ $(function() {
                     </div>
                 </div>
 
-                <%
-                    App app = (App) request.getAttribute("app");
-                    List<String> appResourceList = app.getResourceList();
-
-                    Map<String, String[]> resourceInfoMap = (Map<String, String[]>) request.getAttribute("resourceInfoMap");
-                %>
                 <div class="row col-md-12">
                     <h4 class="bottom-line">Resource Plan</h4>
                     <div class="col-md-12 form-horizontal">
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Database:</label>
-                            <%
-                                String[] resourceList = new String[]{"mysql5", "postgresql9", "oraclexe11g"};
-                                for (int i = 0; i < resourceList.length; i++) {
-                                    String isChecked = "";
-                                    String resourceKey = resourceList[i];
-                                    String ip = "";
-                                    String port = "";
-                                    Resources.Resource resource = Resources.get(resourceKey);
-                                    if(appResourceList.contains(resourceKey)) {
-                                        isChecked = "checked";
-                                        if (resourceInfoMap != null) {
-                                            String[] ipPort = resourceInfoMap.get(resourceKey);
-                                            if (ipPort != null) {
-                                                ip = ipPort[0];
-                                                port = ipPort[1];
-                                            }
-                                        }
-                                    }
-                            %>
-                            <div class="<%=(i > 0) ? "col-md-offset-3 col-sm-offset-3" : "" %> col-md-9 col-sm-9">
+                        <c:forEach var="resource" items="${resources}" varStatus="status">
+                            <label class="col-md-3 col-sm-3 control-label">${resource.resourceName}:</label>
+                            <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="resource_<%=resourceKey %>" value="true" <%=isChecked %> > <%=resource.getName() %>
+                                        <input type="checkbox" name="res_${status.index}" value="${resource.id}" ${resource.inUse ? "checked" : ""}> ${resource.name} ( ${resource.id} )
                                     </label>
                                 </div>
-                                <div class="sub-options">
-                                    $<%=resource.getIPPropertyKey()%>=<%=ip %>
-                                    <br>$<%=resource.getPortPropertyKey()%>=<%=port%>
-                                </div>
                             </div>
-                            <%
-                                }
-                            %>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">NoSQL:</label>
-                            <%
-                                resourceList = new String[]{"mongodb3", "redis3"};
-                                for (int i = 0; i < resourceList.length; i++) {
-                                    String isChecked = "";
-                                    String resourceKey = resourceList[i];
-                                    String ip = "";
-                                    String port = "";
-                                    Resources.Resource resource = Resources.get(resourceKey);
-                                    if(appResourceList.contains(resourceKey)) {
-                                        isChecked = "checked";
-                                        if (resourceInfoMap != null) {
-                                            String[] ipPort = resourceInfoMap.get(resourceKey);
-                                            if (ipPort != null) {
-                                                ip = ipPort[0];
-                                                port = ipPort[1];
-                                            }
-                                        }
-                                    }
-                            %>
-                            <div class="<%=(i > 0) ? "col-md-offset-3 col-sm-offset-3" : "" %> col-md-9 col-sm-9">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="resource_<%=resourceKey %>" value="true" <%=isChecked %> > <%=resource.getName() %>
-                                    </label>
-                                </div>
-                                <div class="sub-options">
-                                    $<%=resource.getIPPropertyKey()%>=<%=ip %>
-                                    <br>$<%=resource.getPortPropertyKey()%>=<%=port%>
-                                </div>
-                            </div>
-                            <%
-                                }
-                            %>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">FTP:</label>
-                            <%
-                                resourceList = new String[]{"sftp", "ftp"};
-                                for (int i = 0; i < resourceList.length; i++) {
-                                    String isChecked = "";
-                                    String resourceKey = resourceList[i];
-                                    String ip = "";
-                                    String port = "";
-                                    Resources.Resource resource = Resources.get(resourceKey);
-                                    if(appResourceList.contains(resourceKey)) {
-                                        isChecked = "checked";
-                                        if (resourceInfoMap != null) {
-                                            String[] ipPort = resourceInfoMap.get(resourceKey);
-                                            if (ipPort != null) {
-                                                ip = ipPort[0];
-                                                port = ipPort[1];
-                                            }
-                                        }
-                                    }
-                            %>
-                            <div class="<%=(i > 0) ? "col-md-offset-3 col-sm-offset-3" : "" %> col-md-9 col-sm-9">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="resource_<%=resourceKey %>" value="true" <%=isChecked %> > <%=resource.getName() %>
-                                    </label>
-                                </div>
-                                <div class="sub-options">
-                                    $<%=resource.getIPPropertyKey()%>=<%=ip %>
-                                    <br>$<%=resource.getPortPropertyKey()%>=<%=port%>
-                                </div>
-                            </div>
-                            <%
-                                }
-                            %>
-                        </div>
+                        </c:forEach>
                     </div>
                 </div>
 

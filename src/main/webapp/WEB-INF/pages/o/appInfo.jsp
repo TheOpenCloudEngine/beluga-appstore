@@ -2,6 +2,7 @@
 <%@ page import="org.opencloudengine.garuda.belugaservice.db.entity.App" %>
 <%@ page import="java.util.List" %>
 <%@ page import="org.opencloudengine.garuda.belugaservice.db.entity.Resource" %>
+<%@ page import="org.opencloudengine.garuda.belugaservice.entity.ResourceProvided" %>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
@@ -190,28 +191,21 @@
                 </div>
             </div>
 
-            <%
-                List<Resource> resources = (List<Resource>) request.getAttribute("resources");
-            %>
             <div class="row col-md-12">
                 <h4 class="bottom-line">Resource Plan</h4>
                 <div class="col-md-12 form-horizontal">
-                <%
-                    for(Resource resource : resources) {
-                %>
-                    <div class="form-group">
-                        <label class="col-md-3 col-sm-3 control-label">
-                            <%=resource.getResourceName()%>:
-                        </label>
-                        <div class="col-md-9 col-sm-9">
-                            <p class="form-control-static">
-                                <a href="/o/resources/<%=resource.getId()%>"><%=resource.getId()%></a>
-                            </p>
+                    <c:forEach var="resource" items="${resources}">
+                        <div class="form-group">
+                            <label class="col-md-3 col-sm-3 control-label">
+                                ${resource.resourceName}:
+                            </label>
+                            <div class="col-md-9 col-sm-9">
+                                <p class="form-control-static">
+                                    <a href="/o/resources/${resource.id}">${resource.name} ( ${resource.id} )</a>
+                                </p>
+                            </div>
                         </div>
-                    </div>
-                <%
-                    }
-                %>
+                    </c:forEach>
                 </div>
             </div>
 
