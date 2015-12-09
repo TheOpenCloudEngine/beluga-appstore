@@ -26,7 +26,10 @@ public class ResourceProvided {
         resourceProvidedList.add(new ResourceProvided("oraclexe11g", "Oracle XE 11g", "wnameless/oracle-xe-11g", 1521, null));
         resourceProvidedList.add(new ResourceProvided("mongodb3", "MongoDB 3.0", "mongo:3.0", 27017, null));
         resourceProvidedList.add(new ResourceProvided("redis3", "Redis 3.0.5", "redis:3.0.5", 6379, null));
-        resourceProvidedList.add(new ResourceProvided("memcached", "Memcached 1.4.25", "memcached:1.4.25", 11211, null));
+        resourceProvidedList.add(new ResourceProvided("memcached1", "Memcached 1.4.25", "memcached:1.4.25", 11211, null));
+        Map<String, String> esEnv = new HashMap<>();
+        esEnv.put("ES_HEAP_SIZE", "500m");
+        resourceProvidedList.add(new ResourceProvided("elasticsearch2", "Elasticsearch 2.1", "elasticsearch:2.1.0", 9200, esEnv));
         Map<String, String> ftpEnv = new HashMap<>();
         ftpEnv.put("FTP_USER", "beluga");
         ftpEnv.put("FTP_PASS", "1234");
