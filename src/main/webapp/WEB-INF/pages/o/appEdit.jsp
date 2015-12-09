@@ -167,9 +167,9 @@ $(function() {
                             <label class="col-md-3 col-sm-3 control-label">Memory:</label>
                             <div class="col-md-9 col-sm-9">
                                 <select name="memory" class="form-control col-100 required">
-                                    <option value="50" <c:if test="${app.memory == 50}">selected</c:if>>50MB</option>
-                                    <option value="100" <c:if test="${app.memory == 100}">selected</c:if>>100MB</option>
-                                    <option value="200" <c:if test="${app.memory == 200}">selected</c:if>>200MB</option>
+                                    <%--<option value="50" <c:if test="${app.memory == 50}">selected</c:if>>50MB</option>--%>
+                                    <%--<option value="100" <c:if test="${app.memory == 100}">selected</c:if>>100MB</option>--%>
+                                    <%--<option value="200" <c:if test="${app.memory == 200}">selected</c:if>>200MB</option>--%>
                                     <option value="300" <c:if test="${app.memory == 300}">selected</c:if>>300MB</option>
                                     <option value="400" <c:if test="${app.memory == 400}">selected</c:if>>400MB</option>
                                     <option value="500" <c:if test="${app.memory == 500}">selected</c:if>>500MB</option>
