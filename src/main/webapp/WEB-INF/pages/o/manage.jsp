@@ -68,7 +68,7 @@
                                 <td>${app.memory}MB</td>
                                 <td>${app.scale}</td>
                                 <td>${app.updateDateDisplay}</td>
-                                <td><span class="glyphicon glyphicon-ok-sign running-status"></span></td>
+                                <td><span class="glyphicon ${app.appStatus == AppStatus.OK ? "glyphicon-ok-sign running-status" : "glyphicon-remove-sign stop-status"}"></span></td>
                                 <td><a href="http://${app.id}.${domain}" target="_pop_${app.id}" class="btn btn-primary outline">Launch</a></td>
                             </tr>
                         </c:forEach>
@@ -106,7 +106,7 @@
                             <td>${resource.cpus}</td>
                             <td>${resource.memory}MB</td>
                             <td>${resource.createDateDisplay}</td>
-                            <td><span class="glyphicon glyphicon-ok-sign running-status"></span></td>
+                            <td><span class="glyphicon ${resource.appStatus == AppStatus.OK ? "glyphicon-ok-sign running-status" : "glyphicon-remove-sign stop-status"}"></span></td>
                         </tr>
                     </c:forEach>
                     </tbody>
@@ -137,7 +137,7 @@
                                 <td>${app.name}</td>
                                 <td>${app.id}</td>
                                 <td>${app.orgName}</td>
-                                <td><span class="glyphicon glyphicon-ok-sign running-status"></span></td>
+                                <td><span class="glyphicon ${app.appStatus == AppStatus.OK ? "glyphicon-ok-sign running-status" : "glyphicon-remove-sign stop-status"}"></span></td>
                                 <td><a href="#" class="btn btn-danger outline">Cancel</a></td>
                             </tr>
                         </c:forEach>

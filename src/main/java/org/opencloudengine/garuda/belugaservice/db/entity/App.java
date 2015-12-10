@@ -1,6 +1,9 @@
 package org.opencloudengine.garuda.belugaservice.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.databind.JsonNode;
+import org.opencloudengine.garuda.belugaservice.entity.AppStatus;
 import org.opencloudengine.garuda.belugaservice.util.JsonUtil;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -61,6 +64,9 @@ public class App {
     private Character autoScaleUse;
     private String autoScaleConf;
     private AutoScaleConfig autoScaleConfig;
+
+    @JsonIgnoreProperties
+    private String appStatus;
 
     public String getId() {
         return id;
@@ -406,5 +412,13 @@ public class App {
         public void setScaleInTimeInMin(Integer scaleInTimeInMin) {
             this.scaleInTimeInMin = scaleInTimeInMin;
         }
+    }
+
+    public String getAppStatus() {
+        return appStatus;
+    }
+
+    public void setAppStatus(String appStatus) {
+        this.appStatus = appStatus;
     }
 }

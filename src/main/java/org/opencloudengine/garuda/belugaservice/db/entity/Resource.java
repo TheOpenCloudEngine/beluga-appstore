@@ -1,9 +1,11 @@
 package org.opencloudengine.garuda.belugaservice.db.entity;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.codehaus.jettison.json.JSONException;
 import org.codehaus.jettison.json.JSONObject;
 import org.codehaus.jettison.json.JSONStringer;
 import org.codehaus.jettison.json.JSONWriter;
+import org.opencloudengine.garuda.belugaservice.entity.AppStatus;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -32,7 +34,10 @@ public class Resource {
     private String createDateDisplay;
     private String memoryDisplay;
 
+    @JsonIgnoreProperties
     private boolean inUse; //리소스가 사용중인지 여부 플래그. 저장하지 않고 화면에 뿌릴때 임시사용.
+    @JsonIgnoreProperties
+    private String appStatus;
 
     public Resource() {}
 
@@ -193,5 +198,13 @@ public class Resource {
 
     public void setInUse(boolean inUse) {
         this.inUse = inUse;
+    }
+
+    public String getAppStatus() {
+        return appStatus;
+    }
+
+    public void setAppStatus(String appStatus) {
+        this.appStatus = appStatus;
     }
 }

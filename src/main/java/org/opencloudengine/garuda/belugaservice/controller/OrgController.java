@@ -4,6 +4,7 @@ import org.opencloudengine.garuda.belugaservice.db.entity.App;
 import org.opencloudengine.garuda.belugaservice.db.entity.Organization;
 import org.opencloudengine.garuda.belugaservice.db.entity.Resource;
 import org.opencloudengine.garuda.belugaservice.db.entity.User;
+import org.opencloudengine.garuda.belugaservice.entity.AppStatus;
 import org.opencloudengine.garuda.belugaservice.entity.ResourceProvided;
 import org.opencloudengine.garuda.belugaservice.service.AppManageService;
 import org.opencloudengine.garuda.belugaservice.service.BelugaService;
@@ -91,6 +92,26 @@ public class OrgController {
         for(Resource r : resources) {
             r.fillCreateDateDisplay(DateUtil.getDateFormat2());
         }
+
+        for(App app : appList) {
+            AppStatus status = belugaService.getAppStatus(app.getId());
+            if(status != null) {
+                app.setAppStatus(status.getStatus());
+            }
+        }
+        for(App app : outerAppList) {
+            AppStatus status = belugaService.getAppStatus(app.getId());
+            if(status != null) {
+                app.setAppStatus(status.getStatus());
+            }
+        }
+        for(Resource resource : resources) {
+            AppStatus status = belugaService.getAppStatus(resource.getId());
+            if(status != null) {
+                resource.setAppStatus(status.getStatus());
+            }
+        }
+
         ModelAndView mav = new ModelAndView();
         int appSize = appList != null ? appList.size() : 0;
         int outerAppSize = outerAppList != null ? outerAppList.size() : 0;
