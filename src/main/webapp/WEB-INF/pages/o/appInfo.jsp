@@ -219,27 +219,15 @@
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3 col-sm-3 control-label">Server Load:</label>
+                        <label class="col-md-3 col-sm-3 control-label">Scale-Out When:</label>
                         <div class="col-md-9 col-sm-9">
-                            <p class="form-control-static">&ge; 70%</p>
+                            <p class="form-control-static">Work Load &ge; ${app.autoScaleConfig.scaleOutWorkLoad}% for ${app.autoScaleConfig.scaleOutTimeInMin}Min</p>
                         </div>
                     </div>
                     <div class="form-group">
-                        <label class="col-md-3 col-sm-3 control-label">During:</label>
+                        <label class="col-md-3 col-sm-3 control-label">Scale-In When:</label>
                         <div class="col-md-9 col-sm-9">
-                            <p class="form-control-static">3 Min</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 col-sm-3 control-label">>Server Load:</label>
-                        <div class="col-md-9 col-sm-9">
-                            <p class="form-control-static">&lt; 30%</p>
-                        </div>
-                    </div>
-                    <div class="form-group">
-                        <label class="col-md-3 col-sm-3 control-label">During:</label>
-                        <div class="col-md-9 col-sm-9">
-                            <p class="form-control-static">3 Min</p>
+                            <p class="form-control-static">Work Load &lt; ${app.autoScaleConfig.scaleInWorkLoad}% for ${app.autoScaleConfig.scaleInTimeInMin}Min</p>
                         </div>
                     </div>
                 </div>

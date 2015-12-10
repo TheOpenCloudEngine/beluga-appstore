@@ -23,10 +23,7 @@ public class AppApplyRequest {
 
     private List<String> resourceList;
 
-    private Character autoScaleInUse;
-    private App.AutoScaleConfig autoScaleInConfig;
-    private Character autoScaleOutUse;
-    private App.AutoScaleConfig autoScaleOutConfig;
+    private String autoScaleConf;
 
     public AppApplyRequest() {}
 
@@ -42,10 +39,7 @@ public class AppApplyRequest {
         this.memory = app.getMemory();
         this.scale = app.getScale();
         this.resourceList = app.getResourceList();
-        autoScaleInUse = app.getAutoScaleInUse();
-        autoScaleInConfig = app.getAutoScaleInConfig();
-        autoScaleOutUse = app.getAutoScaleOutUse();
-        autoScaleOutConfig = app.getAutoScaleOutConfig();
+        this.autoScaleConf = app.getAutoScaleConf();
     }
 
     public String getId() {
@@ -144,35 +138,11 @@ public class AppApplyRequest {
         this.resourceList = resourceList;
     }
 
-    public Character getAutoScaleInUse() {
-        return autoScaleInUse;
+    public String getAutoScaleConf() {
+        return autoScaleConf;
     }
 
-    public void setAutoScaleInUse(Character autoScaleInUse) {
-        this.autoScaleInUse = autoScaleInUse;
-    }
-
-    public App.AutoScaleConfig getAutoScaleInConfig() {
-        return autoScaleInConfig;
-    }
-
-    public void setAutoScaleInConfig(App.AutoScaleConfig autoScaleInConfig) {
-        this.autoScaleInConfig = autoScaleInConfig;
-    }
-
-    public Character getAutoScaleOutUse() {
-        return autoScaleOutUse;
-    }
-
-    public void setAutoScaleOutUse(Character autoScaleOutUse) {
-        this.autoScaleOutUse = autoScaleOutUse;
-    }
-
-    public App.AutoScaleConfig getAutoScaleOutConfig() {
-        return autoScaleOutConfig;
-    }
-
-    public void setAutoScaleOutConfig(App.AutoScaleConfig autoScaleOutConfig) {
-        this.autoScaleOutConfig = autoScaleOutConfig;
+    public void setAutoScaleConf(String autoScaleConf) {
+        this.autoScaleConf = autoScaleConf;
     }
 }

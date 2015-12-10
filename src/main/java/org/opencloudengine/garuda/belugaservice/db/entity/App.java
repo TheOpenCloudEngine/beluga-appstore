@@ -58,12 +58,9 @@ public class App {
     private List<String> resourceList;
 
     /* Auto Scaling Plan */
-    private Character autoScaleOutUse;
-    private Character autoScaleInUse;
-    private String autoScaleOutConf;
-    private String autoScaleInConf;
-    private AutoScaleConfig autoScaleOutConfig;
-    private AutoScaleConfig autoScaleInConfig;
+    private Character autoScaleUse;
+    private String autoScaleConf;
+    private AutoScaleConfig autoScaleConfig;
 
     public String getId() {
         return id;
@@ -320,101 +317,94 @@ public class App {
             logger.error("", e);
         }
     }
-
-    public Character getAutoScaleOutUse() {
-        return autoScaleOutUse;
+    public Character getAutoScaleUse() {
+        return autoScaleUse;
     }
 
-    public void setAutoScaleOutUse(Character autoScaleOutUse) {
-        this.autoScaleOutUse = autoScaleOutUse;
+    public void setAutoScaleUse(Character autoScaleUse) {
+        this.autoScaleUse = autoScaleUse;
     }
 
-    public Character getAutoScaleInUse() {
-        return autoScaleInUse;
-    }
-
-    public void setAutoScaleInUse(Character autoScaleInUse) {
-        this.autoScaleInUse = autoScaleInUse;
-    }
-
-    public void setAutoScaleOutConf(String autoScaleOutConf) {
-        this.autoScaleOutConf = autoScaleOutConf;
+    public void setAutoScaleConf(String autoScaleConf) {
+        this.autoScaleConf = autoScaleConf;
         try{
-           this.autoScaleOutConfig = JsonUtil.json2Object(autoScaleOutConf, AutoScaleConfig.class);
+           this.autoScaleConfig = JsonUtil.json2Object(autoScaleConf, AutoScaleConfig.class);
         } catch (IOException e) {
             logger.error("", e);
         }
     }
-    public String getAutoScaleOutConf() {
-        return autoScaleOutConf;
+    public String getAutoScaleConf() {
+        return autoScaleConf;
     }
 
-    public void setAutoScaleOutConfig(AutoScaleConfig autoScaleOutConfig) {
-        this.autoScaleOutConfig  = autoScaleOutConfig;
+    public void setAutoScaleConfig(AutoScaleConfig autoScaleConfig) {
+        this.autoScaleConfig  = autoScaleConfig;
         try{
-            this.autoScaleOutConf = JsonUtil.object2String(autoScaleOutConfig);
+            this.autoScaleConf = JsonUtil.object2String(autoScaleConfig);
         } catch (IOException e) {
             logger.error("", e);
         }
     }
 
-    public AutoScaleConfig getAutoScaleOutConfig() {
-        return autoScaleOutConfig;
-    }
-
-    public void setAutoScaleInConf(String autoScaleInConf) {
-        this.autoScaleInConf = autoScaleInConf;
-        try {
-            this.autoScaleInConfig = JsonUtil.json2Object(autoScaleInConf, AutoScaleConfig.class);
-        } catch (IOException e) {
-            logger.error("", e);
-        }
-    }
-
-    public String getAutoScaleInConf() {
-        return autoScaleInConf;
-    }
-
-    public void setAutoScaleInConfig(AutoScaleConfig autoScaleInConfig) {
-        this.autoScaleInConfig = autoScaleInConfig;
-        try{
-            this.autoScaleInConf = JsonUtil.object2String(autoScaleInConfig);
-        } catch (IOException e) {
-            logger.error("", e);
-        }
-    }
-
-    public AutoScaleConfig getAutoScaleInConfig() {
-        return autoScaleInConfig;
+    public AutoScaleConfig getAutoScaleConfig() {
+        return autoScaleConfig;
     }
 
     public static class AutoScaleConfig {
-        private Integer loadAverage;
-        private Integer duringInMin;
-        private Integer scale;
+        private boolean inUse;
+        private Integer scaleOutWorkLoad;
+        private Integer scaleOutTimeInMin;
+        private Integer scaleInWorkLoad;
+        private Integer scaleInTimeInMin;
 
-        public Integer getLoadAverage() {
-            return loadAverage;
+        public AutoScaleConfig() {}
+
+        public AutoScaleConfig(boolean inUse, Integer scaleOutWorkLoad, Integer scaleOutTimeInMin, Integer scaleInWorkLoad, Integer scaleInTimeInMin) {
+            this.inUse = inUse;
+            this.scaleOutWorkLoad = scaleOutWorkLoad;
+            this.scaleOutTimeInMin = scaleOutTimeInMin;
+            this.scaleInWorkLoad = scaleInWorkLoad;
+            this.scaleInTimeInMin = scaleInTimeInMin;
         }
 
-        public void setLoadAverage(Integer loadAverage) {
-            this.loadAverage = loadAverage;
+        public boolean isInUse() {
+            return inUse;
         }
 
-        public Integer getDuringInMin() {
-            return duringInMin;
+        public void setInUse(boolean inUse) {
+            this.inUse = inUse;
         }
 
-        public void setDuringInMin(Integer duringInMin) {
-            this.duringInMin = duringInMin;
+        public Integer getScaleOutWorkLoad() {
+            return scaleOutWorkLoad;
         }
 
-        public Integer getScale() {
-            return scale;
+        public void setScaleOutWorkLoad(Integer scaleOutWorkLoad) {
+            this.scaleOutWorkLoad = scaleOutWorkLoad;
         }
 
-        public void setScale(Integer scale) {
-            this.scale = scale;
+        public Integer getScaleOutTimeInMin() {
+            return scaleOutTimeInMin;
+        }
+
+        public void setScaleOutTimeInMin(Integer scaleOutTimeInMin) {
+            this.scaleOutTimeInMin = scaleOutTimeInMin;
+        }
+
+        public Integer getScaleInWorkLoad() {
+            return scaleInWorkLoad;
+        }
+
+        public void setScaleInWorkLoad(Integer scaleInWorkLoad) {
+            this.scaleInWorkLoad = scaleInWorkLoad;
+        }
+
+        public Integer getScaleInTimeInMin() {
+            return scaleInTimeInMin;
+        }
+
+        public void setScaleInTimeInMin(Integer scaleInTimeInMin) {
+            this.scaleInTimeInMin = scaleInTimeInMin;
         }
     }
 }

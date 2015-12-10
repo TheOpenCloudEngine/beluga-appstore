@@ -36,12 +36,11 @@
         INSERT INTO apps(
             `id`, orgId, `name`, description, appContext, appFile, appFilePath, appFileLength, appFileDate, appFileChecksum
             , appContext2, appFile2, appFilePath2, appFileLength2, appFileDate2, appFileChecksum2, appFileUpdated
-            , environment, cpus, memory, `scale`, resources, autoScaleOutUse, autoScaleInUse, autoScaleOutConf, autoScaleInConf, updateDate
+            , environment, cpus, memory, `scale`, resources, autoScaleConf, updateDate
         ) VALUES(
             #{id}, #{orgId}, #{name}, #{description}, #{appContext}, #{appFile}, #{appFilePath}, #{appFileLength}, #{appFileDate}, #{appFileChecksum}
             , #{appContext2}, #{appFile2}, #{appFilePath2}, #{appFileLength2}, #{appFileDate2}, #{appFileChecksum2}, 'Y'
-            , #{environment}, #{cpus}, #{memory}, #{scale}, #{resources}, #{autoScaleOutUse}, #{autoScaleInUse}
-            , #{autoScaleOutConf}, #{autoScaleInConf}, CURRENT_TIMESTAMP
+            , #{environment}, #{cpus}, #{memory}, #{scale}, #{resources}, #{autoScaleConf}, CURRENT_TIMESTAMP
         )
     </insert>
 
@@ -66,10 +65,7 @@
             memory=#{memory},
             `scale`=#{scale},
             resources=#{resources},
-            autoScaleOutUse=#{autoScaleOutUse},
-            autoScaleInUse=#{autoScaleInUse},
-            autoScaleOutConf=#{autoScaleOutConf},
-            autoScaleInConf=#{autoScaleInConf},
+            autoScaleConf=#{autoScaleConf},
             updateDate=CURRENT_TIMESTAMP
         WHERE id = #{id}
     </update>

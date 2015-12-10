@@ -114,13 +114,11 @@ public class AppManageService {
         String memory = (String) data.get("memory");
         String scale = (String) data.get("scale");
 
-        String autoScaleOutUse = (String) data.get("autoScaleOutUse");
-        Integer loadHigher = ParseUtil.parseInt(data.get("loadHigher"));
-        Integer higherDuring = ParseUtil.parseInt(data.get("higherDuring"));
-        Integer autoScaleOutSize = ParseUtil.parseInt(data.get("autoScaleOutSize"));
-        String autoScaleInUse = (String) data.get("autoScaleInUse");
-        Integer loadLower = ParseUtil.parseInt(data.get("loadLower"));
-        Integer lowerDuring = ParseUtil.parseInt(data.get("lowerDuring"));
+        String autoScaleUse = (String) data.get("autoScaleUse");
+        Integer scaleOutLoad = ParseUtil.parseInt(data.get("scaleOutLoad"));
+        Integer scaleOutTimeInMin = ParseUtil.parseInt(data.get("scaleOutTimeInMin"));
+        Integer scaleInLoad = ParseUtil.parseInt(data.get("scaleInLoad"));
+        Integer scaleInTimeInMin = ParseUtil.parseInt(data.get("scaleInTimeInMin"));
 
         App app = new App();
         app.setId(id);
@@ -160,19 +158,9 @@ public class AppManageService {
         app.setResourcesPlan(resourceList);
 
         /* auto scale */
-        App.AutoScaleConfig autoScaleOutConfig = new App.AutoScaleConfig();
-        autoScaleOutConfig.setLoadAverage(loadHigher);
-        autoScaleOutConfig.setDuringInMin(higherDuring);
-        autoScaleOutConfig.setScale(autoScaleOutSize);
+        App.AutoScaleConfig autoScaleConfig = new App.AutoScaleConfig((autoScaleUse != null), scaleOutLoad, scaleOutTimeInMin, scaleInLoad, scaleInTimeInMin);
+        app.setAutoScaleConfig(autoScaleConfig);
 
-        App.AutoScaleConfig autoScaleInConfig = new App.AutoScaleConfig();
-        autoScaleInConfig.setLoadAverage(loadLower);
-        autoScaleInConfig.setDuringInMin(lowerDuring);
-
-        app.setAutoScaleOutUse(ParseUtil.parseChar(autoScaleOutUse));
-        app.setAutoScaleInUse(ParseUtil.parseChar(autoScaleInUse));
-        app.setAutoScaleOutConfig(autoScaleOutConfig);
-        app.setAutoScaleInConfig(autoScaleInConfig);
         return app;
     }
     public String createApp(Map<String, Object> data) {

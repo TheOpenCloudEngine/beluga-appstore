@@ -220,7 +220,7 @@ $(function() {
                             <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="autoScaleOutUse"> Yes
+                                        <input type="checkbox" name="autoScaleUse" ${app.autoScaleConfig.inUse ? "checked" : ""}> Yes
                                     </label>
                                 </div>
                             </div>
@@ -228,65 +228,71 @@ $(function() {
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Scale-Out When:</label>
                             <div class="col-md-9 col-sm-9">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Server Load:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <select class="form-control display-inline col-100" name="loadHigher">
-                                    <option value="50">&ge; 50%</option>
-                                    <option value="60">&ge; 60%</option>
-                                    <option value="70">&ge; 70%</option>
-                                    <option value="80">&ge; 80%</option>
-                                    <option value="90">&ge; 90%</option>
+                                <div style="float:left">
+                                    Work Load
+                                    <select class="form-control display-inline col-100" name="scaleOutLoad">
+                                        <option value="50" ${app.autoScaleConfig.scaleOutWorkLoad == 50 ? "selected" : ""}>&ge; 50%</option>
+                                        <option value="60" ${app.autoScaleConfig.scaleOutWorkLoad == 60 ? "selected" : ""}>&ge; 60%</option>
+                                        <option value="70" ${app.autoScaleConfig.scaleOutWorkLoad == 70 ? "selected" : ""}>&ge; 70%</option>
+                                        <option value="80" ${app.autoScaleConfig.scaleOutWorkLoad == 80 ? "selected" : ""}>&ge; 80%</option>
+                                        <option value="90" ${app.autoScaleConfig.scaleOutWorkLoad == 90 ? "selected" : ""}>&ge; 90%</option>
+                                        <option value="100" ${app.autoScaleConfig.scaleOutWorkLoad == 100 ? "selected" : ""}>&ge; 100%</option>
+                                        <option value="110" ${app.autoScaleConfig.scaleOutWorkLoad == 110 ? "selected" : ""}>&ge; 110%</option>
+                                        <option value="120" ${app.autoScaleConfig.scaleOutWorkLoad == 120 ? "selected" : ""}>&ge; 120%</option>
+                                        <option value="130" ${app.autoScaleConfig.scaleOutWorkLoad == 130 ? "selected" : ""}>&ge; 130%</option>
+                                        <option value="140" ${app.autoScaleConfig.scaleOutWorkLoad == 140 ? "selected" : ""}>&ge; 140%</option>
+                                        <option value="150" ${app.autoScaleConfig.scaleOutWorkLoad == 150 ? "selected" : ""}>&ge; 150%</option>
+                                        <option value="200" ${app.autoScaleConfig.scaleOutWorkLoad == 200 ? "selected" : ""}>&ge; 200%</option>
+                                        <option value="250" ${app.autoScaleConfig.scaleOutWorkLoad == 250 ? "selected" : ""}>&ge; 250%</option>
+                                        <option value="300" ${app.autoScaleConfig.scaleOutWorkLoad == 300 ? "selected" : ""}>&ge; 300%</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    &nbsp;&nbsp;for
+                                <select class="form-control display-inline col-100" name="scaleOutTimeInMin">
+                                    <option value="1" ${app.autoScaleConfig.scaleOutTimeInMin == 1 ? "selected" : ""}>&ge; 1 Min</option>
+                                    <option value="2" ${app.autoScaleConfig.scaleOutTimeInMin == 2 ? "selected" : ""}>&ge; 2 Min</option>
+                                    <option value="3" ${app.autoScaleConfig.scaleOutTimeInMin == 3 ? "selected" : ""}>&ge; 3 Min</option>
+                                    <option value="4" ${app.autoScaleConfig.scaleOutTimeInMin == 4 ? "selected" : ""}>&ge; 4 Min</option>
+                                    <option value="5" ${app.autoScaleConfig.scaleOutTimeInMin == 5 ? "selected" : ""}>&ge; 5 Min</option>
                                 </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">During:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <select class="form-control display-inline col-100" name="higherDuring">
-                                    <option>1 Min</option>
-                                    <option>2 Min</option>
-                                    <option>3 Min</option>
-                                    <option>4 Min</option>
-                                    <option>5 Min</option>
-                                </select>
+                                </div>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Scale-In When:</label>
                             <div class="col-md-9 col-sm-9">
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Server Load: </label>
-                            <div class="col-md-9 col-sm-9">
-                                <select class="form-control display-inline col-100" name="loadLower">
-                                    <option value="10">&lt; 10%</option>
-                                    <option value="20">&lt; 20%</option>
-                                    <option value="30">&lt; 30%</option>
-                                    <option value="40">&lt; 40%</option>
-                                    <option value="50">&lt; 50%</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">During:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <select class="form-control display-inline col-100" name="lowerDuring">
-                                    <option value="1">1 Min</option>
-                                    <option value="2">2 Min</option>
-                                    <option value="3">3 Min</option>
-                                    <option value="4">4 Min</option>
-                                    <option value="5">5 Min</option>
-                                    <option value="6">6 Min</option>
-                                    <option value="7">7 Min</option>
-                                    <option value="8">8 Min</option>
-                                    <option value="9">9 Min</option>
-                                    <option value="10">10 Min</option>
-                                </select>
+                                <div style="float:left">
+                                    Work Load
+                                    <select class="form-control display-inline col-100" name="scaleInLoad">
+                                        <option value="10" ${app.autoScaleConfig.scaleInWorkLoad == 10 ? "selected" : ""}>&lt; 10%</option>
+                                        <option value="20" ${app.autoScaleConfig.scaleInWorkLoad == 20 ? "selected" : ""}>&lt; 20%</option>
+                                        <option value="30" ${app.autoScaleConfig.scaleInWorkLoad == 30 ? "selected" : ""}>&lt; 30%</option>
+                                        <option value="40" ${app.autoScaleConfig.scaleInWorkLoad == 40 ? "selected" : ""}>&lt; 40%</option>
+                                        <option value="50" ${app.autoScaleConfig.scaleInWorkLoad == 50 ? "selected" : ""}>&lt; 50%</option>
+                                        <option value="60" ${app.autoScaleConfig.scaleInWorkLoad == 60 ? "selected" : ""}>&lt; 60%</option>
+                                        <option value="70" ${app.autoScaleConfig.scaleInWorkLoad == 70 ? "selected" : ""}>&lt; 70%</option>
+                                        <option value="80" ${app.autoScaleConfig.scaleInWorkLoad == 80 ? "selected" : ""}>&lt; 80%</option>
+                                        <option value="90" ${app.autoScaleConfig.scaleInWorkLoad == 90 ? "selected" : ""}>&lt; 90%</option>
+                                        <option value="100" ${app.autoScaleConfig.scaleInWorkLoad == 100 ? "selected" : ""}>&lt; 100%</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    &nbsp;&nbsp;for
+                                    <select class="form-control display-inline col-100" name="scaleInTimeInMin">
+                                        <option value="1" ${app.autoScaleConfig.scaleInTimeInMin == 1 ? "selected" : ""}>&ge; 1 Min</option>
+                                        <option value="2" ${app.autoScaleConfig.scaleInTimeInMin == 2 ? "selected" : ""}>&ge; 2 Min</option>
+                                        <option value="3" ${app.autoScaleConfig.scaleInTimeInMin == 3 ? "selected" : ""}>&ge; 3 Min</option>
+                                        <option value="4" ${app.autoScaleConfig.scaleInTimeInMin == 4 ? "selected" : ""}>&ge; 4 Min</option>
+                                        <option value="5" ${app.autoScaleConfig.scaleInTimeInMin == 5 ? "selected" : ""}>&ge; 5 Min</option>
+                                        <option value="6" ${app.autoScaleConfig.scaleInTimeInMin == 6 ? "selected" : ""}>&ge; 6 Min</option>
+                                        <option value="7" ${app.autoScaleConfig.scaleInTimeInMin == 7 ? "selected" : ""}>&ge; 7 Min</option>
+                                        <option value="8" ${app.autoScaleConfig.scaleInTimeInMin == 8 ? "selected" : ""}>&ge; 8 Min</option>
+                                        <option value="9" ${app.autoScaleConfig.scaleInTimeInMin == 9 ? "selected" : ""}>&ge; 9 Min</option>
+                                        <option value="10" ${app.autoScaleConfig.scaleInTimeInMin == 10 ? "selected" : ""}>&ge; 10 Min</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>

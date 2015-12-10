@@ -33,10 +33,7 @@ CREATE TABLE `apps` (
   `memory` int(11) NOT NULL,
   `scale` int(11) NOT NULL,
   `resources` mediumtext COLLATE utf8_unicode_ci,
-  `autoScaleOutUse` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
-  `autoScaleInUse` char(1) COLLATE utf8_unicode_ci DEFAULT 'N',
-  `autoScaleOutConf` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
-  `autoScaleInConf` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `autoScaleConf` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
   `updateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
   PRIMARY KEY (`id`),
   KEY `fk_apps_org_id_idx` (`orgId`),
@@ -70,9 +67,11 @@ CREATE TABLE `resources` (
   `resourceName` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `image` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `port` int(11) NOT NULL,
-  `env` varchar(65535) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `env` varchar(3000) COLLATE utf8_unicode_ci DEFAULT NULL,
   `cpus` float(2,1) NOT NULL,
   `memory` int(11) NOT NULL,
   `createDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`)
+  PRIMARY KEY (`id`),
+  KEY `fk_resources_org_id_idx` (`orgId`),
+  CONSTRAINT `fk_resources_org_id` FOREIGN KEY (`orgId`) REFERENCES `organization` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

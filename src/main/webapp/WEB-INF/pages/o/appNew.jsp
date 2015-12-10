@@ -230,95 +230,83 @@ $(function(){
                     <h4 class="bottom-line">Auto Scaling Plan</h4>
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Enable Auto Scale-out:</label>
+                            <label class="col-md-3 col-sm-3 control-label">Enable Auto Scale:</label>
                             <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="autoScaleOutUse"> Yes
+                                        <input type="checkbox" name="autoScaleUse"> Yes
                                     </label>
                                 </div>
                             </div>
                         </div>
                         <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Load Average higher than:</label>
+                            <label class="col-md-3 col-sm-3 control-label">Scale-Out When:</label>
                             <div class="col-md-9 col-sm-9">
-                                <select class="form-control display-inline col-100" name="cpuHigher">
-                                    <option value="50">10%</option>
-                                    <option value="50">20%</option>
-                                    <option value="50">30%</option>
-                                    <option value="50">40%</option>
-                                    <option value="50">50%</option>
-                                    <option value="60">60%</option>
-                                    <option value="70">70%</option>
-                                    <option value="80">80%</option>
-                                    <option value="90">90%</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">During:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <select class="form-control display-inline col-100" name="cpuHigherDuring">
-                                    <option value="1">1 Min</option>
-                                    <option value="2">2 Min</option>
-                                    <option value="3">3 Min</option>
-                                    <option value="4">4 Min</option>
-                                    <option value="5">5 Min</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Add Scale:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <select class="form-control display-inline col-100" name="autoScaleOutSize">
-                                    <option value="1">1</option>
-                                    <option value="2">2</option>
-                                    <option value="3">3</option>
-                                </select>
+                                <div style="float:left">
+                                    Work Load
+                                    <select class="form-control display-inline col-100" name="scaleOutLoad">
+                                        <option value="50">&ge; 50%</option>
+                                        <option value="60">&ge; 60%</option>
+                                        <option value="70">&ge; 70%</option>
+                                        <option value="80">&ge; 80%</option>
+                                        <option value="90">&ge; 90%</option>
+                                        <option value="100">&ge; 100%</option>
+                                        <option value="110">&ge; 110%</option>
+                                        <option value="120">&ge; 120%</option>
+                                        <option value="130">&ge; 130%</option>
+                                        <option value="140">&ge; 140%</option>
+                                        <option value="150">&ge; 150%</option>
+                                        <option value="200">&ge; 200%</option>
+                                        <option value="250">&ge; 250%</option>
+                                        <option value="300">&ge; 300%</option>
+                                    </select>
+                                </div>
+                                <div>
+                                    &nbsp;&nbsp;for
+                                    <select class="form-control display-inline col-100" name="scaleOutTimeInMin">
+                                        <option value="1">&ge; 1 Min</option>
+                                        <option value="2">&ge; 2 Min</option>
+                                        <option value="3">&ge; 3 Min</option>
+                                        <option value="4">&ge; 4 Min</option>
+                                        <option value="5">&ge; 5 Min</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
 
                         <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Enable Auto Scale-in:</label>
+                            <label class="col-md-3 col-sm-3 control-label">Scale-In When:</label>
                             <div class="col-md-9 col-sm-9">
-                                <div class="checkbox">
-                                    <label>
-                                        <input type="checkbox" name="autoScaleInUse" disabled> Yes
-                                    </label>
+                                <div style="float:left">
+                                    Work Load
+                                    <select class="form-control display-inline col-100" name="scaleInLoad">
+                                        <option value="10">&lt; 10%</option>
+                                        <option value="20">&lt; 20%</option>
+                                        <option value="30">&lt; 30%</option>
+                                        <option value="40">&lt; 40%</option>
+                                        <option value="50">&lt; 50%</option>
+                                        <option value="60">&lt; 60%</option>
+                                        <option value="70">&lt; 70%</option>
+                                        <option value="80">&lt; 80%</option>
+                                        <option value="90">&lt; 90%</option>
+                                        <option value="100">&lt; 100%</option>
+                                    </select>
                                 </div>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">Load Average lower than:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <select class="form-control display-inline col-100" name="cpuLower">
-                                    <option value="10">10%</option>
-                                    <option value="20">20%</option>
-                                    <option value="30">30%</option>
-                                    <option value="40">40%</option>
-                                    <option value="50">50%</option>
-                                    <option value="60">60%</option>
-                                    <option value="70">70%</option>
-                                    <option value="80">80%</option>
-                                    <option value="90">90%</option>
-                                </select>
-                            </div>
-                        </div>
-                        <div class="form-group">
-                            <label class="col-md-3 col-sm-3 control-label">During:</label>
-                            <div class="col-md-9 col-sm-9">
-                                <select class="form-control display-inline col-100" name="cpuLowerDuring">
-                                    <option value="1">1 Min</option>
-                                    <option value="2">2 Min</option>
-                                    <option value="3">3 Min</option>
-                                    <option value="4">4 Min</option>
-                                    <option value="5">5 Min</option>
-                                    <option value="6">6 Min</option>
-                                    <option value="7">7 Min</option>
-                                    <option value="8">8 Min</option>
-                                    <option value="9">9 Min</option>
-                                    <option value="10">10 Min</option>
-                                </select>
+                                <div>
+                                    &nbsp;&nbsp;for
+                                    <select class="form-control display-inline col-100" name="scaleInTimeInMin">
+                                        <option value="1">&ge; 1 Min</option>
+                                        <option value="2">&ge; 2 Min</option>
+                                        <option value="3">&ge; 3 Min</option>
+                                        <option value="4">&ge; 4 Min</option>
+                                        <option value="5">&ge; 5 Min</option>
+                                        <option value="6">&ge; 6 Min</option>
+                                        <option value="7">&ge; 7 Min</option>
+                                        <option value="8">&ge; 8 Min</option>
+                                        <option value="9">&ge; 9 Min</option>
+                                        <option value="10">&ge; 10 Min</option>
+                                    </select>
+                                </div>
                             </div>
                         </div>
                     </div>
