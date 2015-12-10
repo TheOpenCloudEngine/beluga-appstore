@@ -98,15 +98,7 @@ public class BelugaService {
     }
 
     public String[] getAppHostPort(String appId) {
-        return getAppHostPort(appId, null);
-    }
-    public String[] getAppHostPort(String appId, String resourceAppId) {
-        String uri = null;
-        if(resourceAppId == null) {
-            uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
-        } else {
-            uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId + "/resources/" + resourceAppId);
-        }
+        String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
         JsonNode root = getBelugaResponse(uri);
         if(root == null || !root.has("app")) {
             //존재하지 않음.

@@ -155,19 +155,16 @@
                 </div>
             </div>
 
-            <%
-
-            %>
             <div class="row col-md-12">
                 <div><h4 class="bottom-line">Connection Information</h4></div>
                 <div class="col-md-12 form-horizontal compact">
                     <div class="form-group">
                         <label class="col-md-3 col-sm-3 control-label">Host:</label>
-                        <div class="col-md-9 col-sm-9"><p class="form-control-static">$${fn:toUpperCase(resource.id)}_HOST</p></div>
+                        <div class="col-md-9 col-sm-9"><p class="form-control-static">${resource.id}.host : ${hostPort[0]}</p></div>
                     </div>
                     <div class="form-group">
                         <label class="col-md-3 col-sm-3 control-label">Port:</label>
-                        <div class="col-md-9 col-sm-9"><p class="form-control-static">$${fn:toUpperCase(resource.id)}_PORT</p></div>
+                        <div class="col-md-9 col-sm-9"><p class="form-control-static">${resource.id}.port : ${hostPort[1]}</p></div>
                     </div>
                 </div>
             </div>

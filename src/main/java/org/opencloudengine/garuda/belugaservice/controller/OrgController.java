@@ -212,6 +212,8 @@ public class OrgController {
         ModelAndView mav = new ModelAndView();
         mav.addObject("resource", resource);
         mav.addObject("domain", belugaService.getDomainName());
+        String[] hostPort = belugaService.getAppHostPort(resourceId);
+        mav.addObject("hostPort", hostPort);
         mav.setViewName("o/resourceInfo");
         return mav;
     }
