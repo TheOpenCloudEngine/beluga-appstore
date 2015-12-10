@@ -190,6 +190,11 @@ $(function() {
                                     <option value="3" <c:if test="${app.scale == 3}">selected</c:if>>3</option>
                                     <option value="4" <c:if test="${app.scale == 4}">selected</c:if>>4</option>
                                     <option value="5" <c:if test="${app.scale == 5}">selected</c:if>>5</option>
+                                    <option value="6" <c:if test="${app.scale == 6}">selected</c:if>>6</option>
+                                    <option value="7" <c:if test="${app.scale == 7}">selected</c:if>>7</option>
+                                    <option value="8" <c:if test="${app.scale == 8}">selected</c:if>>8</option>
+                                    <option value="9" <c:if test="${app.scale == 9}">selected</c:if>>9</option>
+                                    <option value="10" <c:if test="${app.scale == 10}">selected</c:if>>10</option>
                                 </select>
                             </div>
                         </div>
