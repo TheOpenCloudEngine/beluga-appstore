@@ -49,3 +49,5 @@ JAVA_OPTS="-Djava.awt.headless=true -Xmx768m -XX:+UseConcMarkSweepGC"
 
 3번설정은 옵션사항이나, 설정해두면, `http://beluga.mydomain.com` 으로 클러스터 관리페이지에 바로 접속가능하다.
 
+기본적으로 mesos 관리도구는 `http://mesos.mydomain.com:8080`으로, marathon 관리도구는 `http://marathon.mydomain.com:8080` 으로 접속이 가능하다.
+
