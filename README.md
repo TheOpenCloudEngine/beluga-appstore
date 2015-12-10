@@ -21,7 +21,7 @@ JAVA_OPTS="$JAVA_OPTS -Dbeluga.endpoint=beluga.kloudrun.com:9000/sample" -Ddb.en
 
 ** MySQL 스키마는 다음SQL로 생성한다. 
 
-https://github.com/TheOpenCloudEngine/beluga-appstore/blob/master/src/main/resources/belugaservice.sql
+https://github.com/TheOpenCloudEngine/beluga-appstore/blob/master/src/main/resources/beluga-appstore.sql
 
 ** MySQL서버는 따로 준비할 필요없이 클러스터생성시 만들어진 Management Node내의 MySQL을 사용한다. 계정은 기본적으로 root / beluga123:) 이다.
 
