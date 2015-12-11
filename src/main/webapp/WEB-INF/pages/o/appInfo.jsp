@@ -74,7 +74,7 @@
             error: function(xhr) {
                 $("#appStatus").addClass("text-danger");
                 $("#appStatus").removeClass("text-success");
-                alert("App status update error : " + xhr.responseText);
+                //alert("App status update error : " + xhr.responseText);
             }
         });
     }
