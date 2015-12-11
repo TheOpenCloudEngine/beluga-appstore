@@ -14,10 +14,11 @@ ubuntu14.04 에서 tomcat7은 /etc/default/tomcat7 파일에 추가.
 ```
 
 예)
+```
+JAVA_OPTS="$JAVA_OPTS -Dbeluga.endpoint=10.0.1.200:9000/sample -Ddb.endpoint=10.0.1.100:3306/appstore -Djava.security.egd=file:/dev/./urandom"
+```
 
-```
-JAVA_OPTS="$JAVA_OPTS -Dbeluga.endpoint=beluga.kloudrun.com:9000/sample" -Ddb.endpoint=localhost:3306/appstore
-```
+** `java.security.egd`는 간혹 환경에 따라 `/dev/random`이 충분한 엔트로피를 받지 못할때 JVM이 행에 걸리는 현상을 방지하기 위함이다.
 
 ** MySQL 스키마는 다음SQL로 생성한다. 
 
