@@ -17,6 +17,7 @@ public class ResourceProvided {
         Map<String, String> mysql5Env = new HashMap<>();
         mysql5Env.put("MYSQL_ROOT_PASSWORD", "1234");
         resourceProvidedList.add(new ResourceProvided("mysql5", "MySQL 5.7.9", "mysql:5.7.9", 3306, mysql5Env));
+        resourceProvidedList.add(new ResourceProvided("mysql5Lower", "MySQL 5.7.9 Lowercase", "fastcat/mysql:5.7.9lower", 3306, mysql5Env));
         Map<String, String> postgresql9Env = new HashMap<>();
         postgresql9Env.put("POSTGRES_PASSWORD", "1234");
         resourceProvidedList.add(new ResourceProvided("postgresql9", "PostgreSQL 9.4.5", "postgres:9.4.5", 5432, postgresql9Env));
