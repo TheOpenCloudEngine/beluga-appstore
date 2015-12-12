@@ -57,3 +57,13 @@ JAVA_HOME=/usr/lib/jvm/java-8-oracle
 
 기본적으로 mesos 관리도구는 `http://mesos.mydomain.com:8080`으로, marathon 관리도구는 `http://marathon.mydomain.com:8080` 으로 접속이 가능하다.
 
+3 . 간편 업데이트 구동
+
+`script/update/init.sh` 파일을 서버에 복사한뒤 실행하면, 동일 디렉토리에 자동으로 `deploy.sh` 쉘이 생성되고, Tomcat의 `webapps`, `logs` 디렉토리가 심볼릭링크로 연결된다.
+
+앱스토어를 특정버전으로 구동하기 위해서는 아래와 같이 실행한다.
+
+```
+$ ./deploy.sh 2.0.3
+```
+이를 통해 해당버전의 Appstore 파일이 다운로드되고, 톰캣의 ROOT 컨텍스트로 자동으로 복사되어, 재기동된다.
