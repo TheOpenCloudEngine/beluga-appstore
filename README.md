@@ -31,6 +31,11 @@ https://github.com/TheOpenCloudEngine/beluga-appstore/blob/master/src/main/resou
 JAVA_OPTS="-Djava.awt.headless=true -Xmx768m -XX:+UseConcMarkSweepGC"
 ```
 
+마지막으로 JAVA_HOME 을 설정한다.
+```
+JAVA_HOME=/usr/lib/jvm/java-8-oracle
+```
+
 
 2 . 도메인설정
 
