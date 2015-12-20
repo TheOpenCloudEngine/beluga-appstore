@@ -66,12 +66,12 @@ $(function(){
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">ID:</label>
                             <div class="col-md-9 col-sm-9">
-                                <input type="text" name="id" id="appId" class="form-control col-150 pull-left required" minlength="3"/>
+                                <input type="text" name="id" id="appId" class="form-control col-150 pull-left required" minlength="3" maxlength="20"/>
                             </div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Name:</label>
-                            <div class="col-md-9 col-sm-9"><input type="text" name="name" id="appName" class="form-control required" minlength="3"/></div>
+                            <div class="col-md-9 col-sm-9"><input type="text" name="name" id="appName" class="form-control required" minlength="3" maxlength="40"/></div>
                         </div>
                     </div>
                 </div>

@@ -87,14 +87,14 @@ $(function(){
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Host:</label>
-                            <div class="col-md-9 col-sm-9"><input type="text" name="id" id="appId" class="form-control col-150 pull-left required" minlength="3"/>
+                            <div class="col-md-9 col-sm-9"><input type="text" name="id" id="appId" class="form-control col-150 pull-left required" minlength="3" maxlength="20"/>
                                 <p class="form-control-static">&nbsp;.${domain}</p>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Name:</label>
-                            <div class="col-md-9 col-sm-9"><input type="text" name="name" id="appName" class="form-control required" minlength="3"/></div>
+                            <div class="col-md-9 col-sm-9"><input type="text" name="name" id="appName" class="form-control required" minlength="3" maxlength="40"/></div>
                         </div>
 
                         <div class="form-group">

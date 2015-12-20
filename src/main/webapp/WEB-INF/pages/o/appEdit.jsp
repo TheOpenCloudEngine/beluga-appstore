@@ -80,7 +80,7 @@ $(function() {
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Name:</label>
-                            <div class="col-md-9 col-sm-9"><input type="text" name="name" class="form-control required" minlength="3" value="${app.name}" /></div>
+                            <div class="col-md-9 col-sm-9"><input type="text" name="name" class="form-control required" minlength="3" maxlength="40" value="${app.name}" /></div>
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Description :</label>
