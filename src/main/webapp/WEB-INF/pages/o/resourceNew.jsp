@@ -26,7 +26,7 @@ $(function(){
     $.validator.addMethod("idExists", function(value, element) {
         var ret = true;
         $.ajax({
-            url : "/api/apps/" + value,
+            url : "/api/resources/" + value,
             async: false,
             type : "HEAD",
             success : function(response) {
