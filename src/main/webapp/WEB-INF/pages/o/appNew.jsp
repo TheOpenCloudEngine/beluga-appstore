@@ -65,7 +65,7 @@ $(function(){
         // Marathon documentation에서 가져온 정규식.
         // https://mesosphere.github.io/marathon/docs/rest-api.html#post-v2-apps
         return value.match(/^(([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9])\\.)*([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9])$/);
-    }, 'You must use only lowercase letters, dot and dash in app id');
+    }, 'You must use only lowercase letters and numbers. Dot and dash are also allowed, but cannot be used as first or last letter.');
 })
 
 </script>
@@ -87,7 +87,7 @@ $(function(){
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Host:</label>
-                            <div class="col-md-9 col-sm-9"><input type="text" name="id" id="appId" class="form-control col-150 pull-left required" minlength="3" maxlength="20"/>
+                            <div class="col-md-9 col-sm-9"><input type="text" name="id" id="appId" class="form-control col-150 pull-left required" minlength="3" maxlength="15"/>
                                 <p class="form-control-static">&nbsp;.${domain}</p>
                             </div>
                         </div>
