@@ -78,7 +78,7 @@
                 $("#appStatus").addClass("text-danger");
                 $("#appStatus").removeClass("text-success");
                 $("#deployButton").removeAttr('disabled');
-                alert("Resource status update error : " + xhr.responseText);
+                //alert("Resource status update error : " + xhr.responseText);
             }
         });
     }
