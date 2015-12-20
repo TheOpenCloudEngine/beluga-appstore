@@ -124,7 +124,7 @@
                         </div>
                         <div class="col-md-3 col-sm-3 col-xs-3">
                             <div class="stat-box">
-                                <p class="text-danger">OFF</p>
+                                ${app.autoScaleConfig.inUse ? "<p class='text-success'>ON</p>" : "<p class='text-danger'>OFF</p>"}
                                 <h4>Auto Scale</h4>
                             </div>
                         </div>
@@ -215,7 +215,7 @@
                     <div class="form-group">
                         <label class="col-md-3 col-sm-3 control-label">Enable Auto Scale:</label>
                         <div class="col-md-9 col-sm-9">
-                            <p class="form-control-static">Yes</p>
+                            <p class="form-control-static">${app.autoScaleConfig.inUse ? "Yes" : "No"}</p>
                         </div>
                     </div>
                     <div class="form-group">
