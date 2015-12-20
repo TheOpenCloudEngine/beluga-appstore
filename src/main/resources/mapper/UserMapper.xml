@@ -9,7 +9,7 @@
 
     <select id="selectWithPassword" parameterType="org.opencloudengine.garuda.belugaservice.db.entity.User" resultType="org.opencloudengine.garuda.belugaservice.db.entity.User">
         select `id`, `orgId`, `type`, `joinDate` from user
-  	    where id = #{id} and `password`=#{password}
+  	    where id = #{id} and binary(password)=#{password}
     </select>
 
     <select id="selectInOrganization" parameterType="java.util.HashMap" resultType="org.opencloudengine.garuda.belugaservice.db.entity.User">
