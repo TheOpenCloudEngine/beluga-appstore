@@ -92,7 +92,7 @@
     </form>
     <div class='footer'>
         <p>
-            Don't have an account?
+            Already have an account.
             <a href="/login">Log In</a>
         </p>
     </div>
