@@ -339,6 +339,7 @@ public class OrgController {
         mav.addObject("joinDate", joinDate);
         mav.addObject("organization", organization);
         mav.addObject("users", users);
+        mav.addObject("user", user);
         mav.setViewName("o/organization");
         return mav;
     }

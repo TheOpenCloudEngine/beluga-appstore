@@ -35,8 +35,8 @@
                 </p>
             </div>
 
+            <c:if test="${user.type eq 'A'}">
             <br>
-
             <div class="box" >
                 <div class="pull-right">
                     <button type="button" class="btn btn-lg btn-danger outline" data-toggle="modal" data-target="#deleteOrgModal">Delete Organization</button>
@@ -44,7 +44,7 @@
                 <h2>Delete Organization</h2>
                 <p>This will permanently delete all users, apps and organization information.</p>
             </div>
-
+            </c:if>
         </div>
     </div>
 </div>
@@ -94,6 +94,7 @@
     </div>
 </div>
 
+<c:if test="${user.type eq 'A'}">
 <div class="modal fade" id="deleteOrgModal" tabindex="-1" role="dialog" >
     <div class="modal-dialog">
         <div class="modal-content">
@@ -114,5 +115,6 @@
         </div><!-- /.modal-content -->
     </div><!-- /.modal-dialog -->
 </div><!-- /.modal -->
+</c:if>
 
 <%@include file="bottom.jsp" %>
