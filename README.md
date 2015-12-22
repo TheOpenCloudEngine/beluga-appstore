@@ -1,4 +1,4 @@
-# Beluga Appstore
+# Beluga Appstore [![Build Status](https://travis-ci.org/TheOpenCloudEngine/beluga-appstore.png)](https://travis-ci.org/TheOpenCloudEngine/beluga-appstore)
 벨루가 앱스토어
 
 ### 설치시 설정.
