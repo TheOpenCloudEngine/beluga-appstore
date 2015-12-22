@@ -14,11 +14,11 @@
             url:"/api/apps/${app.id}/deploy",
             type: "POST",
             success:function() {
-                alert("[${app.id}] app Deploy Success.");
-                location.reload(true);
+                $.notify("[${app.id}] App deploy success.", "success");
+//                location.reload(true);
             },
             error:function(xhr) {
-                alert("Deploy app fails : " + xhr.responseText);
+                $.notify("App deploy fails : " + xhr.responseText, {autoHide: false, className:'error'});
             },
             complete: function(){
                 $("#deployButton").button("reset");
@@ -38,10 +38,10 @@
                 url : "/api/apps/${app.id}/scale/" + $("#scaleSize").val(),
                 type : "POST",
                 success : function() {
-                    alert("Scaling started : " + $("#scaleSize").val());
+                    $.notify("Scaling started : " + $("#scaleSize").val(), "info");
                 },
                 error : function(xhr) {
-                    alert("Scale fails : " + xhr.responseText);
+                    $.notify("Scale fails : " + xhr.responseText, {autoHide: false, className:'error'});
                 },
                 complete: function(){
                     $("#scaleModal").modal('hide');
@@ -74,7 +74,6 @@
             error: function(xhr) {
                 $("#appStatus").addClass("text-danger");
                 $("#appStatus").removeClass("text-success");
-                //alert("App status update error : " + xhr.responseText);
             }
         });
     }

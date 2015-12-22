@@ -12,11 +12,12 @@
             url:"/api/resources/${resource.id}/deploy",
             type: "POST",
             success:function() {
-                alert("[${resource.id}] Starting resource succeed.");
-                location.reload(true);
+                $.notify("[${resource.id}] Starting resource succeed.", "success");
             },
             error:function(xhr) {
-                alert("Starting service fails : " + xhr.responseText);
+                $.notify("Starting service fails : " + xhr.responseText, {autoHide: false, className:'error'});
+            },
+            complete: function(){
                 $("#deployButton").button("reset");
                 updateResourceStatus();
             }
@@ -31,7 +32,7 @@
                 location.href = "/o/manage";
             },
             error: function(xhr, status, e) {
-                alert("cannot delete resource : " + e);
+                $.notify("cannot delete resource : " + e, {autoHide: false, className:'error'});
                 updateResourceStatus();
             }
         })
@@ -78,7 +79,6 @@
                 $("#appStatus").addClass("text-danger");
                 $("#appStatus").removeClass("text-success");
                 $("#deployButton").removeAttr('disabled');
-                //alert("Resource status update error : " + xhr.responseText);
             }
         });
     }

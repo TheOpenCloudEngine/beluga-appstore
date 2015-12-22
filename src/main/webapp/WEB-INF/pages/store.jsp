@@ -9,10 +9,10 @@
             url:"/api/subscribe/"+appId,
             type: "POST",
             success:function(data) {
-                alert(data);
+                $.notify(data, {autoHide: false, className:'info'});
             },
             error:function(xhr) {
-                alert("Subscription fails : " + xhr.responseText);
+                $.notify("Subscription fails : " + xhr.responseText, {autoHide: false, className:'error'});
             }
         });
     }

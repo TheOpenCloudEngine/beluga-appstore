@@ -49,7 +49,7 @@ $(function() {
                 location.href = "/o/manage";
             },
             error: function(xhr, status, e) {
-                alert("cannot delete app : " + e);
+                $.notify("cannot delete app : " + e, "error");
             }
         })
     });

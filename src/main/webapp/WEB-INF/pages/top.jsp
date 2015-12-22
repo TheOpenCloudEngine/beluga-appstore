@@ -18,6 +18,7 @@
     <script src="/resources/bootstrap/js/bootstrap.min.js"></script>
     <script src="/resources/js/jquery.validate.min.js"></script>
     <script src="/resources/js/common.js"></script>
+    <script src="/resources/js/notify.min.js"></script>
 </head>
 <body>
 <div class="navbar navbar-default navbar-fixed-top">

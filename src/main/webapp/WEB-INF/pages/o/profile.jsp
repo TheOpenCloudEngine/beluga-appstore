@@ -11,7 +11,7 @@
         });
         var message = "${param.message}";
         if(message != "") {
-            alert(message);
+            $.notify(message, {autoHide: false, className:'error'});
         }
     });
 </script>
