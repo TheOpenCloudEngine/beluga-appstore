@@ -19,12 +19,22 @@
     <script src="/resources/js/jquery.validate.min.js"></script>
     <script src="/resources/js/common.js"></script>
     <script src="/resources/js/notify.min.js"></script>
+
+    <link rel="stylesheet" href="/resources/assets/plugins/font-awesome/css/font-awesome.min.css">
+    <link rel="stylesheet" href="/resources/assets/plugins/cube-portfolio/cubeportfolio/css/cubeportfolio.min.css">
+    <link rel="stylesheet"
+          href="/resources/assets/plugins/cube-portfolio/cubeportfolio/custom/custom-cubeportfolio.css">
+
+    <link href="/resources/assets/plugins/bootstrap-fileinput/css/fileinput.min.css" media="all" rel="stylesheet" type="text/css" />
+    <script src="/resources/assets/plugins/bootstrap-fileinput/js/plugins/canvas-to-blob.min.js" type="text/javascript"></script>
+    <script src="/resources/assets/plugins/bootstrap-fileinput/js/fileinput.min.js"></script>
+
 </head>
 <body>
 <div class="navbar navbar-default navbar-fixed-top">
     <div class="container">
         <div class="navbar-header">
-            <a href="#" ><img src="/resources/css/oce-logo.png"></a>
+            <a href="#"><img src="/resources/css/oce-logo.png"></a>
             <button class="navbar-toggle" type="button" data-toggle="collapse" data-target="#navbar-main">
                 <span class="icon-bar"></span>
                 <span class="icon-bar"></span>
@@ -34,10 +44,10 @@
         <div class="navbar-collapse collapse" id="navbar-main">
             <ul class="nav navbar-nav">
                 <li>
-                    <a href="/o/apps" class="<%="apps".equals(menuId) ? "current" : ""%>" >Apps</a>
+                    <a href="/o/apps" class="<%="apps".equals(menuId) ? "current" : ""%>">Apps</a>
                 </li>
                 <li>
-                    <a href="/o/manage" class="<%="manage".equals(menuId) ? "current" : ""%>" >Manage</a>
+                    <a href="/o/manage" class="<%="manage".equals(menuId) ? "current" : ""%>">Manage</a>
                 </li>
                 <li>
                     <a href="/index">Store</a>
@@ -46,7 +56,8 @@
 
             <ul class="nav navbar-nav navbar-right">
                 <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes"><c:out value="${sessionScope._user.id}" /><span class="caret"></span></a>
+                    <a class="dropdown-toggle" data-toggle="dropdown" href="#" id="themes"><c:out
+                            value="${sessionScope._user.id}"/><span class="caret"></span></a>
                     <ul class="dropdown-menu" aria-labelledby="themes">
                         <li><a href="/o/profile">My Profile</a></li>
                         <li><a href="/o/organization">Organization</a></li>
@@ -54,12 +65,8 @@
                         <li><a href="/logout">Log Out</a></li>
                     </ul>
                 </li>
-                <%--<c:if test="${sessionScope._user.type == 'A'}" >--%>
-                <%--<li><a href="/o/settings" class="btn btn-default"><i class="glyphicon glyphicon-cog"></i></a></li>--%>
-                <%--</c:if>--%>
             </ul>
 
         </div>
     </div>
-    <%--<div class="col-md-2"></div>--%>
 </div>

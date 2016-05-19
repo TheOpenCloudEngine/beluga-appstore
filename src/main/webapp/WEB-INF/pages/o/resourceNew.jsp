@@ -37,7 +37,7 @@ $(function(){
             }
         });
         return ret;
-    }, "This app id already exists.");
+    }, "This resource id already exists.");
 
     $.validator.addMethod("lowercase", function(value) {
         // Marathon documentation에서 가져온 정규식.
@@ -82,12 +82,8 @@ $(function(){
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Resource Type:</label>
                             <div class="col-md-9 col-sm-9">
-                                <select name="type" class="form-control required">
-                                    <option value="">:: Select ::</option>
-                                    <c:forEach var="resource" items="${allResources}">
-                                        <option value="${resource.id}">${resource.name}</option>
-                                    </c:forEach>
-                                </select>
+                                <input type="hidden" value="${resourceType.id}" name="type">
+                                ${resourceType.name}
                             </div>
                         </div>
                         <div class="form-group">

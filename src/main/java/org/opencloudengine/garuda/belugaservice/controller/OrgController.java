@@ -1,15 +1,8 @@
 package org.opencloudengine.garuda.belugaservice.controller;
 
-import org.opencloudengine.garuda.belugaservice.db.entity.App;
-import org.opencloudengine.garuda.belugaservice.db.entity.Organization;
-import org.opencloudengine.garuda.belugaservice.db.entity.Resource;
-import org.opencloudengine.garuda.belugaservice.db.entity.User;
+import org.opencloudengine.garuda.belugaservice.db.entity.*;
 import org.opencloudengine.garuda.belugaservice.entity.AppStatus;
-import org.opencloudengine.garuda.belugaservice.entity.ResourceProvided;
-import org.opencloudengine.garuda.belugaservice.service.AppManageService;
-import org.opencloudengine.garuda.belugaservice.service.BelugaService;
-import org.opencloudengine.garuda.belugaservice.service.MemberService;
-import org.opencloudengine.garuda.belugaservice.service.ResourceManageService;
+import org.opencloudengine.garuda.belugaservice.service.*;
 import org.opencloudengine.garuda.belugaservice.util.DateUtil;
 import org.opencloudengine.garuda.belugaservice.util.ParseUtil;
 import org.opencloudengine.garuda.belugaservice.util.SizeUnit;
@@ -21,6 +14,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.multipart.MultipartFile;
 import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpSession;
@@ -46,6 +40,9 @@ public class OrgController {
     private ResourceManageService resourceManageService;
 
     @Autowired
+    private ResourceTypeService resourceTypeService;
+
+    @Autowired
     private MemberService memberService;
 
     @Autowired
@@ -54,6 +51,7 @@ public class OrgController {
     private User getUser(HttpSession session) {
         return (User) session.getAttribute(User.USER_KEY);
     }
+
     @RequestMapping(value = "/index", method = RequestMethod.GET)
     public ModelAndView index() {
         ModelAndView mav = new ModelAndView();
@@ -89,25 +87,25 @@ public class OrgController {
         makeUserFriendlyApp(appList);
         makeUserFriendlyApp(outerAppList);
         List<Resource> resources = resourceManageService.getOrgResources(orgId);
-        for(Resource r : resources) {
+        for (Resource r : resources) {
             r.fillCreateDateDisplay(DateUtil.getDateFormat2());
         }
 
-        for(App app : appList) {
+        for (App app : appList) {
             AppStatus status = belugaService.getAppStatus(app.getId());
-            if(status != null) {
+            if (status != null) {
                 app.setAppStatus(status.getStatus());
             }
         }
-        for(App app : outerAppList) {
+        for (App app : outerAppList) {
             AppStatus status = belugaService.getAppStatus(app.getId());
-            if(status != null) {
+            if (status != null) {
                 app.setAppStatus(status.getStatus());
             }
         }
-        for(Resource resource : resources) {
+        for (Resource resource : resources) {
             AppStatus status = belugaService.getAppStatus(resource.getId());
-            if(status != null) {
+            if (status != null) {
                 resource.setAppStatus(status.getStatus());
             }
         }
@@ -118,13 +116,18 @@ public class OrgController {
         float totalCpus = 0;
         int totalMemory = 0;
 
-        if(appList != null) {
-            for(App app : appList) {
+        if (appList != null) {
+            for (App app : appList) {
                 totalCpus += app.getCpus();
                 totalMemory += app.getMemory() * app.getScale();
             }
         }
         String totalMemoryString = ParseUtil.toHumanSizeOverMB(totalMemory * 1000000L);
+
+        List<ResourceType> allResourceTypes = resourceTypeService.getAllResourceTypes();
+        for (ResourceType r : allResourceTypes) {
+            r.fillCreateDateDisplay(DateUtil.getDateFormat2());
+        }
 
         mav.addObject("appSize", appSize);
         mav.addObject("outerAppSize", outerAppSize);
@@ -134,15 +137,17 @@ public class OrgController {
         mav.addObject("outerAppList", outerAppList);
         mav.addObject("domain", belugaService.getDomainName());
         mav.addObject("resources", resources);
+        mav.addObject("allResourceTypes", allResourceTypes);
         mav.setViewName("o/manage");
         return mav;
     }
+
     private void makeUserFriendlyApp(List<App> appList) {
-        if(appList == null) {
+        if (appList == null) {
             return;
         }
         // applied date "yyyy.MM.dd"
-        for(App app : appList) {
+        for (App app : appList) {
             app.fillUpdateDateDisplay(DateUtil.getShortDateFormat());
         }
     }
@@ -153,7 +158,7 @@ public class OrgController {
     @RequestMapping(value = "/apps/{appId}/edit", method = RequestMethod.GET)
     public ModelAndView appEdit(@PathVariable String appId) {
         App app = appManageService.getApp(appId);
-        if(app == null) {
+        if (app == null) {
             throw new NotFoundException();
         }
         ModelAndView mav = new ModelAndView();
@@ -165,8 +170,8 @@ public class OrgController {
         List<Resource> resources = resourceManageService.getOrgResources(orgId);
         //사용중 체크.
         List<String> inUseResources = app.getResourceList();
-        for(Resource resource : resources) {
-            if(inUseResources.contains(resource.getId())) {
+        for (Resource resource : resources) {
+            if (inUseResources.contains(resource.getId())) {
                 resource.setInUse(true);
             }
         }
@@ -196,7 +201,7 @@ public class OrgController {
     @RequestMapping(value = "/apps/{appId}", method = RequestMethod.GET)
     public ModelAndView appInfo(@PathVariable String appId) {
         App app = appManageService.getApp(appId);
-        if(app == null) {
+        if (app == null) {
             throw new NotFoundException();
         }
 //        String elapsed = DateUtil.getElapsedTimeDisplay(app.getApplyDate());
@@ -208,8 +213,8 @@ public class OrgController {
         mav.addObject("domain", belugaService.getDomainName());
         List<String> resourceList = app.getResourceList();
         List<Resource> resources = new ArrayList<>();
-        if(resourceList != null) {
-            for(String rid : resourceList) {
+        if (resourceList != null) {
+            for (String rid : resourceList) {
                 Resource resource = resourceManageService.getResource(rid);
                 resources.add(resource);
             }
@@ -225,7 +230,7 @@ public class OrgController {
     @RequestMapping(value = "/resources/{resourceId}", method = RequestMethod.GET)
     public ModelAndView resourceInfo(@PathVariable String resourceId) {
         Resource resource = resourceManageService.getResource(resourceId);
-        if(resource == null) {
+        if (resource == null) {
             throw new NotFoundException();
         }
         resource.setMemoryDisplay(ParseUtil.toHumanSizeOverMB(resource.getMemory() * SizeUnit.MB));
@@ -258,14 +263,17 @@ public class OrgController {
     * 리소스 신규생성 화면
     * */
     @RequestMapping(value = "/resources/new", method = RequestMethod.GET)
-    public ModelAndView resourceNew(HttpSession session) {
+    public ModelAndView resourceNew(@RequestParam String resourceTypeId, HttpSession session) {
         ModelAndView mav = new ModelAndView();
         mav.setViewName("o/resourceNew");
         User user = getUser(session);
         String orgId = user.getOrgId();
-        List<Resource> usingResources = resourceManageService.getOrgResources(orgId);
-        mav.addObject("usingResources", usingResources);
-        mav.addObject("allResources", ResourceProvided.resourceProvidedList);
+        //List<Resource> usingResources = resourceManageService.getOrgResources(orgId);
+        //mav.addObject("usingResources", usingResources);
+        //mav.addObject("allResources", ResourceProvided.resourceProvidedList);
+
+        ResourceType resourceType = resourceTypeService.getResourceType(resourceTypeId);
+        mav.addObject("resourceType", resourceType);
         return mav;
     }
 
@@ -314,7 +322,7 @@ public class OrgController {
         ModelAndView mav = new ModelAndView();
         mav.addObject("user", user);
 
-        if(user.getType().equals(User.ADMIN_TYPE)) {
+        if (user.getType().equals(User.ADMIN_TYPE)) {
             mav.addObject("userType", "Administrator");
         } else {
             mav.addObject("userType", "User");
@@ -341,6 +349,91 @@ public class OrgController {
         mav.addObject("users", users);
         mav.addObject("user", user);
         mav.setViewName("o/organization");
+        return mav;
+    }
+
+
+    /*
+    * 카달로그 화면
+    * */
+    @RequestMapping(value = "/catalog", method = RequestMethod.GET)
+    public ModelAndView catalog(HttpSession session) {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("o/catalog");
+        User user = getUser(session);
+        String orgId = user.getOrgId();
+
+        List<ResourceType> allResourceTypes = resourceTypeService.getAllResourceTypes();
+        mav.addObject("allResourceTypes", allResourceTypes);
+        return mav;
+    }
+
+    /*
+    * 리소스타입 신규생성 화면
+    * */
+    @RequestMapping(value = "/resourcetype/new", method = RequestMethod.GET)
+    public ModelAndView resourceTypeNew(HttpSession session) {
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("o/resourceTypeNew");
+        User user = getUser(session);
+        String orgId = user.getOrgId();
+
+        return mav;
+    }
+
+    /*
+    * 리소스타입 신규생성 저장.
+    * */
+    @RequestMapping(value = "/resourcetype", method = RequestMethod.POST)
+    public ModelAndView resourceTypeNewCreate(ResourceType resourceType, HttpSession session) {
+        String id = resourceTypeService.createResource(resourceType);
+
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("redirect:/o/resourcetype/" + id);
+        return mav;
+    }
+
+    /*
+    * 특정 리소스타입 정보 받기
+    * */
+    @RequestMapping(value = "/resourcetype/{id}", method = RequestMethod.GET)
+    public ModelAndView resourceTypeInfo(@PathVariable String id) {
+        ResourceType resourceType = resourceTypeService.getResourceType(id);
+        if (resourceType == null) {
+            throw new NotFoundException();
+        }
+        resourceType.fillCreateDateDisplay(DateUtil.getDateFormat2());
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("resourceType", resourceType);
+        mav.setViewName("o/resourceTypeInfo");
+        return mav;
+    }
+
+    /*
+    * 리소스 타입 수정 화면.
+    * */
+    @RequestMapping(value = "/resourcetype/{id}/edit", method = RequestMethod.GET)
+    public ModelAndView resourceTypeEdit(@PathVariable String id) {
+        ResourceType resourceType = resourceTypeService.getResourceType(id);
+        if (resourceType == null) {
+            throw new NotFoundException();
+        }
+        resourceType.fillCreateDateDisplay(DateUtil.getDateFormat2());
+        ModelAndView mav = new ModelAndView();
+        mav.addObject("resourceType", resourceType);
+        mav.setViewName("o/resourceTypeEdit");
+        return mav;
+    }
+
+    /*
+    * 리소스 타입 수정후 저장.
+    * */
+    @RequestMapping(value = "/resourcetype/{id}/edit", method = RequestMethod.POST)
+    public ModelAndView resourceTypeEditUpdate(@PathVariable String id, ResourceType resourceType, HttpSession session) {
+
+        resourceTypeService.updateResourceType(resourceType);
+        ModelAndView mav = new ModelAndView();
+        mav.setViewName("redirect:/o/resourcetype/" + id);
         return mav;
     }
 }

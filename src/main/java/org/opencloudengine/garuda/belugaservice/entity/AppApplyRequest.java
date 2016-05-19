@@ -3,6 +3,7 @@ package org.opencloudengine.garuda.belugaservice.entity;
 import org.opencloudengine.garuda.belugaservice.db.entity.App;
 
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by swsong on 2015. 8. 19..
@@ -21,11 +22,14 @@ public class AppApplyRequest {
     private Integer memory;
     private Integer scale;
 
+    private String envs;
+
     private List<String> resourceList;
 
     private String autoScaleConf;
 
-    public AppApplyRequest() {}
+    public AppApplyRequest() {
+    }
 
     public AppApplyRequest(App app) {
         this.id = app.getId();
@@ -38,6 +42,7 @@ public class AppApplyRequest {
         this.cpus = app.getCpus();
         this.memory = app.getMemory();
         this.scale = app.getScale();
+        this.envs = app.getEnvs();
         this.resourceList = app.getResourceList();
         this.autoScaleConf = app.getAutoScaleConf();
     }
@@ -128,6 +133,14 @@ public class AppApplyRequest {
 
     public void setScale(Integer scale) {
         this.scale = scale;
+    }
+
+    public String getEnvs() {
+        return envs;
+    }
+
+    public void setEnvs(String envs) {
+        this.envs = envs;
     }
 
     public List<String> getResourceList() {

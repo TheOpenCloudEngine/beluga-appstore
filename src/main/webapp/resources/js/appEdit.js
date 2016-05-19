@@ -1,4 +1,4 @@
-$(function() {
+$(function () {
     function handleUpload(formData, i) {
         $.ajax({
             url: '/api/apps/upload',
@@ -7,10 +7,10 @@ $(function() {
             data: formData,
             type: 'POST',
             dataType: 'json',
-            beforeSend : function() {
-                $("#progressbar"+i).show();
+            beforeSend: function () {
+                $("#progressbar" + i).show();
             },
-                success: function (result) {
+            success: function (result) {
 //                console.log(result.name, result.length, result.date);
                 $(".app-file-detail" + i + "").show();
                 $("#fileInfo" + i).text(result.name + " (" + toHumanSize(result.length) + ")");
@@ -26,8 +26,8 @@ $(function() {
                 console.log("upload error = ", e);
                 alert("File upload failed :" + e);
             },
-            complete: function() {
-                $("#progressbar"+i).hide();
+            complete: function () {
+                $("#progressbar" + i).hide();
             }
         });
     }

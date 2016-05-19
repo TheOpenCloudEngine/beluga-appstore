@@ -8,7 +8,8 @@
         on A.orgId = O.id
     </select>
 
-    <select id="listByOrganization" parameterType="map" resultType="org.opencloudengine.garuda.belugaservice.db.entity.App">
+    <select id="listByOrganization" parameterType="map"
+            resultType="org.opencloudengine.garuda.belugaservice.db.entity.App">
         select A.*, O.name as orgName from apps A
         join organization O
         on A.orgId = O.id
@@ -36,11 +37,11 @@
         INSERT INTO apps(
             `id`, orgId, `name`, description, appContext, appFile, appFilePath, appFileLength, appFileDate, appFileChecksum
             , appContext2, appFile2, appFilePath2, appFileLength2, appFileDate2, appFileChecksum2, appFileUpdated
-            , environment, cpus, memory, `scale`, resources, autoScaleConf, updateDate
+            , environment, cpus, memory, `scale`, resources, envs, autoScaleConf, updateDate
         ) VALUES(
             #{id}, #{orgId}, #{name}, #{description}, #{appContext}, #{appFile}, #{appFilePath}, #{appFileLength}, #{appFileDate}, #{appFileChecksum}
             , #{appContext2}, #{appFile2}, #{appFilePath2}, #{appFileLength2}, #{appFileDate2}, #{appFileChecksum2}, 'Y'
-            , #{environment}, #{cpus}, #{memory}, #{scale}, #{resources}, #{autoScaleConf}, CURRENT_TIMESTAMP
+            , #{environment}, #{cpus}, #{memory}, #{scale}, #{resources}, #{envs}, #{autoScaleConf}, CURRENT_TIMESTAMP
         )
     </insert>
 
@@ -65,6 +66,7 @@
             memory=#{memory},
             `scale`=#{scale},
             resources=#{resources},
+            envs=#{envs},
             autoScaleConf=#{autoScaleConf},
             updateDate=CURRENT_TIMESTAMP
         WHERE id = #{id}

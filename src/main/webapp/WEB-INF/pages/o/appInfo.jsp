@@ -191,6 +191,27 @@
             </div>
 
             <div class="row col-md-12">
+                <h4 class="bottom-line">Environment Plan</h4>
+
+                <%--Environment 값--%>
+                <input type="hidden" name="envs" id="envs">
+
+                <div class="col-md-12 form-horizontal compact">
+
+                    <div class="col-md-12 col-sm-12">
+                        <c:forEach var="env" items="${app.envsObject}">
+                            <div class="form-group">
+                                <label class="col-md-3 col-sm-3 control-label">${env.key}:</label>
+                                <div class="col-md-9 col-sm-9">
+                                    <p class="form-control-static">${env.value}</p>
+                                </div>
+                            </div>
+                        </c:forEach>
+                    </div>
+                </div>
+            </div>
+
+            <div class="row col-md-12">
                 <h4 class="bottom-line">Resource Plan</h4>
                 <div class="col-md-12 form-horizontal">
                     <c:forEach var="resource" items="${resources}">

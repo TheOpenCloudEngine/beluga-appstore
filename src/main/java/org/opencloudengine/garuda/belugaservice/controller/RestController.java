@@ -2,16 +2,17 @@ package org.opencloudengine.garuda.belugaservice.controller;
 
 import org.opencloudengine.garuda.belugaservice.db.entity.*;
 import org.opencloudengine.garuda.belugaservice.entity.AppStatus;
-import org.opencloudengine.garuda.belugaservice.service.AppManageService;
-import org.opencloudengine.garuda.belugaservice.service.BelugaService;
-import org.opencloudengine.garuda.belugaservice.service.MemberService;
-import org.opencloudengine.garuda.belugaservice.service.ResourceManageService;
+import org.opencloudengine.garuda.belugaservice.service.*;
 import org.opencloudengine.garuda.belugaservice.util.DateUtil;
 import org.opencloudengine.garuda.belugaservice.util.JsonUtil;
 import org.opencloudengine.garuda.belugaservice.util.MessageDigestUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
@@ -40,6 +41,9 @@ public class RestController {
     ResourceManageService resourceManageService;
 
     @Autowired
+    ResourceTypeService resourceTypeService;
+
+    @Autowired
     private BelugaService belugaService;
 
     @RequestMapping(value = "/api/apps/{appId}", method = RequestMethod.HEAD)
@@ -53,7 +57,7 @@ public class RestController {
     }
 
     @RequestMapping(value = "/api/resources/{resourceId}", method = RequestMethod.HEAD)
-    public void resources(@PathVariable String resourceId, HttpServletResponse response) throws IOException {
+    public void resource(@PathVariable String resourceId, HttpServletResponse response) throws IOException {
         Resource resource = resourceManageService.getResource(resourceId);
         if (resource != null) {
             response.setStatus(200);
@@ -62,10 +66,47 @@ public class RestController {
         }
     }
 
+    @RequestMapping(value = "/api/resourcetype/{id}", method = RequestMethod.HEAD)
+    public void resourcetype(@PathVariable String id, HttpServletResponse response) throws IOException {
+        ResourceType resourcType = resourceTypeService.getResourceType(id);
+        if (resourcType != null) {
+            response.setStatus(200);
+        } else {
+            response.setStatus(404, "no such resource : " + resourcType);
+        }
+    }
+
+    @RequestMapping(value = "/api/resourcetype/{id}/image", method = RequestMethod.GET)
+    public ResponseEntity<byte[]> resourcetypeImage(@PathVariable String id, HttpServletResponse response) throws IOException {
+        ResourceType resourcType = resourceTypeService.getResourceType(id);
+
+        if (resourcType != null) {
+            byte[] imageContent = resourcType.getFile();
+            final HttpHeaders headers = new HttpHeaders();
+            headers.set("Content-Type", resourcType.getFiletype());
+            return new ResponseEntity<byte[]>(imageContent, headers, HttpStatus.OK);
+        } else {
+            return new ResponseEntity<byte[]>(null, null, HttpStatus.NO_CONTENT);
+        }
+    }
+
+    @RequestMapping(value = "/api/resourcetype/{id}", method = RequestMethod.DELETE)
+    public void deleteResourceType(@PathVariable String id, HttpServletResponse response) throws IOException {
+        ResourceType resourceType = resourceTypeService.getResourceType(id);
+
+        if (resourceType != null) {
+            resourceTypeService.deleteResource(id);
+            response.setStatus(200);
+            return;
+        } else {
+            response.sendError(500, "no such resource type: " + id);
+        }
+    }
+
     @RequestMapping(value = "/api/apps/{appId}/status", method = RequestMethod.GET)
     public void appStatus(@PathVariable String appId, HttpServletResponse response) throws IOException {
         AppStatus appStatus = belugaService.getAppStatus(appId);
-        if(appStatus == null) {
+        if (appStatus == null) {
             appStatus = new AppStatus("-", "-", "-");
         }
         response.setStatus(200);
@@ -76,7 +117,7 @@ public class RestController {
     @RequestMapping(value = "/api/resources/{resourceId}/status", method = RequestMethod.GET)
     public void resourcesStatus(@PathVariable String resourceId, HttpServletResponse response) throws IOException {
         AppStatus appStatus = belugaService.getAppStatus(resourceId);
-        if(appStatus == null) {
+        if (appStatus == null) {
             appStatus = new AppStatus("-", "-", "-");
         }
         response.setStatus(200);
@@ -124,7 +165,7 @@ public class RestController {
                 } else {
                     //업데이트 실행.
                     Character isAppFileUpdated = app.getAppFileUpdated();
-                    if(isAppFileUpdated != null && isAppFileUpdated.charValue() == App.CHECK_NO) {
+                    if (isAppFileUpdated != null && isAppFileUpdated.charValue() == App.CHECK_NO) {
                         //app 이 업데이트 되지 않았다면,
                         app.setAppContext(null);
                         app.setAppContext2(null);
@@ -194,6 +235,9 @@ public class RestController {
                 /*
                  * 변경되었거나 꼭 필요한 항목만 넣어준다.
                  */
+                //리소스와 환경변수를 머지하지 위해 넣어준다.
+                app.setEnvs(dbApp.getEnvs());
+
                 //리소스를 넣어주어야 손실이 방지된다.
                 app.setResources(dbApp.getResources());
                 if (belugaService.updateApp(app, true)) {
@@ -272,12 +316,12 @@ public class RestController {
     @ResponseBody
     public String subscribe(@PathVariable String appId, HttpServletResponse response, HttpSession session) {
         User user = (User) session.getAttribute(User.USER_KEY);
-        if(!user.getType().equals(User.ADMIN_TYPE)) {
+        if (!user.getType().equals(User.ADMIN_TYPE)) {
             return "Only admin can subscribe apps.";
         }
 
         String orgId = user.getOrgId();
-        if(appManageService.isGranted(orgId, appId)) {
+        if (appManageService.isGranted(orgId, appId)) {
             return "Already subscribed.";
         }
 

@@ -9,6 +9,7 @@ import java.io.IOException;
 import java.text.DateFormat;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by swsong on 2015. 8. 17..
@@ -55,6 +56,10 @@ public class App {
     /* Resource Plan */
     private String resources;
     private List<String> resourceList;
+
+    /* Envs Plan */
+    private String envs;
+    private Map envsObject;
 
     /* Auto Scaling Plan */
     private Character autoScaleUse;
@@ -298,7 +303,7 @@ public class App {
 
     public void setResources(String resources) {
         this.resources = resources;
-        if(resources != null) {
+        if (resources != null) {
             try {
                 resourceList = JsonUtil.json2Object(resources, List.class);
             } catch (IOException e) {
@@ -313,12 +318,41 @@ public class App {
 
     public void setResourcesPlan(List<String> resourceList) {
         this.resourceList = resourceList;
-        try{
+        try {
             this.resources = JsonUtil.object2String(resourceList);
         } catch (IOException e) {
             logger.error("", e);
         }
     }
+
+    public String getEnvs() {
+        return envs;
+    }
+
+    public void setEnvs(String envs) {
+        this.envs = envs;
+        if (envs != null) {
+            try {
+                envsObject = JsonUtil.json2Object(envs, Map.class);
+            } catch (IOException e) {
+                logger.error("", e);
+            }
+        }
+    }
+
+    public Map getEnvsObject() {
+        return envsObject;
+    }
+
+    public void setEnvsPlan(Map envsObject) {
+        this.envsObject = envsObject;
+        try {
+            this.envs = JsonUtil.object2String(envsObject);
+        } catch (IOException e) {
+            logger.error("", e);
+        }
+    }
+
     public Character getAutoScaleUse() {
         return autoScaleUse;
     }
@@ -329,19 +363,20 @@ public class App {
 
     public void setAutoScaleConf(String autoScaleConf) {
         this.autoScaleConf = autoScaleConf;
-        try{
-           this.autoScaleConfig = JsonUtil.json2Object(autoScaleConf, AutoScaleConfig.class);
+        try {
+            this.autoScaleConfig = JsonUtil.json2Object(autoScaleConf, AutoScaleConfig.class);
         } catch (IOException e) {
             logger.error("", e);
         }
     }
+
     public String getAutoScaleConf() {
         return autoScaleConf;
     }
 
     public void setAutoScaleConfig(AutoScaleConfig autoScaleConfig) {
-        this.autoScaleConfig  = autoScaleConfig;
-        try{
+        this.autoScaleConfig = autoScaleConfig;
+        try {
             this.autoScaleConf = JsonUtil.object2String(autoScaleConfig);
         } catch (IOException e) {
             logger.error("", e);
@@ -359,7 +394,8 @@ public class App {
         private Integer scaleInWorkLoad;
         private Integer scaleInTimeInMin;
 
-        public AutoScaleConfig() {}
+        public AutoScaleConfig() {
+        }
 
         public AutoScaleConfig(boolean inUse, Integer scaleOutWorkLoad, Integer scaleOutTimeInMin, Integer scaleInWorkLoad, Integer scaleInTimeInMin) {
             this.inUse = inUse;

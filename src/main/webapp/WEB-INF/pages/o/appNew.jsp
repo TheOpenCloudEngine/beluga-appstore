@@ -7,66 +7,92 @@
 
 <script src="/resources/js/appEdit.js"></script>
 <script>
-$(function(){
-    $("#app-new-form").validate({
-        onkeyup: function(element) {
-            var element_id = $(element).attr('id');
-            if (this.settings.rules[element_id] && this.settings.rules[element_id].onkeyup != false) {
-                $.validator.defaults.onkeyup.apply(this, arguments);
-            }
-        },
-        rules: {
-            id: {
-                idExists: true,
-                lowercase : true,
-                onkeyup: false
-            },
+    $(function () {
 
-            appFile1: {
-                required: true
-            },
-            context1: {
-                required: true
-            },
-            appFile2 : {
-                required: function(element){
-                    return $("#context2").val().length > 0;
+        $("#env_add").click(function () {
+            var template = $("#env_template");
+            var clone = template.clone();
+            clone.removeAttr("id");
+            template.after(clone);
+            clone.show();
+
+            clone.find("[name=env_del]").click(function () {
+                clone.remove();
+            });
+        });
+
+        $("#app-new-form").validate({
+            onkeyup: function (element) {
+                var element_id = $(element).attr('id');
+                if (this.settings.rules[element_id] && this.settings.rules[element_id].onkeyup != false) {
+                    $.validator.defaults.onkeyup.apply(this, arguments);
                 }
             },
-            context2 : {
-                required: function(element){
-                    return $("#appFile2").val().length > 0;
-                }
-            }
-        },
-        messages: {
-            appFile1: "Upload file is required.",
-            appFile2: "Upload file is required."
-        }
-    });
+            rules: {
+                id: {
+                    idExists: true,
+                    lowercase: true,
+                    onkeyup: false
+                },
 
-    $.validator.addMethod("idExists", function(value, element) {
-        var ret = true;
-        $.ajax({
-            url : "/api/apps/" + value,
-            async: false,
-            type : "HEAD",
-            success : function(response) {
-                ret = false;
+                appFile1: {
+                    required: true
+                },
+                context1: {
+                    required: true
+                },
+                appFile2: {
+                    required: function (element) {
+                        return $("#context2").val().length > 0;
+                    }
+                },
+                context2: {
+                    required: function (element) {
+                        return $("#appFile2").val().length > 0;
+                    }
+                }
             },
-            error : function() {
-                ret = true;
+            messages: {
+                appFile1: "Upload file is required.",
+                appFile2: "Upload file is required."
+            },
+            submitHandler: function (form) {
+                var envs = {};
+                var envTemplates = $("[name=env_template]");
+                envTemplates.each(function () {
+                    var key = $(this).find("[name=env_key]").val().trim();
+                    var value = $(this).find("[name=env_value]").val();
+                    if (key.length > 0) {
+                        envs[key] = value;
+                    }
+                });
+                $("#envs").val(JSON.stringify(envs));
+                form.submit();
             }
         });
-        return ret;
-    }, "This app id already exists.");
 
-    $.validator.addMethod("lowercase", function(value) {
-        // Marathon documentation에서 가져온 정규식.
-        // https://mesosphere.github.io/marathon/docs/rest-api.html#post-v2-apps
-        return value.match(/^(([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9])\\.)*([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9])$/);
-    }, 'You must use only lowercase letters and numbers. Dot and dash are also allowed, but cannot be used as first or last letter.');
-})
+        $.validator.addMethod("idExists", function (value, element) {
+            var ret = true;
+            $.ajax({
+                url: "/api/apps/" + value,
+                async: false,
+                type: "HEAD",
+                success: function (response) {
+                    ret = false;
+                },
+                error: function () {
+                    ret = true;
+                }
+            });
+            return ret;
+        }, "This app id already exists.");
+
+        $.validator.addMethod("lowercase", function (value) {
+            // Marathon documentation에서 가져온 정규식.
+            // https://mesosphere.github.io/marathon/docs/rest-api.html#post-v2-apps
+            return value.match(/^(([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9])\\.)*([a-z0-9]|[a-z0-9][a-z0-9\\-]*[a-z0-9])$/);
+        }, 'You must use only lowercase letters and numbers. Dot and dash are also allowed, but cannot be used as first or last letter.');
+    })
 
 </script>
 <div class="container" id="content">
@@ -80,42 +106,60 @@ $(function(){
             <form id="app-new-form" action="/o/apps" method="POST">
                 <div class="row col-md-12">
                     <a href="/o/manage" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
-                    &nbsp;<button type="submit" class="btn btn-primary outline">Save all changes</button>
+                    &nbsp;
+                    <button type="submit" class="btn btn-primary outline">Save all changes</button>
                 </div>
                 <div class="row col-md-12">
                     <h4 class="bottom-line">General Information</h4>
+
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Host:</label>
-                            <div class="col-md-9 col-sm-9"><input type="text" name="id" id="appId" class="form-control col-150 pull-left required" minlength="3" maxlength="15"/>
+
+                            <div class="col-md-9 col-sm-9"><input type="text" name="id" id="appId"
+                                                                  class="form-control col-150 pull-left required"
+                                                                  minlength="3" maxlength="15"/>
+
                                 <p class="form-control-static">&nbsp;.${domain}</p>
                             </div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Name:</label>
-                            <div class="col-md-9 col-sm-9"><input type="text" name="name" id="appName" class="form-control required" minlength="3" maxlength="40"/></div>
+
+                            <div class="col-md-9 col-sm-9"><input type="text" name="name" id="appName"
+                                                                  class="form-control required" minlength="3"
+                                                                  maxlength="40"/></div>
                         </div>
 
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Description :</label>
-                            <div class="col-md-9 col-sm-9"><textarea name="description" class="form-control" rows="3"></textarea></div>
+
+                            <div class="col-md-9 col-sm-9"><textarea name="description" class="form-control"
+                                                                     rows="3"></textarea></div>
                         </div>
                     </div>
                 </div>
 
                 <div class="row col-md-12">
                     <h4 class="bottom-line">Operating Plan</h4>
+
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">App file:</label>
+
                             <div class="col-md-9 col-sm-9">
                                 <!--file1-->
                                 <p class="form-control-static pull-left">Context</p>
-                                <input type="text" id="context1" name="context1" class="form-control col-150 pull-left mleft-10" placeholder="/context" value="/">
-                                <input type="file" id="appFile1" name="appFile1" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
+                                <input type="text" id="context1" name="context1"
+                                       class="form-control col-150 pull-left mleft-10" placeholder="/context" value="/">
+                                <input type="file" id="appFile1" name="appFile1"
+                                       class="form-control-static required col-100 pleft-10 simple-file-btn"/>
+
                                 <div class="progress" id="progressbar1" style="display:none">
-                                    <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                    <div class="progress-bar progress-bar-info progress-bar-striped active"
+                                         role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                                         style="width: 100%">
                                         <span class="sr-only">100% Complete</span>
                                     </div>
                                 </div>
@@ -126,10 +170,15 @@ $(function(){
                                 <p/>
                                 <!--file2-->
                                 <p class="form-control-static pull-left">Context</p>
-                                <input type="text" id="context2" name="context2" class="form-control col-150 pull-left mleft-10" placeholder="/context">
-                                <input type="file" id="appFile2" name="appFile2" class="form-control-static required col-100 pleft-10 simple-file-btn"/>
+                                <input type="text" id="context2" name="context2"
+                                       class="form-control col-150 pull-left mleft-10" placeholder="/context">
+                                <input type="file" id="appFile2" name="appFile2"
+                                       class="form-control-static required col-100 pleft-10 simple-file-btn"/>
+
                                 <div class="progress" id="progressbar2" style="display:none">
-                                    <div class="progress-bar progress-bar-info progress-bar-striped active" role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100" style="width: 100%">
+                                    <div class="progress-bar progress-bar-info progress-bar-striped active"
+                                         role="progressbar" aria-valuenow="100" aria-valuemin="0" aria-valuemax="100"
+                                         style="width: 100%">
                                         <span class="sr-only">100% Complete</span>
                                     </div>
                                 </div>
@@ -151,6 +200,7 @@ $(function(){
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Environment:</label>
+
                             <div class="col-md-9 col-sm-9">
                                 <select name="environment" class="form-control required">
                                     <option value="">:: Select ::</option>
@@ -162,6 +212,7 @@ $(function(){
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">CPUs:</label>
+
                             <div class="col-md-9 col-sm-9">
                                 <select name="cpus" class="form-control col-100 required">
                                     <option value="0.1">0.1</option>
@@ -179,6 +230,7 @@ $(function(){
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Memory:</label>
+
                             <div class="col-md-9 col-sm-9">
                                 <select name="memory" class="form-control col-100 required">
                                     <%--<option value="50">50MB</option>--%>
@@ -197,8 +249,9 @@ $(function(){
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Scale:</label>
+
                             <div class="col-md-9 col-sm-9">
-                                <select name="scale"class="form-control col-100 required">
+                                <select name="scale" class="form-control col-100 required">
                                     <option value="1">1</option>
                                     <option value="2">2</option>
                                     <option value="3">3</option>
@@ -217,14 +270,47 @@ $(function(){
                 </div>
 
                 <div class="row col-md-12">
+                    <h4 class="bottom-line">Environment Plan</h4>
+
+                    <%--Environment 값--%>
+                    <input type="hidden" name="envs" id="envs">
+
+                    <div class="col-md-12 form-horizontal compact">
+                        <label class="col-md-3 col-sm-3 control-label">Environments:</label>
+
+                        <div class="col-md-9 col-sm-9">
+                            <div class="row" style="margin-bottom: 10px;display: none" id="env_template"
+                                 name="env_template">
+                                <div class="col-md-3 col-sm-3">
+                                    <input type="text" name="env_key" class="form-control col-150 mright-10"
+                                           placeholder="key">
+                                </div>
+                                <div class="col-md-8 col-sm-8">
+                                    <input type="text" name="env_value" class="form-control"
+                                           placeholder="value">
+                                </div>
+                                <div class="col-md-1 col-sm-1">
+                                    <button type="button" name="env_del" class="btn btn-primary outline">Del</button>
+                                </div>
+                            </div>
+
+                            <button id="env_add" type="button" class="btn btn-primary outline mleft-10">Add</button>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="row col-md-12">
                     <h4 class="bottom-line">Resource Plan</h4>
+
                     <div class="col-md-12 form-horizontal compact">
                         <c:forEach var="resource" items="${resources}" varStatus="status">
                             <label class="col-md-3 col-sm-3 control-label">${resource.resourceName}:</label>
+
                             <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
-                                        <input type="checkbox" name="res_${status.index}" value="${resource.id}"> ${resource.name} ( ${resource.id} )
+                                        <input type="checkbox" name="res_${status.index}"
+                                               value="${resource.id}"> ${resource.name} ( ${resource.id} )
                                     </label>
                                 </div>
                             </div>
@@ -234,9 +320,11 @@ $(function(){
 
                 <div class="row col-md-12">
                     <h4 class="bottom-line">Auto Scaling Plan</h4>
+
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Enable Auto Scale:</label>
+
                             <div class="col-md-9 col-sm-9">
                                 <div class="checkbox">
                                     <label>
@@ -247,6 +335,7 @@ $(function(){
                         </div>
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Scale-Out When:</label>
+
                             <div class="col-md-9 col-sm-9">
                                 <div style="float:left">
                                     Work Load
@@ -282,6 +371,7 @@ $(function(){
 
                         <div class="form-group">
                             <label class="col-md-3 col-sm-3 control-label">Scale-In When:</label>
+
                             <div class="col-md-9 col-sm-9">
                                 <div style="float:left">
                                     Work Load

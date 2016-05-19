@@ -34,6 +34,7 @@ public class AppManageService {
     public List<App> getOrgApps(String orgId) {
         return appMapper.listByOrganization(orgId);
     }
+
     public List<App> getOuterApps(String orgId) {
         return appMapper.listOuterApp(orgId);
     }
@@ -55,12 +56,12 @@ public class AppManageService {
         * 1. file이 바뀌었는지 체크한다. checksum비교.
         * */
         int revision = oldApp.getAppFileRevision();
-        if(isEquals(oldApp.getAppContext(), app.getAppContext())
+        if (isEquals(oldApp.getAppContext(), app.getAppContext())
                 && isEquals(oldApp.getAppContext2(), app.getAppContext2())
                 && isEquals(oldApp.getAppFileChecksum(), app.getAppFileChecksum())
                 && isEquals(oldApp.getAppFileChecksum2(), app.getAppFileChecksum2())
                 && isEquals(oldApp.getEnvironment(), app.getEnvironment())
-        ) {
+                ) {
             //같으면
             //중요: deploy를 안하고 여러번 수정했을 경우, 중간에 appFile을 바꿨으면 그대로 바꾼상태로 놔둔다.
             // 그렇지 않으면, 중간에 바꼈음에도 불구하고, 마지막에 updated가 N이 되면, 도커를 교체하지 않는 버그가 생기게 된다.
@@ -77,10 +78,10 @@ public class AppManageService {
     }
 
     private boolean isEquals(String a, String b) {
-        if(a == null && b == null) {
+        if (a == null && b == null) {
             return true;
         }
-        if(a != null && b != null) {
+        if (a != null && b != null) {
             return a.equals(b);
         }
         return false;
@@ -105,9 +106,11 @@ public class AppManageService {
         String appFileLength2 = (String) data.get("fileLength2");
         String appFileDate2 = (String) data.get("fileDate2");
         String appFileChecksum2 = (String) data.get("fileChecksum2");
-        if(appFile2.length() == 0 || appFile2.length() == 0) {
+        if (appFile2.length() == 0 || appFile2.length() == 0) {
             appContext2 = null;
         }
+
+        String envs = (String) data.get("envs");
 
         String environment = (String) data.get("environment");
         String cpus = (String) data.get("cpus");
@@ -133,7 +136,7 @@ public class AppManageService {
         app.setAppFileDate(appFileDate);
         app.setAppFileChecksum(appFileChecksum);
         //app file2
-        if(appContext2 != null) {
+        if (appContext2 != null) {
             app.setAppContext2(appContext2);
             app.setAppFile2(appFile2);
             app.setAppFilePath2(appFilePath2);
@@ -147,10 +150,13 @@ public class AppManageService {
         app.setMemory(ParseUtil.parseInt(memory));
         app.setScale(ParseUtil.parseInt(scale));
 
+        /* environment plan */
+        app.setEnvs(envs);
+
         /* resources plan */
         List<String> resourceList = new ArrayList<>();
-        for(String key : data.keySet()) {
-            if(key.startsWith("res_")) {
+        for (String key : data.keySet()) {
+            if (key.startsWith("res_")) {
                 String resourceId = (String) data.get(key);
                 resourceList.add(resourceId);
             }
@@ -163,6 +169,7 @@ public class AppManageService {
 
         return app;
     }
+
     public String createApp(Map<String, Object> data) {
         App app = parseApp(data);
         appMapper.insert(app);
@@ -187,7 +194,7 @@ public class AppManageService {
 
     public File saveMultipartFile(MultipartFile file, String orgId) throws IOException {
 
-        if(file == null || file.isEmpty()) {
+        if (file == null || file.isEmpty()) {
             return null;
         }
 
