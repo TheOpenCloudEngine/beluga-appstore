@@ -14,6 +14,7 @@ import java.net.URLDecoder;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by swsong on 2015. 8. 17..
@@ -35,12 +36,12 @@ public class AppManageService {
         return appMapper.listByOrganization(orgId);
     }
 
-    public List<App> getOuterApps(String orgId) {
-        return appMapper.listOuterApp(orgId);
+    public List<App> getAppsById(String appId) {
+        return appMapper.listByAppId(appId);
     }
 
-    public App getApp(String appId) {
-        return appMapper.select(appId);
+    public App getApp(String appId, Integer version) {
+        return appMapper.select(appId, version);
     }
 
     public void updateApp(App app) {
@@ -50,12 +51,12 @@ public class AppManageService {
     public String updateApp(Map<String, Object> data) {
         App app = parseApp(data);
         String id = (String) data.get("id");
-        App oldApp = appMapper.select(id);
+        Integer version = (Integer) data.get("version");
+        App oldApp = appMapper.select(id, version);
 
         /*
         * 1. file이 바뀌었는지 체크한다. checksum비교.
         * */
-        int revision = oldApp.getAppFileRevision();
         if (isEquals(oldApp.getAppContext(), app.getAppContext())
                 && isEquals(oldApp.getAppContext2(), app.getAppContext2())
                 && isEquals(oldApp.getAppFileChecksum(), app.getAppFileChecksum())
@@ -69,10 +70,7 @@ public class AppManageService {
         } else {
             //달라졌으면
             app.setAppFileUpdated(App.CHECK_YES);
-            //revision 을 1증가시킨다.
-            revision++;
         }
-        app.setAppFileRevision(revision);
         appMapper.update(app);
         return app.getId();
     }
@@ -89,6 +87,7 @@ public class AppManageService {
 
     public App parseApp(Map<String, Object> data) {
         String id = (String) data.get("id");
+        Integer version = (Integer) data.get("version");
         String orgId = (String) data.get("orgId");
         String name = (String) data.get("name");
         String description = (String) data.get("description");
@@ -126,6 +125,7 @@ public class AppManageService {
         App app = new App();
         app.setId(id);
         app.setOrgId(orgId);
+        app.setVersion(version);
         app.setName(name);
         app.setDescription(description);
         //app file1
@@ -171,25 +171,31 @@ public class AppManageService {
     }
 
     public String createApp(Map<String, Object> data) {
+        data.put("version", 1);
         App app = parseApp(data);
+        app.setCurrentUse(App.CURRENT_YES);
         appMapper.insert(app);
         return app.getId();
     }
 
-    public void createApp(App app) {
+    public String createVersion(Map<String, Object> data) {
+        String id = (String) data.get("id");
+        App lastVersionApp = this.selectMaxVersion(id);
+        Integer version = lastVersionApp.getVersion() + 1;
+
+        data.put("version", version);
+        App app = parseApp(data);
+        app.setCurrentUse(App.CURRENT_NO);
         appMapper.insert(app);
-    }
-
-    public boolean isGranted(String orgId, String appId) {
-        return appMapper.getGrant(orgId, appId) > 0;
-    }
-
-    public void setGrant(String orgId, String appId) {
-        appMapper.setGrant(orgId, appId);
+        return app.getId();
     }
 
     public void deleteApp(String appId) {
         appMapper.delete(appId);
+    }
+
+    public void deleteAppVersion(String appId, Integer version) {
+        appMapper.deleteVersion(appId, version);
     }
 
     public File saveMultipartFile(MultipartFile file, String orgId) throws IOException {
@@ -197,12 +203,12 @@ public class AppManageService {
         if (file == null || file.isEmpty()) {
             return null;
         }
-
         File dir = new File(APP_UPLOAD_ROOT, orgId);
         dir.mkdirs();
 
         String fileName = file.getOriginalFilename();
         fileName = URLDecoder.decode(fileName, "utf-8");
+
         File f = new File(dir, fileName);
         logger.debug("App uploaded >> {}", f.getAbsolutePath());
         InputStream is = file.getInputStream();
@@ -220,7 +226,19 @@ public class AppManageService {
         return f;
     }
 
-    public void setAppFileUpdatedDone(String appId) {
-        appMapper.setAppFileUpdatedDone(appId);
+    public void setAppFileUpdatedDone(String appId, Integer version) {
+        appMapper.setAppFileUpdatedDone(appId, version);
+    }
+
+    public void setAppUse(String appId, Integer version) {
+        appMapper.setAppUse(appId, version);
+    }
+
+    public void setAppNotUse(String appId) {
+        appMapper.setAppNotUse(appId);
+    }
+
+    public App selectMaxVersion(String appId) {
+        return appMapper.selectMaxVersion(appId);
     }
 }

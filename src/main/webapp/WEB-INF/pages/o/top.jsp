@@ -50,6 +50,12 @@
                     <a href="/o/manage" class="<%="manage".equals(menuId) ? "current" : ""%>">Manage</a>
                 </li>
                 <li>
+                    <a href="/o/service" class="<%="service".equals(menuId) ? "current" : ""%>">Service</a>
+                </li>
+                <li>
+                    <a href="/o/image" class="<%="image".equals(menuId) ? "current" : ""%>">Liberty Images</a>
+                </li>
+                <li>
                     <a href="/index">Store</a>
                 </li>
             </ul>

@@ -82,20 +82,6 @@
                 }
             })
         });
-
-        $("#deleteVersionModal").on("click", function () {
-            $.ajax({
-                url: "/api/apps/${app.id}/${app.version}",
-                type: "DELETE",
-                success: function () {
-                    location.href = "/o/manage";
-                },
-                error: function (xhr, status, e) {
-                    $.notify("cannot delete app version: " + e, "error");
-                }
-            })
-        });
-
     });
 
 
@@ -105,10 +91,10 @@
         <div class="col-md-12">
 
             <div class="page-header">
-                <h1 id="tables">${app.name} - Version ${app.version}</h1>
+                <h1 id="tables">${app.name} - Create New Version from Version ${app.version}</h1>
             </div>
 
-            <form id="app-edit-form" action="/o/apps/${app.id}/${app.version}/edit" method="POST">
+            <form id="app-edit-form" action="/o/apps/${app.id}" method="POST">
                 <div class="row col-md-12">
                     <a href="/o/apps/${app.id}/${app.version}" class="btn btn-default">Cancel</a>
                     &nbsp;
@@ -552,19 +538,6 @@
 
                 <div class="box">
                     <div class="pull-right">
-                        <c:choose>
-                            <c:when test="${app.currentUse == 'Y'}">
-                                <button disabled type="button" class="btn btn-lg btn-danger outline" data-toggle="modal"
-                                        data-target="#deleteVersionModal"><i class="glyphicon glyphicon-trash"></i>
-                                    Can Not Delete Current Deploy Version
-                                </button>
-                            </c:when>
-                            <c:otherwise>
-                                <button type="button" class="btn btn-lg btn-danger outline" data-toggle="modal"
-                                        data-target="#deleteVersionModal"><i class="glyphicon glyphicon-trash"></i> Delete Version
-                                </button>
-                            </c:otherwise>
-                        </c:choose>
                         <button type="button" class="btn btn-lg btn-danger outline" data-toggle="modal"
                                 data-target="#deleteModal"><i class="glyphicon glyphicon-trash"></i> Delete App
                         </button>
@@ -577,31 +550,6 @@
         </div>
     </div>
 </div>
-
-
-<div class="modal fade" id="deleteVersionModal" tabindex="-1" role="dialog">
-    <div class="modal-dialog">
-        <div class="modal-content">
-            <div class="modal-header">
-                <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span
-                        aria-hidden="true">&times;</span></button>
-                <h4 class="modal-title">Are you sure?</h4>
-            </div>
-            <div class="modal-body">
-                <p>This will delete version of app and permanently delete all app version information.</p>
-
-                <p><strong class="text-danger">Delete app version "${app.id} : ${app.version}".</strong></p>
-            </div>
-            <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal">No</button>
-                <button type="button" class="btn btn-danger" id="deleteAppVersionButton">Yes</button>
-            </div>
-        </div>
-        <!-- /.modal-content -->
-    </div>
-    <!-- /.modal-dialog -->
-</div>
-<!-- /.modal -->
 
 <div class="modal fade" id="deleteModal" tabindex="-1" role="dialog">
     <div class="modal-dialog">

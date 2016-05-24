@@ -62,8 +62,8 @@
                     <tbody>
                         <c:forEach var="app" items="${appList}">
                             <tr>
-                                <td><a href="apps/${app.id}">${app.name}</a></td>
-                                <td><a href="apps/${app.id}">${app.id}</a></td>
+                                <td><a href="apps/${app.id}/${app.version}">${app.name}</a></td>
+                                <td><a href="apps/${app.id}/${app.version}">${app.id}</a></td>
                                 <td>${app.cpus}</td>
                                 <td>${app.memory}MB</td>
                                 <td>${app.scale}</td>
@@ -115,75 +115,6 @@
             <c:if test="${empty resources}">
                 <div class="well col-md-12 empty-apps">
                     <h3>No resources</h3>
-                </div>
-            </c:if>
-            <br>
-
-            <div class="pull-right">
-                <a href="resourcetype/new" class="btn btn-primary outline">New Resource Type</a></td>
-            </div>
-            <h2>Resource Types</h2>
-            <c:if test="${not empty allResourceTypes}">
-                <table class="table table-hover table-bordered">
-                    <thead>
-                    <tr>
-                        <th>ID</th>
-                        <th>Name</th>
-                        <th>Catalog</th>
-                        <th>Image</th>
-                        <th>Port</th>
-                        <th>Apply Date</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                    <c:forEach var="resourceType" items="${allResourceTypes}">
-                        <tr>
-                            <td><a href="resourcetype/${resourceType.id}">${resourceType.id}</a></td>
-                            <td><a href="resourcetype/${resourceType.id}">${resourceType.name}</a></td>
-                            <td>${resourceType.catalog}</td>
-                            <td>${resourceType.image}MB</td>
-                            <td>${resourceType.port}</td>
-                            <td>${resourceType.createDateDisplay}</td>
-                        </tr>
-                    </c:forEach>
-                    </tbody>
-                </table>
-            </c:if>
-            <c:if test="${empty allResourceTypes}">
-                <div class="well col-md-12 empty-apps">
-                    <h3>No resource Types</h3>
-                </div>
-            </c:if>
-            <br>
-
-            <h2>Outer Apps</h2>
-            <c:if test="${not empty outerAppList}">
-                <table class="table table-hover table-bordered">
-                    <thead>
-                    <tr>
-                        <th>Name</th>
-                        <th>ID</th>
-                        <th>Provider</th>
-                        <th>Status</th>
-                        <th>Action</th>
-                    </tr>
-                    </thead>
-                    <tbody>
-                        <c:forEach var="app" items="${outerAppList}">
-                            <tr>
-                                <td>${app.name}</td>
-                                <td>${app.id}</td>
-                                <td>${app.orgName}</td>
-                                <td><span class="glyphicon ${app.appStatus eq "OK" ? "glyphicon-ok-sign running-status" : "glyphicon-remove-sign stop-status"}"></span></td>
-                                <td><a href="#" class="btn btn-danger outline">Cancel</a></td>
-                            </tr>
-                        </c:forEach>
-                    </tbody>
-                </table>
-            </c:if>
-            <c:if test="${empty outerAppList}">
-                <div class="well col-md-12 empty-apps">
-                    <h3>No apps</h3>
                 </div>
             </c:if>
         </div>

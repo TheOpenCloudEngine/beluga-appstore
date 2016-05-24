@@ -14,15 +14,17 @@
 
     <insert id="insert" parameterType="org.opencloudengine.garuda.belugaservice.db.entity.ResourceType">
         INSERT INTO resource_types(
-            id, `catalog`, `name`, image, port, env, `desc`, file, filetype
+            id,liberty, `catalog`, `name`, image, port, env, `desc`, file, filetype
         ) VALUES(
-            #{id}, #{catalog}, #{name}, #{image}, #{port}, #{env}, #{desc}, #{file}, #{filetype}
+            #{id},#{liberty}, #{catalog}, #{name}, #{image}, #{port}, #{env}, #{desc}, #{file}, #{filetype}
         )
     </insert>
 
     <update id="update" parameterType="org.opencloudengine.garuda.belugaservice.db.entity.ResourceType">
         UPDATE resource_types
-        SET `catalog`=#{catalog},
+        SET
+         liberty=#{liberty},
+        `catalog`=#{catalog},
         `name`=#{name},
         image=#{image},
         port=#{port},

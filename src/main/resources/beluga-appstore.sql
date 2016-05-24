@@ -11,6 +11,8 @@ CREATE TABLE `organization` (
 
 CREATE TABLE `apps` (
   `id` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `version` int(11) DEFAULT '1',
+  `currentUse` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
   `orgId` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `description` varchar(10000) COLLATE utf8_unicode_ci DEFAULT NULL,
@@ -27,7 +29,6 @@ CREATE TABLE `apps` (
   `appFileDate2` datetime DEFAULT NULL,
   `appFileChecksum2` char(32) COLLATE utf8_unicode_ci DEFAULT NULL,
   `appFileUpdated` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'Y',
-  `appFileRevision` int(11) NOT NULL DEFAULT '1',
   `environment` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `cpus` float(2,1) NOT NULL,
   `memory` int(11) NOT NULL,
@@ -36,18 +37,9 @@ CREATE TABLE `apps` (
   `envs` mediumtext COLLATE utf8_unicode_ci,
   `autoScaleConf` varchar(1000) COLLATE utf8_unicode_ci DEFAULT NULL,
   `updateDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
-  PRIMARY KEY (`id`),
+  PRIMARY KEY (`id`,`version`),
   KEY `fk_apps_org_id_idx` (`orgId`),
   CONSTRAINT `fk_apps_org_id` FOREIGN KEY (`orgId`) REFERENCES `organization` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
-
-CREATE TABLE `apps_grant` (
-  `appId` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  `orgId` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
-  KEY `fk_grant_app_id_idx` (`appId`),
-  KEY `fk_grant_org_id_idx` (`orgId`),
-  CONSTRAINT `fk_grant_app_id` FOREIGN KEY (`appId`) REFERENCES `apps` (`id`) ON DELETE CASCADE ON UPDATE CASCADE,
-  CONSTRAINT `fk_grant_org_id` FOREIGN KEY (`orgId`) REFERENCES `organization` (`id`) ON DELETE CASCADE ON UPDATE CASCADE
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;
 
 CREATE TABLE `user` (
@@ -79,6 +71,7 @@ CREATE TABLE `resources` (
 
 CREATE TABLE `resource_types` (
   `id` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `liberty` char(1) COLLATE utf8_unicode_ci NOT NULL DEFAULT 'N',
   `catalog` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
   `name` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
   `image` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
@@ -119,3 +112,15 @@ INSERT INTO resource_types (id, catalog, name, image, port, env, `desc`)
 VALUES ('ftp', 'database', 'FTP', 'mcreations/ftp', 21, '{"FTP_USER":"beluga","FTP_PASS":"1234","HOST":"localhost"}', '');
 
 
+
+CREATE TABLE `liberty_images` (
+  `id` varchar(45) COLLATE utf8_unicode_ci NOT NULL,
+  `tag` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `os` varchar(100) COLLATE utf8_unicode_ci DEFAULT NULL,
+  `desc` longtext COLLATE utf8_unicode_ci DEFAULT NULL,
+  `image` varchar(100) COLLATE utf8_unicode_ci NOT NULL,
+  `port` int(11) NOT NULL,
+  `cmd` longtext COLLATE utf8_unicode_ci DEFAULT NULL,
+  `createDate` datetime NOT NULL DEFAULT CURRENT_TIMESTAMP,
+  PRIMARY KEY (`id`,`tag`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8 COLLATE=utf8_unicode_ci;

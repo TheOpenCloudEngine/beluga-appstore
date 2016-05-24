@@ -6,6 +6,7 @@ package org.opencloudengine.garuda.belugaservice.entity;
 public class AppStatus {
     public static final String STATUS_OK = "OK";
     public static final String STATUS_OFF = "OFF";
+    public static final String STATUS_DEPLOY = "DEPLOY";
     public static final String STATUS_SCALE = "SCALE";
     private String status;
     private String elapsed;

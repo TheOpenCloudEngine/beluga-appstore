@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd" >
+<mapper namespace="org.opencloudengine.garuda.belugaservice.db.mapper.LibertyImageMapper">
+
+    <select id="listAll" resultType="org.opencloudengine.garuda.belugaservice.db.entity.LibertyImage">
+        select * from liberty_images
+    </select>
+
+    <select id="select" parameterType="map"
+            resultType="org.opencloudengine.garuda.belugaservice.db.entity.LibertyImage">
+        select * from liberty_images
+        where id = #{id} and tag = #{tag}
+    </select>
+
+    <insert id="insert" parameterType="org.opencloudengine.garuda.belugaservice.db.entity.LibertyImage">
+        INSERT INTO liberty_images(
+            id,tag,os,`desc`, image, port, cmd
+        ) VALUES(
+            #{id},#{tag},#{os}, #{desc}, #{image}, #{port}, #{cmd}
+        )
+    </insert>
+
+    <update id="update" parameterType="org.opencloudengine.garuda.belugaservice.db.entity.LibertyImage">
+        UPDATE liberty_images
+        SET
+        os=#{os},
+        `desc`=#{desc},
+        image=#{image},
+        port=#{port},
+        cmd=#{cmd}
+        WHERE id = #{id} and tag = #{tag}
+    </update>
+
+    <delete id="delete" parameterType="map">
+        DELETE FROM liberty_images
+        WHERE id = #{id} and tag = #{tag}
+    </delete>
+
+    <delete id="truncate">
+        truncate table liberty_images
+    </delete>
+</mapper>

@@ -33,7 +33,7 @@ public class AppApplyRequest {
 
     public AppApplyRequest(App app) {
         this.id = app.getId();
-        this.revision = app.getAppFileRevision();
+        this.revision = app.getVersion();
         this.context = app.getAppContext();
         this.file = app.getAppFilePath();
         this.context2 = app.getAppContext2();

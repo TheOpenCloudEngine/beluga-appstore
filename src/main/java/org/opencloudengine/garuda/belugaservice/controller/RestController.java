@@ -1,5 +1,6 @@
 package org.opencloudengine.garuda.belugaservice.controller;
 
+import com.fasterxml.jackson.databind.JsonNode;
 import org.opencloudengine.garuda.belugaservice.db.entity.*;
 import org.opencloudengine.garuda.belugaservice.entity.AppStatus;
 import org.opencloudengine.garuda.belugaservice.service.*;
@@ -22,6 +23,8 @@ import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import java.io.File;
 import java.io.IOException;
+import java.util.Map;
+import java.util.UUID;
 
 /**
  * Created by swsong on 2015. 8. 18..
@@ -44,11 +47,14 @@ public class RestController {
     ResourceTypeService resourceTypeService;
 
     @Autowired
+    LibertyImageService imageService;
+
+    @Autowired
     private BelugaService belugaService;
 
-    @RequestMapping(value = "/api/apps/{appId}", method = RequestMethod.HEAD)
-    public void apps(@PathVariable String appId, HttpServletResponse response) throws IOException {
-        App app = appManageService.getApp(appId);
+    @RequestMapping(value = "/api/apps/{appId}/{version}", method = RequestMethod.HEAD)
+    public void apps(@PathVariable String appId, @PathVariable Integer version, HttpServletResponse response) throws IOException {
+        App app = appManageService.getApp(appId, version);
         if (app != null) {
             response.setStatus(200);
         } else {
@@ -103,11 +109,17 @@ public class RestController {
         }
     }
 
-    @RequestMapping(value = "/api/apps/{appId}/status", method = RequestMethod.GET)
-    public void appStatus(@PathVariable String appId, HttpServletResponse response) throws IOException {
-        AppStatus appStatus = belugaService.getAppStatus(appId);
-        if (appStatus == null) {
+    @RequestMapping(value = "/api/apps/{appId}/{version}/status", method = RequestMethod.GET)
+    public void appStatus(@PathVariable String appId, @PathVariable Integer version, HttpServletResponse response) throws IOException {
+        AppStatus appStatus = null;
+        App app = appManageService.getApp(appId, version);
+        if (app.getCurrentUse().equals(App.CURRENT_NO)) {
             appStatus = new AppStatus("-", "-", "-");
+        } else {
+            appStatus = belugaService.getAppStatus(appId);
+            if (appStatus == null) {
+                appStatus = new AppStatus("-", "-", "-");
+            }
         }
         response.setStatus(200);
         response.setCharacterEncoding("utf-8");
@@ -150,11 +162,11 @@ public class RestController {
         }
     }
 
-    @RequestMapping(value = "/api/apps/{appId}/deploy", method = RequestMethod.POST)
-    public void appDeploy(@PathVariable String appId, HttpServletResponse response) throws Exception {
+    @RequestMapping(value = "/api/apps/{appId}/{version}/deploy", method = RequestMethod.POST)
+    public void appDeploy(@PathVariable String appId, @PathVariable Integer version, HttpServletResponse response) throws Exception {
 
         try {
-            App app = appManageService.getApp(appId);
+            App app = appManageService.getApp(appId, version);
             if (app != null) {
                 // 이미 실행중인 marathon app이 있는지 확인한다.
                 AppStatus appStatus = belugaService.getAppStatus(appId);
@@ -174,9 +186,34 @@ public class RestController {
                 }
                 if (isSuccess) {
                     // 앱파일을 적용했으므로, 변경되지 않음으로 갱신한다.
-                    appManageService.setAppFileUpdatedDone(appId);
+                    appManageService.setAppFileUpdatedDone(appId, version);
+
+                    //해당 버젼을 커런트 버젼으로 변경한다.
+                    appManageService.setAppNotUse(appId);
+                    appManageService.setAppUse(appId, version);
                     response.setStatus(200);
                     return;
+                } else {
+                    response.sendError(500, "error : " + appId);
+                }
+            } else {
+                response.sendError(404, "no such app : " + appId);
+            }
+        } catch (Exception e) {
+            response.setStatus(500);
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().print(e.getMessage());
+        }
+    }
+
+    @RequestMapping(value = "/api/apps/{appId}/{version}/deploystop/{cmd}", method = RequestMethod.POST)
+    public void appDeployStop(@PathVariable String appId, @PathVariable Integer version, @PathVariable String cmd, HttpServletResponse response) throws Exception {
+        try {
+            App app = appManageService.getApp(appId, version);
+            if (app != null) {
+                boolean success = belugaService.deployStopApp(app, cmd);
+                if (success) {
+                    response.setStatus(200);
                 } else {
                     response.sendError(500, "error : " + appId);
                 }
@@ -222,15 +259,15 @@ public class RestController {
         }
     }
 
-    @RequestMapping(value = "/api/apps/{appId}/scale/{scale}", method = RequestMethod.POST)
-    public void appScale(@PathVariable String appId, @PathVariable String scale, HttpServletResponse response) throws Exception {
+    @RequestMapping(value = "/api/apps/{appId}/{version}/scale/{scale}", method = RequestMethod.POST)
+    public void appScale(@PathVariable String appId, @PathVariable Integer version, @PathVariable String scale, HttpServletResponse response) throws Exception {
 
         try {
             int scaleInt = Integer.parseInt(scale);
             App app = new App();
             app.setId(appId);
             app.setScale(scaleInt);
-            App dbApp = appManageService.getApp(appId);
+            App dbApp = appManageService.getApp(appId, version);
             if (app != null) {
                 /*
                  * 변경되었거나 꼭 필요한 항목만 넣어준다.
@@ -269,6 +306,22 @@ public class RestController {
         }
     }
 
+    @RequestMapping(value = "/api/apps/{appId}/{version}", method = RequestMethod.DELETE)
+    public void deleteAppVersion(@PathVariable String appId, @PathVariable Integer version, HttpServletResponse response) throws IOException {
+        App app = appManageService.getApp(appId, version);
+        if (app != null) {
+            if (app.getCurrentUse().equals(App.CURRENT_YES)) {
+                response.sendError(500, "unable to delete current deploy app version: " + appId + "/" + version);
+            } else {
+                appManageService.deleteAppVersion(appId, version);
+                response.setStatus(200);
+                return;
+            }
+        } else {
+            response.sendError(500, "no such app version: " + appId + "/" + version);
+        }
+    }
+
     @RequestMapping(value = "/api/resources/{appId}", method = RequestMethod.DELETE)
     public void deleteResource(@PathVariable String appId, HttpServletResponse response) throws IOException {
         if (belugaService.destroyApp(appId)) {
@@ -302,31 +355,64 @@ public class RestController {
         }
     }
 
-//    @RequestMapping(value = "/api/oauth2/token", method = RequestMethod.POST)
-//    public void oauth2Token(@RequestBody String json, HttpServletResponse response) throws IOException {
-//        //TODO
-//    }
-//
-//    @RequestMapping(value = "/api/oauth2/authorization", method = RequestMethod.POST)
-//    public void oauth2Authrozation(@RequestBody String json, HttpServletResponse response) throws IOException {
-//        //TODO
-//    }
+    @RequestMapping(value = "/api/image/boot", method = RequestMethod.POST)
+    public void imageBoot(@RequestBody Map<String, Object> data, HttpServletResponse response, HttpSession session) throws IOException {
+        String image = data.get("os").toString();
+        String container = UUID.randomUUID().toString();
 
-    @RequestMapping(value = "/api/subscribe/{appId}", method = RequestMethod.POST)
-    @ResponseBody
-    public String subscribe(@PathVariable String appId, HttpServletResponse response, HttpSession session) {
-        User user = (User) session.getAttribute(User.USER_KEY);
-        if (!user.getType().equals(User.ADMIN_TYPE)) {
-            return "Only admin can subscribe apps.";
+        JsonNode jsonNode = belugaService.bootTerminal(image, container);
+        System.out.println(jsonNode);
+
+        if (jsonNode.has("image")) {
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().print(jsonNode.toString());
+        } else {
+            response.sendError(500, "Cannot open terminal : " + image);
         }
-
-        String orgId = user.getOrgId();
-        if (appManageService.isGranted(orgId, appId)) {
-            return "Already subscribed.";
-        }
-
-        appManageService.setGrant(orgId, appId);
-        return "[SUCCESS] Now your organization members can use this app.";
     }
 
+    @RequestMapping(value = "/api/image/{id}/{tag}/boot", method = RequestMethod.POST)
+    public void imageBootContinue(@PathVariable String id, @PathVariable String tag, @RequestBody Map<String, Object> data, HttpServletResponse response, HttpSession session) throws IOException {
+
+        LibertyImage libertyImage = imageService.getLibertyImage(id, tag);
+        String container = UUID.randomUUID().toString();
+
+        JsonNode jsonNode = belugaService.bootTerminal(libertyImage.getImage(), container);
+
+        if (jsonNode.has("image")) {
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().print(jsonNode.toString());
+        } else {
+            response.sendError(500, "Cannot open terminal : " + libertyImage.getImage());
+        }
+    }
+
+    @RequestMapping(value = "/api/image/{id}/{tag}/new", method = RequestMethod.POST)
+    public void imageBootNew(@PathVariable String id, @PathVariable String tag, @RequestBody Map<String, Object> data, HttpServletResponse response, HttpSession session) throws IOException {
+
+        String image = data.get("os").toString();
+        String container = UUID.randomUUID().toString();
+
+        JsonNode jsonNode = belugaService.bootTerminal(image, container);
+        System.out.println(jsonNode);
+
+        if (jsonNode.has("image")) {
+            response.setCharacterEncoding("utf-8");
+            response.getWriter().print(jsonNode.toString());
+        } else {
+            response.sendError(500, "Cannot open terminal : " + image);
+        }
+    }
+
+    @RequestMapping(value = "/api/image/{id}/{tag}", method = RequestMethod.DELETE)
+    public void deleteImage(@PathVariable String id, @PathVariable String tag, HttpServletResponse response) throws IOException {
+        LibertyImage libertyImage = imageService.getLibertyImage(id, tag);
+
+        if (libertyImage != null) {
+            imageService.deleteLibertyImage(id, tag);
+            response.setStatus(200);
+        } else {
+            response.sendError(500, "no such image : " + id + ":" + tag);
+        }
+    }
 }

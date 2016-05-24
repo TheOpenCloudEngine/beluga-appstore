@@ -2,11 +2,26 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
-<% String menuId = "manage"; %>
+<% String menuId = "service"; %>
 <%@include file="top.jsp" %>
 
 <script>
     $(function () {
+        $("#from").change(function () {
+            var val = $(this).val();
+            var split = val.split(",");
+
+            $("[name=image]").val(split[0]);
+            $("[name=port]").val(split[1]);
+
+            if (split[0].length > 0) {
+                $("[name=image]").attr("readonly", true);
+                $("[name=port]").attr("readonly", true);
+            }else{
+                $("[name=image]").attr("readonly", false);
+                $("[name=port]").attr("readonly", false);
+            }
+        });
         $("#uploadFile").fileinput({
             showUpload: false
         });
@@ -66,7 +81,7 @@
                 }
             });
             return ret;
-        }, "This resource type id already exists.");
+        }, "This service id already exists.");
 
         $.validator.addMethod("lowercase", function (value) {
             // Marathon documentation에서 가져온 정규식.
@@ -81,15 +96,18 @@
         <div class="col-md-12">
 
             <div class="page-header">
-                <h1 id="tables">Create New Resource Type</h1>
+                <h1 id="tables">Create New Service</h1>
             </div>
 
             <form id="app-new-form" action="/o/resourcetype" method="POST" enctype="multipart/form-data">
                 <div class="row col-md-12">
-                    <a href="/o/manage" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
+                    <a href="/o/service" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
                     &nbsp;
                     <button type="submit" class="btn btn-primary outline">Save all changes</button>
                 </div>
+
+                <input type="hidden" name="liberty" value="N">
+
                 <div class="row col-md-12">
                     <h4 class="bottom-line">General Information</h4>
 
@@ -134,6 +152,21 @@
 
                 <div class="row col-md-12">
                     <h4 class="bottom-line">Operating Plan</h4>
+
+                    <div class="col-md-12 form-horizontal">
+                        <div class="form-group">
+                            <label class="col-md-3 col-sm-3 control-label">From:</label>
+
+                            <div class="col-md-9 col-sm-9">
+                                <select id="from" class="form-control">
+                                    <option value=",">Docker Hub / Docker Registry</option>
+                                    <c:forEach var="image" items="${libertyImages}">
+                                        <option value="${image.image},${image.port}">${image.id}:${image.tag}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">

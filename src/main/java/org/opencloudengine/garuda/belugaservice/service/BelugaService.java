@@ -6,10 +6,13 @@ import org.glassfish.jersey.jackson.JacksonFeature;
 import org.glassfish.jersey.media.multipart.MultiPart;
 import org.glassfish.jersey.media.multipart.MultiPartFeature;
 import org.glassfish.jersey.media.multipart.file.FileDataBodyPart;
+import org.opencloudengine.garuda.belugaservice.common.util.JsonUtils;
 import org.opencloudengine.garuda.belugaservice.db.entity.App;
 import org.opencloudengine.garuda.belugaservice.db.entity.Resource;
 import org.opencloudengine.garuda.belugaservice.entity.AppApplyRequest;
 import org.opencloudengine.garuda.belugaservice.entity.AppStatus;
+import org.opencloudengine.garuda.belugaservice.entity.TerminalCommitRequest;
+import org.opencloudengine.garuda.belugaservice.entity.TerminalOpenRequest;
 import org.opencloudengine.garuda.belugaservice.util.DateUtil;
 import org.opencloudengine.garuda.belugaservice.util.JsonUtil;
 import org.slf4j.Logger;
@@ -27,6 +30,7 @@ import javax.ws.rs.core.Response;
 import java.io.File;
 import java.io.IOException;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -42,7 +46,7 @@ public class BelugaService {
 
     /**
      * Format : <ip>:<port>/<cluster id>
-     * */
+     */
     @Value("#{systemProperties['beluga.endpoint']}")
     private String belugaEndPoint;
 
@@ -52,17 +56,18 @@ public class BelugaService {
     private String domainName;
 
     @PostConstruct
-    public void init(){
-        if(belugaEndPoint == null) {
+    public void init() {
+        if (belugaEndPoint == null) {
             throw new IllegalArgumentException("Error : Please set system variable 'beluga.endpoint'.");
         }
         String[] els = belugaEndPoint.split("/");
-        if(els.length < 2) {
+        if (els.length < 2) {
             throw new IllegalArgumentException("Error : System variable 'beluga.endpoint' format is invalid. Format => ip:port/clusterId");
         }
         hostId = PROTOCOL + els[0].trim();
         clusterId = els[1].trim();
     }
+
     private WebTarget getWebTarget(String path) {
         Client client = ClientBuilder.newClient();
         return client.target(hostId).path(path);
@@ -73,7 +78,7 @@ public class BelugaService {
     }
 
     public String getDomainName() {
-        if(domainName == null) {
+        if (domainName == null) {
             String uri = String.format("/v1/clusters/%s/domain", clusterId);
             domainName = getWebTarget(uri).request().get(String.class);
         }
@@ -91,7 +96,7 @@ public class BelugaService {
             } else {
                 return null;
             }
-        }catch (Throwable t) {
+        } catch (Throwable t) {
             logger.error("", t);
             return null;
         }
@@ -100,17 +105,17 @@ public class BelugaService {
     public String[] getAppHostPort(String appId) {
         String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
         JsonNode root = getBelugaResponse(uri);
-        if(root == null || !root.has("app")) {
+        if (root == null || !root.has("app")) {
             //존재하지 않음.
             return null;
         }
         JsonNode app = root.get("app");
         ArrayNode tasks = (ArrayNode) app.get("tasks");
-        if(tasks != null) {
+        if (tasks != null) {
             String host = "";
             String port = "";
             JsonNode task = tasks.get(0);
-            if(task != null) {
+            if (task != null) {
                 host = task.get("host").asText();
                 ArrayNode ports = (ArrayNode) task.get("ports");
                 if (ports.size() > 0) {
@@ -126,7 +131,7 @@ public class BelugaService {
     public AppStatus getAppStatus(String appId) {
         String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
         JsonNode root = getBelugaResponse(uri);
-        if(root == null || !root.has("app")) {
+        if (root == null || !root.has("app")) {
             //존재하지 않음.
             return null;
         }
@@ -134,6 +139,10 @@ public class BelugaService {
         int instances = app.get("instances").asInt();
         int running = app.get("tasksRunning").asInt();
         int staged = app.get("tasksStaged").asInt();
+
+        JsonNode deployments = app.get("deployments");
+        int size = deployments.size();
+
         int totalRunning = running + staged;
         String dateString = app.get("version").asText();
         Date launchDate = DateUtil.getUtc2LocalTime(dateString);
@@ -142,16 +151,18 @@ public class BelugaService {
 
         String status = "-";
         String scale = "-";
-        if(totalRunning == 0) {
+        if (totalRunning == 0) {
             status = AppStatus.STATUS_OFF;
             scale = "0";
         } else {
-            if(totalRunning == instances) {
+            if (totalRunning == instances) {
                 scale = String.valueOf(instances);
             } else {
                 scale = totalRunning + " / " + instances;
             }
-            if(running == instances && staged == 0) {
+            if (size > 0) {
+                status = AppStatus.STATUS_DEPLOY;
+            } else if (running == instances && staged == 0) {
                 status = AppStatus.STATUS_OK;
             } else {
                 status = AppStatus.STATUS_SCALE;
@@ -165,7 +176,7 @@ public class BelugaService {
         String appId = app.getId();
         String uri = String.format("/v1/clusters/%s/apps/%s", clusterId, appId);
         WebTarget webTarget = getWebTarget(uri);
-        if(force) {
+        if (force) {
             webTarget = webTarget.queryParam("force", "true");
         }
         AppApplyRequest request = new AppApplyRequest(app);
@@ -192,6 +203,17 @@ public class BelugaService {
             String entity = response.readEntity(String.class);
             throw new Exception(entity);
         }
+    }
+
+    public boolean deployStopApp(App app, String cmd) throws Exception {
+        String appId = app.getId();
+        String uri = String.format("/v1/clusters/%s/apps/%s/stop/%s", clusterId, appId, cmd);
+        WebTarget webTarget = getWebTarget(uri);
+        Response response = webTarget.request(MediaType.APPLICATION_JSON).get();
+        if (response.getStatus() == 200) {
+            return true;
+        }
+        return false;
     }
 
     public boolean deployResource(Resource resource) throws Exception {
@@ -232,7 +254,7 @@ public class BelugaService {
         MultiPart multiPart = new MultiPart();
         multiPart.setMediaType(MediaType.MULTIPART_FORM_DATA_TYPE);
 
-        FileDataBodyPart fileDataBodyPart = new FileDataBodyPart("file",appFile, MediaType.APPLICATION_OCTET_STREAM_TYPE);
+        FileDataBodyPart fileDataBodyPart = new FileDataBodyPart("file", appFile, MediaType.APPLICATION_OCTET_STREAM_TYPE);
         multiPart.bodyPart(fileDataBodyPart);
 
         Response response = webTarget.request(MediaType.APPLICATION_JSON).post(Entity.entity(multiPart, multiPart.getMediaType()));
@@ -246,7 +268,51 @@ public class BelugaService {
             } else {
                 return null;
             }
-        }catch (Throwable t) {
+        } catch (Throwable t) {
+            logger.error("", t);
+            return null;
+        }
+    }
+
+    public JsonNode bootTerminal(String image, String container) {
+        String endpoint = System.getProperty("beluga.endpoint");
+        String host = endpoint.substring(0, endpoint.indexOf(":"));
+
+        TerminalOpenRequest request = new TerminalOpenRequest(image, container, host);
+
+        String uri = String.format("/v1/clusters/%s/terminal/boot", clusterId);
+        WebTarget webTarget = getWebTarget(uri);
+        Response response = webTarget.request(MediaType.APPLICATION_JSON).post(Entity.json(request));
+        try {
+            if (response.getStatus() == 200) {
+                String json = response.readEntity(String.class);
+                JsonNode entity = JsonUtil.toJsonNode(json);
+                return entity;
+            } else {
+                return null;
+            }
+        } catch (Throwable t) {
+            logger.error("", t);
+            return null;
+        }
+    }
+
+    public String commitTerminal(String image, String container, String cmd, int port) {
+        TerminalCommitRequest request = new TerminalCommitRequest(image, container, cmd, port);
+
+        String uri = String.format("/v1/clusters/%s/terminal/commit", clusterId);
+        WebTarget webTarget = getWebTarget(uri);
+        Response response = webTarget.request(MediaType.APPLICATION_JSON).post(Entity.json(request));
+        try {
+            if (response.getStatus() == 200) {
+                String json = response.readEntity(String.class);
+                JsonNode entity = JsonUtil.toJsonNode(json);
+                String imageName = entity.get("image").asText();
+                return imageName;
+            } else {
+                return null;
+            }
+        } catch (Throwable t) {
             logger.error("", t);
             return null;
         }

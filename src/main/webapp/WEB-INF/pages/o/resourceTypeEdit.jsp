@@ -1,12 +1,28 @@
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
-<% String menuId = "manage"; %>
+<% String menuId = "service"; %>
 <%@include file="top.jsp" %>
 
 <script src="/resources/js/appEdit.js"></script>
 <script>
     $(function () {
+        $("#from").change(function () {
+            var val = $(this).val();
+            var split = val.split(",");
+
+            $("[name=image]").val(split[0]);
+            $("[name=port]").val(split[1]);
+
+            if (split[0].length > 0) {
+                $("[name=image]").attr("readonly", true);
+                $("[name=port]").attr("readonly", true);
+            }else{
+                $("[name=image]").attr("readonly", false);
+                $("[name=port]").attr("readonly", false);
+            }
+        });
+
         $("#uploadFile").fileinput({
             showUpload: false
         });
@@ -76,6 +92,9 @@
                     &nbsp;
                     <button type="submit" class="btn btn-primary outline">Save all changes</button>
                 </div>
+
+                <input type="hidden" name="liberty" value="${resourceType.liberty}">
+
                 <div class="row col-md-12">
                     <h4 class="bottom-line">General Information</h4>
 
@@ -115,6 +134,21 @@
 
                 <div class="row col-md-12">
                     <h4 class="bottom-line">Operating Plan</h4>
+
+                    <div class="col-md-12 form-horizontal">
+                        <div class="form-group">
+                            <label class="col-md-3 col-sm-3 control-label">From:</label>
+
+                            <div class="col-md-9 col-sm-9">
+                                <select id="from" class="form-control">
+                                    <option value=",">Docker Hub / Docker Registry</option>
+                                    <c:forEach var="image" items="${libertyImages}">
+                                        <option value="${image.image},${image.port}">${image.id}:${image.tag}</option>
+                                    </c:forEach>
+                                </select>
+                            </div>
+                        </div>
+                    </div>
 
                     <div class="col-md-12 form-horizontal">
                         <div class="form-group">
@@ -228,9 +262,9 @@
                 <h4 class="modal-title">Are you sure?</h4>
             </div>
             <div class="modal-body">
-                <p>This will delete resouce type.</p>
+                <p>This will delete service.</p>
 
-                <p><strong class="text-danger">Delete Resource Type "${resourceType.id}".</strong></p>
+                <p><strong class="text-danger">Delete Service "${resourceType.id}".</strong></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal">No</button>

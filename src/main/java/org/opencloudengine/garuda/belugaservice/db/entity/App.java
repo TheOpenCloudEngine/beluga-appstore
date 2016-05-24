@@ -21,12 +21,19 @@ public class App {
     public static final Character CHECK_YES = 'Y';
     public static final Character CHECK_NO = 'N';
 
+    public static final String CURRENT_YES = "Y";
+    public static final String CURRENT_NO = "N";
+
     /* General Information */
     private String id;
     private String orgId;
     private String orgName; //Organization 테이블 조인결과.
     private String name;
     private String description;
+
+    /* Version Information */
+    private Integer version;
+    private String currentUse;
 
     /* Operating Plan */
     private String appContext;
@@ -44,7 +51,6 @@ public class App {
     private String appFileDate2;
     private String appFileChecksum2;
     private Character appFileUpdated;   //appFile이 update 되었는지 여부. context, appFileChecksum을 기존값과 비교해서 셋팅해준다.
-    private Integer appFileRevision;    //docker image revision을 설정한다.
     private String environment;
     private Float cpus;
     private Integer memory;
@@ -107,6 +113,22 @@ public class App {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public Integer getVersion() {
+        return version;
+    }
+
+    public void setVersion(Integer version) {
+        this.version = version;
+    }
+
+    public String getCurrentUse() {
+        return currentUse;
+    }
+
+    public void setCurrentUse(String currentUse) {
+        this.currentUse = currentUse;
     }
 
     public String getAppContext() {
@@ -227,14 +249,6 @@ public class App {
 
     public void setAppFileUpdated(Character appFileUpdated) {
         this.appFileUpdated = appFileUpdated;
-    }
-
-    public Integer getAppFileRevision() {
-        return appFileRevision;
-    }
-
-    public void setAppFileRevision(Integer appFileRevision) {
-        this.appFileRevision = appFileRevision;
     }
 
     public String getEnvironment() {

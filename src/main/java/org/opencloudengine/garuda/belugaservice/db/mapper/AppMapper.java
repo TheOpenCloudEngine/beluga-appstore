@@ -14,9 +14,9 @@ public interface AppMapper {
 
     public List<App> listByOrganization(@Param("orgId") String orgId);
 
-    public List<App> listOuterApp(@Param("orgId") String orgId);
+    public List<App> listByAppId(@Param("id") String id);
 
-    public App select(@Param("id") String id);
+    public App select(@Param("id") String id, @Param("version") Integer version);
 
     public void insert(App app);
 
@@ -24,13 +24,15 @@ public interface AppMapper {
 
     public void delete(@Param("id") String id);
 
+    public void deleteVersion(@Param("id") String id, @Param("version") Integer version);
+
     public void truncate();
 
-    public Integer getGrant(@Param("orgId") String orgId, @Param("appId") String appId);
+    public void setAppFileUpdatedDone(@Param("id") String id, @Param("version") Integer version);
 
-    public void setGrant(@Param("orgId") String orgId, @Param("appId") String appId);
+    public void setAppUse(@Param("id") String id, @Param("version") Integer version);
 
-    public void removeGrant(@Param("orgId") String orgId, @Param("appId") String appId);
+    public void setAppNotUse(@Param("id") String id);
 
-    public void setAppFileUpdatedDone(@Param("id") String id);
+    public App selectMaxVersion(@Param("id") String id);
 }

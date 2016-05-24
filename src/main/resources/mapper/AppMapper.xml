@@ -3,43 +3,55 @@
 <mapper namespace="org.opencloudengine.garuda.belugaservice.db.mapper.AppMapper">
 
     <select id="listAll" resultType="org.opencloudengine.garuda.belugaservice.db.entity.App">
-        select A.*, O.name as orgName from apps A
+        select A.*, O.name as orgName from
+        (select * from apps where currentUse = 'Y') A
         join organization O
-        on A.orgId = O.id
+        on A.orgId = O.id;
     </select>
 
     <select id="listByOrganization" parameterType="map"
             resultType="org.opencloudengine.garuda.belugaservice.db.entity.App">
-        select A.*, O.name as orgName from apps A
+        select A.*, O.name as orgName from
+        (select * from apps where currentUse = 'Y') A
         join organization O
         on A.orgId = O.id
         where A.orgId = #{orgId}
     </select>
 
-    <select id="listOuterApp" parameterType="map" resultType="org.opencloudengine.garuda.belugaservice.db.entity.App">
+    <select id="listByAppId" parameterType="map"
+            resultType="org.opencloudengine.garuda.belugaservice.db.entity.App">
         select A.*, O.name as orgName from apps A
         join organization O
         on A.orgId = O.id
-        join apps_grant G
-        on A.id = G.appId
-        where G.orgId = #{orgId} and A.orgId != #{orgId}
+        where A.id = #{id}
+        order by A.version desc;
     </select>
-
 
     <select id="select" parameterType="map" resultType="org.opencloudengine.garuda.belugaservice.db.entity.App">
         select A.*, O.name as orgName from apps A
         join organization O
         on A.orgId = O.id
-        where A.id = #{id}
+        where A.id = #{id} and A.version = #{version}
+    </select>
+
+    <select id="selectMaxVersion" parameterType="map" resultType="org.opencloudengine.garuda.belugaservice.db.entity.App">
+        select A.*
+        from (select * from apps where id = #{id}) A
+        inner join (
+            select id, max(version) version
+            from apps
+            where id = #{id}
+            group by id
+        ) B on A.id = B.id and A.version = B.version;
     </select>
 
     <insert id="insert" parameterType="org.opencloudengine.garuda.belugaservice.db.entity.App">
         INSERT INTO apps(
-            `id`, orgId, `name`, description, appContext, appFile, appFilePath, appFileLength, appFileDate, appFileChecksum
+            `id`, orgId, currentUse ,version, `name`, description, appContext, appFile, appFilePath, appFileLength, appFileDate, appFileChecksum
             , appContext2, appFile2, appFilePath2, appFileLength2, appFileDate2, appFileChecksum2, appFileUpdated
             , environment, cpus, memory, `scale`, resources, envs, autoScaleConf, updateDate
         ) VALUES(
-            #{id}, #{orgId}, #{name}, #{description}, #{appContext}, #{appFile}, #{appFilePath}, #{appFileLength}, #{appFileDate}, #{appFileChecksum}
+            #{id}, #{orgId},#{currentUse}, #{version}, #{name}, #{description}, #{appContext}, #{appFile}, #{appFilePath}, #{appFileLength}, #{appFileDate}, #{appFileChecksum}
             , #{appContext2}, #{appFile2}, #{appFilePath2}, #{appFileLength2}, #{appFileDate2}, #{appFileChecksum2}, 'Y'
             , #{environment}, #{cpus}, #{memory}, #{scale}, #{resources}, #{envs}, #{autoScaleConf}, CURRENT_TIMESTAMP
         )
@@ -60,7 +72,6 @@
             appFileLength2=#{appFileLength2},
             appFileDate2=#{appFileDate2},
             appFileUpdated=#{appFileUpdated},
-            appFileRevision=#{appFileRevision},
             environment=#{environment},
             cpus=#{cpus},
             memory=#{memory},
@@ -69,33 +80,35 @@
             envs=#{envs},
             autoScaleConf=#{autoScaleConf},
             updateDate=CURRENT_TIMESTAMP
-        WHERE id = #{id}
+        WHERE id = #{id} and version = #{version}
     </update>
 
     <update id="setAppFileUpdatedDone" parameterType="map">
         UPDATE apps
         SET appFileUpdated='N'
-        WHERE id = #{id}
+        WHERE id = #{id} and version = #{version}
     </update>
 
-    <select id="getGrant" parameterType="map" resultType="int">
-        select count(1) from apps_grant
-        where orgId = #{orgId} and appId = #{appId}
-    </select>
+    <update id="setAppUse" parameterType="map">
+        UPDATE apps
+        SET currentUse='Y'
+        WHERE id = #{id} and version = #{version}
+    </update>
 
-    <insert id="setGrant" parameterType="map">
-        INSERT INTO apps_grant (orgId, appId)
-        VALUES (#{orgId}, #{appId})
-    </insert>
-
-    <delete id="removeGrant" parameterType="map">
-        DELETE from apps_grant
-        where orgId = #{orgId} and appId = #{appId}
-    </delete>
+    <update id="setAppNotUse" parameterType="map">
+        UPDATE apps
+        SET currentUse='N'
+        WHERE id = #{id}
+    </update>
 
     <delete id="delete">
         DELETE FROM apps
         WHERE id = #{id}
+    </delete>
+
+    <delete id="deleteVersion" parameterType="map">
+        DELETE FROM apps
+        WHERE id = #{id} and version = #{version}
     </delete>
 
     <delete id="truncate">

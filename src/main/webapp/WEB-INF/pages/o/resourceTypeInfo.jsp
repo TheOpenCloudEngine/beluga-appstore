@@ -2,7 +2,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/functions" prefix="fn" %>
 <%@ page language="java" contentType="text/html; charset=utf-8"
          pageEncoding="utf-8" %>
-<% String menuId = "manage"; %>
+<% String menuId = "service"; %>
 <%@include file="top.jsp" %>
 <script>
     function deleteResourceType() {
@@ -42,7 +42,7 @@
             </div>
 
             <div class="row col-md-12">
-                <a href="/o/manage" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
+                <a href="/o/service" class="btn btn-default"><i class="glyphicon glyphicon-arrow-left"></i> List</a>
                 &nbsp;<a href="${resourceType.id}/edit" class="btn btn-default">Edit</a>
             </div>
 

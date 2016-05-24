@@ -20,6 +20,7 @@ import java.util.Map;
 public class ResourceType {
     private static final Logger logger = LoggerFactory.getLogger(ResourceType.class);
     private String id;
+    private String liberty;
     private String catalog;
     private String name;
     private String image;
@@ -36,8 +37,9 @@ public class ResourceType {
     public ResourceType() {
     }
 
-    public ResourceType(String id, String catalog, String name, String image, int port, String env, String desc, byte[] file, String filetype) {
+    public ResourceType(String id, String liberty, String catalog, String name, String image, int port, String env, String desc, byte[] file, String filetype) {
         this.id = id;
+        this.liberty = liberty;
         this.catalog = catalog;
         this.name = name;
         this.image = image;
@@ -54,6 +56,14 @@ public class ResourceType {
 
     public void setId(String id) {
         this.id = id;
+    }
+
+    public String getLiberty() {
+        return liberty;
+    }
+
+    public void setLiberty(String liberty) {
+        this.liberty = liberty;
     }
 
     public String getCatalog() {
