@@ -113,7 +113,7 @@
         <div class="col-md-12">
 
             <div class="page-header">
-                <h1 id="tables">Create Liberty Image</h1>
+                <h1 id="tables">Create Liberty Docker</h1>
             </div>
 
             <form id="app-new-form" action="/o/image" method="POST" enctype="multipart/form-data">
@@ -169,7 +169,7 @@
                 </div>
 
                 <div class="row col-md-12">
-                    <h4 class="bottom-line">Edit Image</h4>
+                    <h4 class="bottom-line">Edit Docker</h4>
 
                     <input type="hidden" name="container" id="container">
 

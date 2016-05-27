@@ -81,7 +81,7 @@
 
                 <div class="col-md-12 form-horizontal">
                     <div class="form-group">
-                        <label class="col-md-3 col-sm-3 control-label">Image:</label>
+                        <label class="col-md-3 col-sm-3 control-label">Docker:</label>
 
                         <div class="col-md-9 col-sm-9"><p class="form-control-static">${resourceType.image}</p></div>
                     </div>

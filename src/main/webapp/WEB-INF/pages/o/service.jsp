@@ -22,7 +22,7 @@
                         <th>ID</th>
                         <th>Name</th>
                         <th>Catalog</th>
-                        <th>Image</th>
+                        <th>Docker</th>
                         <th>Port</th>
                         <th>Apply Date</th>
                     </tr>

@@ -53,7 +53,7 @@
                     <a href="/o/service" class="<%="service".equals(menuId) ? "current" : ""%>">Service</a>
                 </li>
                 <li>
-                    <a href="/o/image" class="<%="image".equals(menuId) ? "current" : ""%>">Liberty Images</a>
+                    <a href="/o/image" class="<%="image".equals(menuId) ? "current" : ""%>">Liberty Docker</a>
                 </li>
                 <li>
                     <a href="/index">Store</a>

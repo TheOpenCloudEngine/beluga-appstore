@@ -171,7 +171,7 @@
                                     <div class="col-md-12 col-sm-12">
                                         <button id="launchContinue" type="button"
                                                 class="btn btn-primary outline mleft-10">Launch
-                                            Editor From Previous Docker Image, ${libertyImage.image}
+                                            Editor From Previous Docker, ${libertyImage.image}
                                         </button>
                                     </div>
                                 </div>
@@ -181,7 +181,7 @@
                 </div>
 
                 <div class="row col-md-12">
-                    <h4 class="bottom-line">Edit Image</h4>
+                    <h4 class="bottom-line">Edit Docker</h4>
 
                     <div id="editor" class="col-md-12 row">
 
@@ -248,12 +248,12 @@
                     <div class="pull-right">
                         <button type="button" class="btn btn-lg btn-danger outline" data-toggle="modal"
                                 data-target="#deleteModal"><i class="glyphicon glyphicon-trash"></i> Delete Liberty
-                            Image
+                            Docker
                         </button>
                     </div>
-                    <h2>Delete Liberty Image</h2>
+                    <h2>Delete Liberty Docker</h2>
 
-                    <p>This will delete liberty image.</p>
+                    <p>This will delete liberty docker.</p>
                 </div>
             </div>
         </div>
@@ -269,9 +269,9 @@
                 <h4 class="modal-title">Are you sure?</h4>
             </div>
             <div class="modal-body">
-                <p>This will delete liberty image.</p>
+                <p>This will delete liberty docker.</p>
 
-                <p><strong class="text-danger">Delete Liberty Image "${libertyImage.id}:${libertyImage.tag}".</strong>
+                <p><strong class="text-danger">Delete Liberty Docker "${libertyImage.id}:${libertyImage.tag}".</strong>
                 </p>
             </div>
             <div class="modal-footer">
