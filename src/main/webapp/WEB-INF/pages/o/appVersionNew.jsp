@@ -198,6 +198,10 @@
                                             <c:if test="${app.environment == 'java7_tomcat7'}">selected</c:if>>
                                         java7_tomcat7
                                     </option>
+                                    <option value="java8_tomcat8"
+                                            <c:if test="${app.environment == 'java8_tomcat8'}">selected</c:if>>
+                                        java7_tomcat7
+                                    </option>
                                     <option value="java7_wildfly8.2"
                                             <c:if test="${app.environment == 'java7_wildfly8.2'}">selected</c:if>>
                                         java7_wildfly8.2
